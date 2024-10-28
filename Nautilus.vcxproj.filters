@@ -18,6 +18,7 @@
     <None Include=".gitignore" />
     <None Include="LICENSE" />
     <None Include="README.md" />
+    <None Include=".gitmodules" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Nautilus\src\Nautilus\core.h">
@@ -32,9 +33,15 @@
     <ClInclude Include="Nautilus\src\Nautilus\entryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Nautilus\src\Nautilus\log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Nautilus\src\Nautilus\app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Nautilus\src\Nautilus\log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

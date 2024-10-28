@@ -7,7 +7,7 @@
 
 namespace Nt
 {
-	class NTAPI Application
+	class NT_API Application
 	{
 	public:
 		Application(void);

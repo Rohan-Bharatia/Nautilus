@@ -5,9 +5,13 @@
 
 	int main(int argc, char** argv)
 	{
-		auto sandbox = Nt::createApplication();
-		sandbox->run();
-		delete sandbox;
+		Nt::Log::init();
+		NT_CORE_WARN("Initialized log");
+		NT_CLIENT_INFO("Hello! a={0}", 5);
+
+		auto app = Nt::createApplication();
+		app->run();
+		delete app;
 
 		return 0;
 	}

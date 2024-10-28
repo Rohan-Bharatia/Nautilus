@@ -57,6 +57,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NT_PLATFORM_WINDOWS;NT_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Nautilus\vendor\spdlog\include\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,16 +82,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include=".gitmodules" />
     <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Nautilus\src\Nautilus\log.h" />
     <ClInclude Include="Nautilus\src\nautilus.h" />
     <ClInclude Include="Nautilus\src\Nautilus\app.h" />
     <ClInclude Include="Nautilus\src\Nautilus\core.h" />
     <ClInclude Include="Nautilus\src\Nautilus\entryPoint.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Nautilus\src\Nautilus\log.cpp" />
     <ClCompile Include="Nautilus\src\Nautilus\app.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

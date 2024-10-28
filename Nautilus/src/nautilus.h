@@ -6,6 +6,7 @@
 // Used for Nautilus applications
 #include "Nautilus/core.h"
 #include "Nautilus/app.h"
+#include "Nautilus/log.h"
 
 // ****** Nautilus Entry Point ******
 #include "Nautilus/entryPoint.h"

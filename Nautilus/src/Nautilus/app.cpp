@@ -3,8 +3,6 @@
 
 #include "app.h"
 
-#include <stdio.h>
-
 namespace Nt
 {
 	Application::Application(void)
@@ -15,8 +13,6 @@ namespace Nt
 
 	void Application::run(void)
 	{
-		printf("Running Nautilus Application...");
-
 		while (true);
 	}
 }

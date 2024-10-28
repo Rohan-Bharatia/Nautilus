@@ -5,9 +5,9 @@
 
 #ifdef NT_PLATFORM_WINDOWS
 	#ifdef NT_BUILD_DLL
-		#define NTAPI __declspec(dllexport)
+		#define NT_API __declspec(dllexport)
 	#else // (NOT) NT_BUILD_DLL
-		#define NTAPI __declspec(dllimport)
+		#define NT_API __declspec(dllimport)
 	#endif //NT_BUILD_DLL
 #else // NT_PLATFORM_WINDOWS
 	#error Nautilus Engine only supports Windows!
