@@ -16,65 +16,46 @@
 #include <iomanip>
 #include <ctime>
 #include <time.h>
+#include <cstdarg>
 
+namespace 
+{
+    static std::mutex logMutex;
+} // namespace 
 namespace nt
 {
-    Logger::Logger() : 
-        m_currentLevel(LogLevel::NT_TRACE)
-    {}
-
-    Logger::~Logger()
+    void Logger::log(LogLevel level, const std::string& message, ...)
     {
-        if(m_logFile.is_open())
-            m_logFile.close();
-    }
+        std::lock_guard<std::mutex> lock(::logMutex);
 
-    void Logger::setLogLevel(LogLevel level)
-    {
-        m_currentLevel = level;
-    }
+        va_list args;
+        va_start(args, message);
+        char buffer[1024];
+        vsnprintf(buffer, sizeof(buffer), message.c_str(), args);
 
-    void Logger::enableFileLogging(const std::string& filename)
-    {
-        m_logFile.open(filename, std::ios::out | std::ios::app);
-    }
-        
-    void Logger::trace(const std::string& message)
-    {
-        log(LogLevel::NT_TRACE, message);
-    }
+        std::string effects, lvl;
 
-    void Logger::debug(const std::string& message)
-    {
-        log(LogLevel::NT_DEBUG, message);
-    }
+        switch (level)
+        {
+            case LogLevel::NT_TRACE:    effects = "\033[90m"; break; // Gray text
+            case LogLevel::NT_DEBUG:    effects = "\033[34m"; break; // Blue text
+            case LogLevel::NT_INFO:     effects = "\033[32m"; break; // Green text
+            case LogLevel::NT_WARN:     effects = "\033[33m"; break; // Yellow text
+            case LogLevel::NT_ERROR:    effects = "\033[31m"; break; // Red text
+            case LogLevel::NT_CRITICAL: effects = "\033[41m"; break; // Red background
+            default:                    effects = "\033[0m";  break; // Reset
+        }
 
-    void Logger::info(const std::string& message)
-    {
-        log(LogLevel::NT_INFO, message);
-    }
-
-    void Logger::warn(const std::string& message)
-    {
-        log(LogLevel::NT_WARN, message);
-    }
-
-    void Logger::error(const std::string& message)
-    {
-        log(LogLevel::NT_ERROR, message);
-    }
-
-    void Logger::critical(const std::string& message)
-    {
-        log(LogLevel::NT_CRITICAL, message);
-    }
-
-    void Logger::log(LogLevel level, const std::string& message)
-    {
-        if (level < m_currentLevel || m_currentLevel == LogLevel::NT_OFF)
-            return;
-
-        std::lock_guard<std::mutex> lock(m_logMutex);
+        switch (level)
+        {
+            case LogLevel::NT_TRACE:    lvl = "TRACE";    break;
+            case LogLevel::NT_DEBUG:    lvl = "DEBUG";    break;
+            case LogLevel::NT_INFO:     lvl = "INFO";     break;
+            case LogLevel::NT_WARN:     lvl = "WARN";     break;
+            case LogLevel::NT_ERROR:    lvl = "ERROR";    break;
+            case LogLevel::NT_CRITICAL: lvl = "CRITICAL"; break;
+            default:                    lvl = "UNKNOWN";  break;
+        }
 
         time_t now = time(0);
         char* dt = ctime(&now);
@@ -82,41 +63,83 @@ namespace nt
         dt = asctime(gmtm);
         std::string timeStr(dt);
         timeStr.erase(timeStr.find('\n'));
-        std::string logEntry = levelToEffects(level) + "[" + timeStr + "][" + levelToString(level) + "] " + message + "\033[0m";
+        std::string logEntry = effects + "[" + timeStr + "][" + lvl + "] " + buffer + "\033[0m";
 
         std::cout << logEntry << std::endl;
-        if (m_logFile.is_open())
-            m_logFile << logEntry << std::endl;
+
+        va_end(args);
+    }
+        
+    void Logger::trace(const std::string& message, ...)
+    {
+        va_list args;
+        va_start(args, message);
+        char buffer[1024];
+        vsnprintf(buffer, sizeof(buffer), message.c_str(), args);
+
+        log(LogLevel::NT_TRACE, buffer);
+
+        va_end(args);
     }
 
-    std::string Logger::levelToString(LogLevel level)
+    void Logger::debug(const std::string& message, ...)
     {
-        switch (level)
-        {
-            case LogLevel::NT_TRACE:    return "TRACE";
-            case LogLevel::NT_DEBUG:    return "DEBUG";
-            case LogLevel::NT_INFO:     return "INFO";
-            case LogLevel::NT_WARN:     return "WARN";
-            case LogLevel::NT_ERROR:    return "ERROR";
-            case LogLevel::NT_CRITICAL: return "CRITICAL";
-            case LogLevel::NT_OFF:      return "OFF";
-            default:                    return "UNKNOWN";
-        }
+        va_list args;
+        va_start(args, message);
+        char buffer[1024];
+        vsnprintf(buffer, sizeof(buffer), message.c_str(), args);
+
+        log(LogLevel::NT_DEBUG, buffer);
+
+        va_end(args);
     }
 
-    std::string Logger::levelToEffects(LogLevel level)
+    void Logger::info(const std::string& message, ...)
     {
-        switch (level)
-        {
-            case LogLevel::NT_TRACE:    return "\033[90m"; // Gray text
-            case LogLevel::NT_DEBUG:    return "\033[34m"; // Blue text
-            case LogLevel::NT_INFO:     return "\033[32m"; // Green text
-            case LogLevel::NT_WARN:     return "\033[33m"; // Yellow text
-            case LogLevel::NT_ERROR:    return "\033[31m"; // Red text
-            case LogLevel::NT_CRITICAL: return "\033[41m"; // Red background
-            case LogLevel::NT_OFF:      return "\033[0m";  // Reset
-            default:                    return "\033[0m";  // Reset
-        }
+        va_list args;
+        va_start(args, message);
+        char buffer[1024];
+        vsnprintf(buffer, sizeof(buffer), message.c_str(), args);
+
+        log(LogLevel::NT_INFO, buffer);
+
+        va_end(args);
+    }
+
+    void Logger::warn(const std::string& message, ...)
+    {
+        va_list args;
+        va_start(args, message);
+        char buffer[1024];
+        vsnprintf(buffer, sizeof(buffer), message.c_str(), args);
+
+        log(LogLevel::NT_WARN, buffer);
+
+        va_end(args);
+    }
+
+    void Logger::error(const std::string& message, ...)
+    {
+        va_list args;
+        va_start(args, message);
+        char buffer[1024];
+        vsnprintf(buffer, sizeof(buffer), message.c_str(), args);
+
+        log(LogLevel::NT_ERROR, buffer);
+
+        va_end(args);
+    }
+
+    void Logger::critical(const std::string& message, ...)
+    {
+        va_list args;
+        va_start(args, message);
+        char buffer[1024];
+        vsnprintf(buffer, sizeof(buffer), message.c_str(), args);
+
+        log(LogLevel::NT_CRITICAL, buffer);
+
+        va_end(args);
     }
 }
 

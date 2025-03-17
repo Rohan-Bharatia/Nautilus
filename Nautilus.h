@@ -97,13 +97,14 @@ using namespace nt::literals;
 #define NT_RAY3F_FORWARD nt::Ray3f(NT_VEC3F_FORWARD, NT_VEC3F_FORWARD)
 #define NT_RAY3F_BACKWARD nt::Ray3f(NT_VEC3F_BACKWARD, NT_VEC3F_BACKWARD)
 
-// Color constants
+// Color macros
 #define NT_COLOR_GRAYSCALEA(v, a) nt::Color((nt::uint8)v, a)
 #define NT_COLOR_RGBA(r, g, b, a) nt::Color((nt::uint8)r, g, b, a)
 #define NT_COLOR_HSLA(h, s, l, a) nt::Color((float)h, s, l, a)
 #define NT_COLOR_HSVA(h, s, v, a) nt::Color((float)h, s, v, a)
 #define NT_COLOR_CMYKA(c, m, y, k, a) nt::Color(c, m, y, k, a)
 #define NT_COLOR_HEXA(hex, a) nt::Color((nt::uint32)hex, a)
+// Color constants
 #define NT_COLOR_RED NT_COLOR_RGBA(255, 0, 0, 1.0f)
 #define NT_COLOR_GREEN NT_COLOR_RGBA(0, 255, 0, 1.0f)
 #define NT_COLOR_BLUE NT_COLOR_RGBA(0, 0, 255, 1.0f)
@@ -129,5 +130,27 @@ using namespace nt::literals;
 #define NT_COLOR_NAVY_BLUE NT_COLOR_RGBA(0, 0, 128, 1.0f)
 #define NT_COLOR_COPPER NT_COLOR_RGBA(184, 115, 51, 1.0f)
 #define NT_COLOR_SILVER NT_COLOR_RGBA(192, 192, 192, 1.0f)
+
+// Logger constants
+#define NT_LOG_LEVEL_TRACE nt::LogLevel::NT_TRACE
+#define NT_LOG_LEVEL_DEBUG nt::LogLevel::NT_DEBUG
+#define NT_LOG_LEVEL_INFO nt::LogLevel::NT_INFO
+#define NT_LOG_LEVEL_WARNING nt::LogLevel::NT_WARNING
+#define NT_LOG_LEVEL_ERROR nt::LogLevel::NT_ERROR
+#define NT_LOG_LEVEL_CRITICAL nt::LogLevel::NT_CRITICAL
+#define NT_LOG_LEVEL_OFF nt::LogLevel::NT_OFF
+// Logger macros
+#define NT_LOG_TRACE(msg, ...) nt::Logger::trace(msg, ##__VA_ARGS__)
+#define NT_LOG_DEBUG(msg, ...) nt::Logger::debug(msg, ##__VA_ARGS__)
+#define NT_LOG_INFO(msg, ...) nt::Logger::info(msg, ##__VA_ARGS__)
+#define NT_LOG_WARN(msg, ...) nt::Logger::warn(msg, ##__VA_ARGS__)
+#define NT_LOG_ERROR(msg, ...) nt::Logger::error(msg, ##__VA_ARGS__)
+#define NT_LOG_CRITICAL(msg, ...) nt::Logger::critical(msg, ##__VA_ARGS__)
+
+// Timer macro
+#define NT_WAIT_MICROS(ms) nt::Timer::sleep(ms / 10)
+#define NT_WAIT_MILLIS(ms) nt::Timer::sleep(ms)
+#define NT_WAIT_SECONDS(s) nt::Timer::sleep(s * 1000)
+#define NT_WAIT(ms) nt::Timer::sleep(ms)
 
 #endif // _NT_NAUTILUS_h_

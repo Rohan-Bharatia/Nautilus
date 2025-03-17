@@ -26,33 +26,23 @@ namespace nt
         NT_WARN     = 3,
         NT_ERROR    = 4,
         NT_CRITICAL = 5,
-        NT_OFF      = 6,
     };
 
     class Logger
     {
     public:
-        Logger();
-        ~Logger();
+        Logger()                               = default;
+        ~Logger()                              = default;
+        Logger(const Logger& other)            = default;
+        Logger& operator=(const Logger& other) = default;
         
-        void setLogLevel(LogLevel level);
-        void enableFileLogging(const std::string& filename);
-        
-        void trace(const std::string& message);
-        void debug(const std::string& message);
-        void info(const std::string& message);
-        void warn(const std::string& message);
-        void error(const std::string& message);
-        void critical(const std::string& message);
-    
-    private:
-        void log(LogLevel level, const std::string& message);
-        std::string levelToString(LogLevel level);
-        std::string levelToEffects(LogLevel level);
-    
-        LogLevel m_currentLevel;
-        std::ofstream m_logFile;
-        std::mutex m_logMutex;
+        static void log(LogLevel level, const std::string& message, ...);
+        static void trace(const std::string& message, ...);
+        static void debug(const std::string& message, ...);
+        static void info(const std::string& message, ...);
+        static void warn(const std::string& message, ...);
+        static void error(const std::string& message, ...);
+        static void critical(const std::string& message, ...);
     };
 }
 
