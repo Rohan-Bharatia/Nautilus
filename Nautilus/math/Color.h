@@ -20,68 +20,15 @@ namespace nt
     {
     public:
         Color()                        = default;
-        Color(uint8 value, float alpha=1.0f);
         Color(uint8 red, uint8 green, uint8 blue, float alpha=1.0f);
-        Color(float hue, float saturation, float lv, float alpha=1.0f);
-        Color(float cyan, float magenta, float yellow, float key, float alpha=1.0f);
-        Color(uint32 hex, float alpha=1.0f);
         ~Color()                       = default;
         Color(const Color&)            = default;
         Color& operator=(const Color&) = default;
 
-        Color toGrayscale();
-        Color toRGB();
-        Color toHSL();
-        Color toHSV();
-        Color toCMYK();
-        Color toHex();
-        
-        enum class Colorspace
-        {
-            GRAYSCALE,
-            RGB,
-            HSL,
-            HSV,
-            CMYK,
-            HEX,
-        };
-
-        Colorspace colorspace;
-
-        union
-        {
-            struct
-            {
-                uint8 value;
-            } Grayscale;
-            struct
-            {
-                uint8 red;
-                uint8 green;
-                uint8 blue;
-            } RGB;
-            struct
-            {
-                float hue;
-                float saturation;
-                float lightness;
-            } HSL;
-            struct
-            {
-                float hue;
-                float saturation;
-                float value;
-            } HSV;
-            struct
-            {
-                float cyan;
-                float magenta;
-                float yellow;
-                float key;
-            } CMYK;
-            uint32 hex;
-            float alpha;
-        } data;
+        uint8 red;
+        uint8 green;
+        uint8 blue;
+        float alpha;
     };
 
     // Arithmetic & assignment operations

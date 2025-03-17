@@ -1,0 +1,36 @@
+#pragma once
+
+#ifndef _NT_WINDOW_WINDOW_ANDROID_h_
+    #define _NT_WINDOW_WINDOW_ANDROID_h_
+
+#include "WindowBase.h"
+
+#include <android/native_window_jni.h>
+#include <android/native_activity.h>
+
+namespace nt
+{
+    class WindowAndroid :
+        public WindowBase
+    {
+    public:
+        WindowAndroid()                                  = default;
+        WindowAndroid(const WindowDesc& desc);
+        ~WindowAndroid()                                 = default;
+        WindowAndroid(const WindowAndroid& other)            = default;
+        WindowAndroid& operator=(const WindowAndroid& other) = default;
+
+        void initialize() override;
+        bool pollEvents() override;
+        void update() override;
+        void destroy() override;
+
+        void* getHandle() override;
+
+    private:
+        ANativeWindow* m_window;
+        WindowDesc m_desc;
+    };
+} // namespace nt
+
+#endif // _NT_WINDOW_WINDOW_ANDROID_h_

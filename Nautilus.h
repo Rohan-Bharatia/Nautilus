@@ -15,6 +15,7 @@
 // Source files
 #include "Nautilus/Core.h"
 #include "Nautilus/Math.h"
+#include "Nautilus/Window.h"
 using namespace nt::literals;
 
 // Version
@@ -98,38 +99,32 @@ using namespace nt::literals;
 #define NT_RAY3F_BACKWARD nt::Ray3f(NT_VEC3F_BACKWARD, NT_VEC3F_BACKWARD)
 
 // Color macros
-#define NT_COLOR_GRAYSCALEA(v, a) nt::Color((nt::uint8)v, a)
-#define NT_COLOR_RGBA(r, g, b, a) nt::Color((nt::uint8)r, g, b, a)
-#define NT_COLOR_HSLA(h, s, l, a) nt::Color((float)h, s, l, a)
-#define NT_COLOR_HSVA(h, s, v, a) nt::Color((float)h, s, v, a)
-#define NT_COLOR_CMYKA(c, m, y, k, a) nt::Color(c, m, y, k, a)
-#define NT_COLOR_HEXA(hex, a) nt::Color((nt::uint32)hex, a)
-// Color constants
-#define NT_COLOR_RED NT_COLOR_RGBA(255, 0, 0, 1.0f)
-#define NT_COLOR_GREEN NT_COLOR_RGBA(0, 255, 0, 1.0f)
-#define NT_COLOR_BLUE NT_COLOR_RGBA(0, 0, 255, 1.0f)
-#define NT_COLOR_CYAN NT_COLOR_RGBA(0, 255, 255, 1.0f)
-#define NT_COLOR_YELLOW NT_COLOR_RGBA(255, 255, 0, 1.0f)
-#define NT_COLOR_BLACK NT_COLOR_RGBA(0, 0, 0, 1.0f)
-#define NT_COLOR_MAGENTA NT_COLOR_RGBA(255, 0, 255, 1.0f)
-#define NT_COLOR_GRAY NT_COLOR_RGBA(128, 128, 128, 1.0f)
-#define NT_COLOR_WHITE NT_COLOR_RGBA(255, 255, 255, 1.0f)
-#define NT_COLOR_BEIGE NT_COLOR_RGBA(245, 245, 220, 1.0f)
-#define NT_COLOR_BROWN NT_COLOR_RGBA(165, 42, 42, 1.0f)
-#define NT_COLOR_LIGHT_BLUE NT_COLOR_RGBA(173, 216, 230, 1.0f)
-#define NT_COLOR_TAN NT_COLOR_RGBA(210, 180, 140, 1.0f)
-#define NT_COLOR_BABY_BLUE NT_COLOR_RGBA(137, 207, 240, 1.0f)
-#define NT_COLOR_PINK NT_COLOR_RGBA(255, 192, 203, 1.0f)
-#define NT_COLOR_ORANGE NT_COLOR_RGBA(255, 165, 0, 1.0f)
-#define NT_COLOR_MINT NT_COLOR_RGBA(152, 255, 152, 1.0f)
-#define NT_COLOR_TEAL NT_COLOR_RGBA(0, 128, 128, 1.0f)
-#define NT_COLOR_PURPLE NT_COLOR_RGBA(128, 0, 128, 1.0f)
-#define NT_COLOR_DARK_BROWN NT_COLOR_RGBA(101, 67, 33, 1.0f)
-#define NT_COLOR_DARK_GRAY NT_COLOR_RGBA(64, 64, 64, 1.0f)
-#define NT_COLOR_GOLD NT_COLOR_RGBA(255, 215, 0, 1.0f)
-#define NT_COLOR_NAVY_BLUE NT_COLOR_RGBA(0, 0, 128, 1.0f)
-#define NT_COLOR_COPPER NT_COLOR_RGBA(184, 115, 51, 1.0f)
-#define NT_COLOR_SILVER NT_COLOR_RGBA(192, 192, 192, 1.0f)
+#define NT_COLOR_DEFAULT nt::Color(27, 49, 51, 1.0f)
+#define NT_COLOR_RED nt::Color(255, 0, 0, 1.0f)
+#define NT_COLOR_GREEN nt::Color(0, 255, 0, 1.0f)
+#define NT_COLOR_BLUE nt::Color(0, 0, 255, 1.0f)
+#define NT_COLOR_CYAN nt::Color(0, 255, 255, 1.0f)
+#define NT_COLOR_YELLOW nt::Color(255, 255, 0, 1.0f)
+#define NT_COLOR_BLACK nt::Color(0, 0, 0, 1.0f)
+#define NT_COLOR_MAGENTA nt::Color(255, 0, 255, 1.0f)
+#define NT_COLOR_GRAY nt::Color(128, 128, 128, 1.0f)
+#define NT_COLOR_WHITE nt::Color(255, 255, 255, 1.0f)
+#define NT_COLOR_BEIGE nt::Color(245, 245, 220, 1.0f)
+#define NT_COLOR_BROWN nt::Color(165, 42, 42, 1.0f)
+#define NT_COLOR_LIGHT_BLUE nt::Color(173, 216, 230, 1.0f)
+#define NT_COLOR_TAN nt::Color(210, 180, 140, 1.0f)
+#define NT_COLOR_BABY_BLUE nt::Color(137, 207, 240, 1.0f)
+#define NT_COLOR_PINK nt::Color(255, 192, 203, 1.0f)
+#define NT_COLOR_ORANGE nt::Color(255, 165, 0, 1.0f)
+#define NT_COLOR_MINT nt::Color(152, 255, 152, 1.0f)
+#define NT_COLOR_TEAL nt::Color(0, 128, 128, 1.0f)
+#define NT_COLOR_PURPLE nt::Color(128, 0, 128, 1.0f)
+#define NT_COLOR_DARK_BROWN nt::Color(101, 67, 33, 1.0f)
+#define NT_COLOR_DARK_GRAY nt::Color(64, 64, 64, 1.0f)
+#define NT_COLOR_GOLD nt::Color(255, 215, 0, 1.0f)
+#define NT_COLOR_NAVY_BLUE nt::Color(0, 0, 128, 1.0f)
+#define NT_COLOR_COPPER nt::Color(184, 115, 51, 1.0f)
+#define NT_COLOR_SILVER nt::Color(192, 192, 192, 1.0f)
 
 // Logger constants
 #define NT_LOG_LEVEL_TRACE nt::LogLevel::NT_TRACE

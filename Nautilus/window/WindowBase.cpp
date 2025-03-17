@@ -1,0 +1,40 @@
+#ifndef _NT_WINDOW_WINDOW_BASE_cpp_
+    #define _NT_WINDOW_WINDOW_BASE_cpp_
+
+#include "WindowBase.h"
+
+#include "../core/Config.h"
+
+#if defined(NT_PLATFORM_WINDOWS)
+    #include "WindowWin32.h"
+#elif defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD)
+    #include "WindowX11.h"
+#elif defined(NT_PLATFORM_MACOS)
+    #include "WindowCocoa.h"
+#elif defined(NT_PLATFORM_IOS)
+    #include "WindowUIKit.h"
+#elif defined(NT_PLATFORM_ANDROID)
+    #include "WindowAndroid.h"
+#endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
+
+namespace nt
+{
+    std::unique_ptr<WindowBase> createWindow(const WindowDesc& desc)
+    {
+    #if defined(NT_PLATFORM_WINDOWS)
+        return std::make_unique<WindowWin32>(desc);
+    #elif defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD)
+        return std::make_unique<WindowX11>(desc);
+    #elif defined(NT_PLATFORM_MACOS)
+        return std::make_unique<WindowCocoa>(desc);
+    #elif defined(NT_PLATFORM_IOS)
+        return std::make_unique<WindowUIKit>(desc);
+    #elif defined(NT_PLATFORM_ANDROID)
+        return std::make_unique<WindowAndroid>(desc);
+    #else // (NOT) defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
+        return nullptr;
+    #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
+    }
+} // namespace nt
+
+#endif // _NT_WINDOW_WINDOW_BASE_cpp_
