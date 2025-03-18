@@ -16,6 +16,7 @@
 #include "Nautilus/Core.h"
 #include "Nautilus/Math.h"
 #include "Nautilus/Window.h"
+#include "Nautilus/Event.h"
 using namespace nt::literals;
 
 // Version
