@@ -126,6 +126,11 @@ namespace nt
         
         return 0;
     }
+
+    WindowDesc WindowWin32::getDescription()
+    {
+        return m_desc;
+    }
 } // namespace nt
 
 #endif // _NT_WINDOW_WINDOW_WIN32_cpp_

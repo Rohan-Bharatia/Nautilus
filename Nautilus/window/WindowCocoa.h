@@ -34,6 +34,7 @@ namespace nt
         void destroy() override;
 
         void* getHandle() override;
+        WindowDesc getDescription() override;
 
     private:
         NSWindow* m_window;

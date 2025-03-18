@@ -34,7 +34,7 @@ namespace nt
             m_desc.onCreate();
     }
 
-    bool WindowIOS::pollEvents()
+    bool WindowUIKit::pollEvents()
     {
         // Poll events
         AInputQueue* queue = AInputQueue_attachLooper(env, looper, LOOPER_ID_MAIN, NULL);
@@ -75,6 +75,11 @@ namespace nt
     void* WindowAndroid::getHandle()
     {
         return static_cast<void*>(m_window);
+    }
+
+    WindowDesc WindowAndroid::getDescription()
+    {
+        return m_desc;
     }
 } // namespace nt
 

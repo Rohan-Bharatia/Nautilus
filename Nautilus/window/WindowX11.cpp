@@ -80,6 +80,11 @@ namespace nt
     {
         return static_cast<void*>(m_window);
     }
+
+    WindowDesc WindowX11::getDescription()
+    {
+        return m_desc;
+    }
 } // namespace nt
 
 #endif // _NT_WINDOW_WINDOW_X11_cpp_

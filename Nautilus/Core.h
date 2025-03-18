@@ -15,7 +15,6 @@
 // Source files
 #include "core/Config.h"
 #include "core/Types.h"
-#include "core/API.h"
 #include "core/Logger.h"
 #include "core/Timer.h"
 

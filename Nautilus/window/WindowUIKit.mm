@@ -7,15 +7,15 @@
 //                               ...
 //                  Copyright (C) 2024 Rohan Bharatia
 
-#import "WindowIOS.h"
+#import "WindowUIKit.h"
 
 namespace nt
 {
-    WindowIOS::WindowIOS(const WindowDesc& desc) :
+    WindowUIKit::WindowUIKit(const WindowDesc& desc) :
         m_window(nullptr), m_desc(desc)
     {}
 
-    void WindowIOS::initialize()
+    void WindowUIKit::initialize()
     {
         // Create window
         m_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -34,7 +34,7 @@ namespace nt
             m_desc.onCreate();
     }
 
-    bool WindowIOS::pollEvents()
+    bool WindowUIKit::pollEvents()
     {
         // Poll events
         [[UIApplication sharedApplication] processEvents];
@@ -42,7 +42,7 @@ namespace nt
         return true;
     }
 
-    void WindowIOS::update()
+    void WindowUIKit::update()
     {
         // Update window
         [m_window setNeedsDisplay];
@@ -52,7 +52,7 @@ namespace nt
             m_desc.onUpdate();
     }
 
-    void WindowIOS::destroy()
+    void WindowUIKit::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
@@ -63,8 +63,13 @@ namespace nt
             [m_window setHidden:YES];
     }
 
-    void* WindowIOS::getHandle()
+    void* WindowUIKit::getHandle()
     {
         return static_cast<void*>(m_window);
+    }
+
+    WindowDesc WindowUIKit::getDescription()
+    {
+        return m_desc;
     }
 } // namespace nt

@@ -18,15 +18,15 @@
 
 namespace nt
 {
-    class WindowIOS :
+    class WindowUIKit :
         public WindowBase
     {
     public:
-        WindowIOS()                                  = default;
-        WindowIOS(const WindowDesc& desc);
-        ~WindowIOS()                                 = default;
-        WindowIOS(const WindowIOS& other)            = default;
-        WindowIOS& operator=(const WindowIOS& other) = default;
+        WindowUIKit()                                  = default;
+        WindowUIKit(const WindowDesc& desc);
+        ~WindowUIKit()                                 = default;
+        WindowUIKit(const WindowUIKit& other)            = default;
+        WindowUIKit& operator=(const WindowUIKit& other) = default;
 
         void initialize() override;
         bool pollEvents() override;
@@ -34,6 +34,7 @@ namespace nt
         void destroy() override;
 
         void* getHandle() override;
+        WindowDesc getDescription() override;
 
     private:
         UIWindow* m_window;

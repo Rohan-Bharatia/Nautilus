@@ -26,9 +26,10 @@ namespace nt
         virtual void update()     = 0;
         virtual void destroy()    = 0;
         virtual void* getHandle() = 0;
+        virtual WindowDesc getDescription() = 0;
     };
 
-    std::unique_ptr<WindowBase> createWindow(const WindowDesc& desc);
+    std::shared_ptr<WindowBase> createWindow(const WindowDesc& desc);
 } // namespace nt
 
 #endif // _NT_WINDOW_WINDOW_BASE_h_

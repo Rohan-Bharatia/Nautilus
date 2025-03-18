@@ -17,6 +17,8 @@
 #include "Nautilus/Math.h"
 #include "Nautilus/Window.h"
 #include "Nautilus/Event.h"
+
+// Aliases
 using namespace nt::literals;
 
 // Version
@@ -148,5 +150,14 @@ using namespace nt::literals;
 #define NT_WAIT_MILLIS(ms) nt::Timer::sleep(ms)
 #define NT_WAIT_SECONDS(s) nt::Timer::sleep(s * 1000)
 #define NT_WAIT(ms) nt::Timer::sleep(ms)
+
+// GPU Preferences
+#if defined(NT_PLATFORM_WINDOWS)
+    #define NT_DISCRETE_GPU_PREFERENCE                                                     \
+        extern "C" NT_EXPORT nt::uint32 NvOptimusEnablement                  = 0x00000001; \
+        extern "C" NT_EXPORT nt::uint32 AMDPowerXpressRequestHighPerformance = 0x00000001;
+#else // (NOT) defined(NT_PLATFORM_WINDOWS)
+    #define NT_DISCRETE_GPU_PREFERENCE
+#endif // defined(NT_PLATFORM_WINDOWS)
 
 #endif // _NT_NAUTILUS_h_

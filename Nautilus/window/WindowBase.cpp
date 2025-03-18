@@ -28,7 +28,7 @@
 
 namespace nt
 {
-    std::unique_ptr<WindowBase> createWindow(const WindowDesc& desc)
+    std::shared_ptr<WindowBase> createWindow(const WindowDesc& desc)
     {
     #if defined(NT_PLATFORM_WINDOWS)
         return std::make_unique<WindowWin32>(desc);

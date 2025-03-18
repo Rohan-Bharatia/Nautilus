@@ -35,6 +35,7 @@ namespace nt
         void destroy() override;
 
         void* getHandle() override;
+        WindowDesc getDescription() override;
 
     private:
         ANativeWindow* m_window;

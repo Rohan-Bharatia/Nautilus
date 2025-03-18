@@ -80,4 +80,9 @@ namespace nt
     {
         return static_cast<void*>(m_window);
     }
+
+    WindowDesc WindowCocoa::getDescription()
+    {
+        return m_desc;
+    }
 } // namespace nt

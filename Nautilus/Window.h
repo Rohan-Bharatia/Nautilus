@@ -19,7 +19,7 @@
 
 namespace nt
 {
-    using WindowPtr = std::unique_ptr<WindowBase>;
+    using WindowPtr = std::shared_ptr<WindowBase>;
 } // namespace nt
 
 #endif // _NT_WINDOW_h_
