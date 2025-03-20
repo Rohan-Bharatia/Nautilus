@@ -1,6 +1,6 @@
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
@@ -14,7 +14,7 @@
 
 namespace nt
 {
-    WindowWin32::WindowWin32(const WindowDesc& desc) : 
+    WindowWin32::WindowWin32(const WindowDesc& desc) :
         m_hwnd(nullptr), m_hinstance(nullptr), m_desc(desc)
     {}
 
@@ -37,10 +37,10 @@ namespace nt
         RegisterClassExA(&wc);
 
         // Create window
-        m_hwnd = CreateWindowExA(0, wc.lpszClassName, m_desc.title.c_str(), WS_OVERLAPPEDWINDOW, 
-                                 m_desc.position.x, m_desc.position.y, m_desc.width, m_desc.height, 
+        m_hwnd = CreateWindowExA(0, wc.lpszClassName, m_desc.title.c_str(), WS_OVERLAPPEDWINDOW,
+                                 m_desc.position.x, m_desc.position.y, m_desc.width, m_desc.height,
                                  nullptr, nullptr, m_hinstance, nullptr);
-        
+
         SetWindowLongPtr(m_hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
         ShowWindow(m_hwnd, SW_SHOWDEFAULT);
@@ -89,6 +89,11 @@ namespace nt
         return static_cast<void*>(m_hwnd);
     }
 
+    WindowDesc WindowWin32::getDescription()
+    {
+        return m_desc;
+    }
+
     LRESULT CALLBACK WindowWin32::wndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     {
         WindowWin32* win = nullptr;
@@ -111,8 +116,8 @@ namespace nt
             case WM_PAINT:
             {
                 PAINTSTRUCT ps;
-                HBRUSH hbrush = CreateSolidBrush(RGB(win->m_desc.backgroundColor.red, 
-                                                     win->m_desc.backgroundColor.green, 
+                HBRUSH hbrush = CreateSolidBrush(RGB(win->m_desc.backgroundColor.red,
+                                                     win->m_desc.backgroundColor.green,
                                                      win->m_desc.backgroundColor.blue));
                 HDC hdc       = BeginPaint(hwnd, &ps);
                 FillRect(hdc, &ps.rcPaint, hbrush);
@@ -123,13 +128,8 @@ namespace nt
             default:
                 return DefWindowProc(hwnd, msg, wp, lp);
         }
-        
-        return 0;
-    }
 
-    WindowDesc WindowWin32::getDescription()
-    {
-        return m_desc;
+        return 0;
     }
 } // namespace nt
 

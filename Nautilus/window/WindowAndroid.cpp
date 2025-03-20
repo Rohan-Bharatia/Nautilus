@@ -1,6 +1,6 @@
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
@@ -66,12 +66,12 @@ namespace nt
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
-    
+
         // Destroy window
         if (m_window)
             ANativeWindow_release(m_window);
     }
-    
+
     void* WindowAndroid::getHandle()
     {
         return static_cast<void*>(m_window);

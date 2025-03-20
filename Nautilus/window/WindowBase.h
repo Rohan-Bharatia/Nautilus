@@ -21,11 +21,11 @@ namespace nt
     class WindowBase
     {
     public:
-        virtual void initialize() = 0;
-        virtual bool pollEvents() = 0;
-        virtual void update()     = 0;
-        virtual void destroy()    = 0;
-        virtual void* getHandle() = 0;
+        virtual void initialize()           = 0;
+        virtual bool pollEvents()           = 0;
+        virtual void update()               = 0;
+        virtual void destroy()              = 0;
+        virtual void* getHandle()           = 0;
         virtual WindowDesc getDescription() = 0;
     };
 
