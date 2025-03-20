@@ -8,59 +8,76 @@ This repository is licensed under the [GNU General Public License v3.0](https://
 
 ## Dependencies
 
+### CMake
+
+Nautilus uses [CMake](https://cmake.org/) for building.
+
+[Download CMake](https://cmake.org/download/)
+
 ### Platform
 
-| **Platform** | **System Deps**  |
-|--------------|------------------|
-|   Windows    |   Windows API    |
-|   Linux      |   XLib           |
-|   BSD        |   XLib           |
-|   MAC OS     |   Cocoa          |
-|   iOS        |   UIKit          |
-|   Android    |   Android SDK    |
+|**Platform**|**System Deps**|
+|-|-|
+|Windows|~~Windows API~~|
+|Linux|[XLib](https://github.com/walklang/Xlib)|
+|BSD|[XLib](https://github.com/walklang/Xlib)|
+|MAC OS|~~Cocoa~~|
+|iOS|[UIKit](https://github.com/uikit/uikit)|
+|Android|[Android SDK](https://developer.android.com/studio)|
 
-### Graphics (Future implementation)
+## Usage
 
-#### OpenGL
+Create a file called `main.cpp` and use the following `CMakeLists.txt` file for it:
 
-| **Platform** | **OpenGL Deps** |
-|--------------|-----------------|
-|   Windows    | OpenGL          |
-|   Linux      | OpenGL          |
-|   BSD        | OpenGL          |
-|   MAC OS     | Core OpenGL     |
-|   iOS        | Core OpenGL     |
-|   Android    | Embedded OpenGL |
+```cmake
+cmake_minimum_required(VERSION 3.10)
 
-#### Vulkan
+project(Main)
 
-| **Platform** | **Vulkan Deps** |
-|--------------|-----------------|
-|   Windows    | Vulkan SDK      |
-|   Linux      | Vulkan SDK      |
-|   BSD        | Vulkan SDK      |
-|   MAC OS     | Vulkan SDK      |
-|   iOS        | Vulkan SDK      |
-|   Android    | Vulkan SDK      |
+add_executable(Main main.cpp)
 
-#### DirectX
+target_link_libraries(Main PUBLIC Nautilus)
+```
 
-| **Platform** | **DirectX Deps**  |
-|--------------|-------------------|
-|   Windows    | DirectX 12+       |
-|   Linux      | ~~Not supported~~ |
-|   BSD        | ~~Not supported~~ |
-|   MAC OS     | ~~Not supported~~ |
-|   iOS        | ~~Not supported~~ |
-|   Android    | ~~Not supported~~ |
+Here is an example of what `main.cpp` could look like:
 
-#### Metal
+```cpp
+#include "Nautilus/Nautilus.h"
 
-| **Platform** |  **Metal Deps**   |
-|--------------|-------------------|
-|   Windows    | ~~Not supported~~ |
-|   Linux      | ~~Not supported~~ |
-|   BSD        | ~~Not supported~~ |
-|   MAC OS     | Metal v3.0+       |
-|   iOS        | Metal v3.0+       |
-|   Android    | ~~Not supported~~ |
+int main(int argc, char* argv[])
+{
+    // Window settings
+    nt::WindowDesc desc{};
+    desc.position.x      = 100;
+    desc.position.y      = 100;
+    desc.width           = 1024;
+    desc.height          = 768;
+    desc.title           = "Nautilus Application";
+    desc.backgroundColor = NT_COLOR_DEFAULT;
+
+    // Create window agent
+    nt::WindowPtr window = nt::createWindow(desc);
+
+    if (!window)
+        return NT_EXIT_MINOR_ERROR;
+
+    // Initialize
+    window->initialize();
+
+    // Main loop
+    while (window->pollEvents())
+    {
+        // Exit condition
+        if (nt::Event::isKeyPressed(VK_ESCAPE))
+            break;
+
+        // Draw frame
+        window->update();
+    }
+
+    // Close window
+    window->destroy();
+
+    return NT_EXIT_SUCCESS;
+}
+```
