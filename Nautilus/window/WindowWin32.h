@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #pragma once
 
@@ -18,7 +22,7 @@
 
 namespace nt
 {
-    class WindowWin32 : 
+    class WindowWin32 :
         public WindowBase
     {
     public:

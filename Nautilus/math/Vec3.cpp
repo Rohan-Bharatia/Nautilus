@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #ifndef _NT_MATH_VEC3_cpp_
     #define _NT_MATH_VEC3_cpp_
@@ -19,14 +23,14 @@
 namespace nt
 {
     template<typename T>
-    Vec3<T>::Vec3(T x, T y, T z) : 
+    Vec3<T>::Vec3(T x, T y, T z) :
         x(x), y(y), z(z)
     {
         assert((std::is_arithmetic_v<T>) && "Vec3 reqiures an arithmetic type!");
     }
 
     template<typename T>
-    Vec3<T>::Vec3(Vec2<T> xy, T z) : 
+    Vec3<T>::Vec3(Vec2<T> xy, T z) :
         x(xy.x), y(xy.y), z(z)
     {
         assert((std::is_arithmetic_v<T>) && "Vec3 reqiures an arithmetic type!");
@@ -47,16 +51,16 @@ namespace nt
     template<typename T>
     T Vec3<T>::dot(const Vec3<T>& other) const
     {
-        return (x * other.x) + 
-               (y * other.y) + 
+        return (x * other.x) +
+               (y * other.y) +
                (z * other.z);
     }
 
     template<typename T>
     Vec3<T> Vec3<T>::cross(const Vec3<T>& other) const
     {
-        return Vec3(y * other.z - z * other.y, 
-                    z * other.x - x * other.z, 
+        return Vec3(y * other.z - z * other.y,
+                    z * other.x - x * other.z,
                     x * other.y - y * other.x);
     }
 

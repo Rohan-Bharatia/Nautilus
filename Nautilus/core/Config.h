@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #pragma once
 
@@ -256,7 +260,7 @@
         #if defined(NT_COMPILER_CLANG)
             #define NT_ASSUME(expr) __builtin_assume(expr)
         #endif // defined(NT_COMPILER_CLANG)
-        #if defined(NT_COMPILER_GCC) 
+        #if defined(NT_COMPILER_GCC)
             #if (__GNUC__ >= 13) // __attribute__(assume) is supported starting with GCC 13
                 #define NT_ASSUME(expr) __attribute__(assume(expr))
             #endif // (__GNUC__ >= 13)

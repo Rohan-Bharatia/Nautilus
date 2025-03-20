@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #ifndef _NT_WINDOW_EVENT_X11_cpp_
     #define _NT_WINDOW_EVENT_X11_cpp_
@@ -41,8 +45,8 @@ namespace nt
             return false;
 
         XEvent event;
-        XQueryPointer(display, DefaultRootWindow(display), &event.xbutton.same_screen, 
-                      &event.xbutton.x, &event.xbutton.y, &event.xbutton.x_root, &event.xbutton.y_root, 
+        XQueryPointer(display, DefaultRootWindow(display), &event.xbutton.same_screen,
+                      &event.xbutton.x, &event.xbutton.y, &event.xbutton.x_root, &event.xbutton.y_root,
                       &event.xbutton.state);
 
         return (event.xbutton.state & button) != 0;
@@ -58,9 +62,9 @@ namespace nt
         Window child;
         int rootX, rootY, winX, winY;
         unsigned int mask;
-    
+
         XQueryPointer(display, root, &root, &child, &rootX, &rootY, &winX, &winY, &mask);
-    
+
         return Vec2f(static_cast<float>(rootX), static_cast<float>(rootY));
     }
 } // namespace nt

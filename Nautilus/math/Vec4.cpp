@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #ifndef _NT_MATH_VEC4_cpp_
     #define _NT_MATH_VEC4_cpp_
@@ -19,21 +23,21 @@
 namespace nt
 {
     template<typename T>
-    Vec4<T>::Vec4(T w, T x, T y, T z) : 
+    Vec4<T>::Vec4(T w, T x, T y, T z) :
         x(x), y(y), z(z)
     {
         assert((std::is_arithmetic_v<T>) && "Vec2 reqiures an arithmetic type!");
     }
 
     template<typename T>
-    Vec4<T>::Vec4(Vec2<T> wx, Vec2<T> yz) : 
+    Vec4<T>::Vec4(Vec2<T> wx, Vec2<T> yz) :
         w(wx.x), x(wx.y), y(yz.x), z(yz.y)
     {
         assert((std::is_arithmetic_v<T>) && "Vec2 reqiures an arithmetic type!");
     }
 
     template<typename T>
-    Vec4<T>::Vec4(Vec3<T> wxy, T z) : 
+    Vec4<T>::Vec4(Vec3<T> wxy, T z) :
         w(wxy.x), x(wxy.y), y(wxy.z), z(z)
     {
         assert((std::is_arithmetic_v<T>) && "Vec2 reqiures an arithmetic type!");
@@ -54,9 +58,9 @@ namespace nt
     template<typename T>
     T Vec4<T>::dot(const Vec4<T>& other) const
     {
-        return (w * other.w) + 
-               (x * other.x) + 
-               (y * other.y) + 
+        return (w * other.w) +
+               (x * other.x) +
+               (y * other.y) +
                (z * other.z);
     }
 

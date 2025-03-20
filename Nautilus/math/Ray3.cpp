@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #ifndef _NT_MATH_RAY3_cpp_
     #define _NT_MATH_RAY3_cpp_
@@ -18,7 +22,7 @@
 namespace nt
 {
     template<typename T>
-    Ray3<T>::Ray3(Vec3<T> origin, Vec3<T> direction) : 
+    Ray3<T>::Ray3(Vec3<T> origin, Vec3<T> direction) :
         origin(origin), direction(direction)
     {
         assert((std::is_arithmetic_v<T>) && "Ray3 reqiures an arithmetic type!");

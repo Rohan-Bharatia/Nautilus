@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #pragma once
 
@@ -43,5 +47,5 @@ static_assert(sizeof(nt::uint8)  == 1, "uint8_t is not of the correct size" );
 static_assert(sizeof(nt::uint16) == 2, "uint16_t is not of the correct size");
 static_assert(sizeof(nt::uint32) == 4, "uint32_t is not of the correct size");
 static_assert(sizeof(nt::uint64) == 8, "uint64_t is not of the correct size");
-    
+
 #endif // _NT_CORE_TYPES_h_

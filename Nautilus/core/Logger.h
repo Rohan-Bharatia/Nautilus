@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #pragma once
 
@@ -35,7 +39,7 @@ namespace nt
         ~Logger()                              = default;
         Logger(const Logger& other)            = default;
         Logger& operator=(const Logger& other) = default;
-        
+
         static void log(LogLevel level, const std::string& message, ...);
         static void trace(const std::string& message, ...);
         static void debug(const std::string& message, ...);

@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #ifndef _NT_MATH_VEC2_cpp_
     #define _NT_MATH_VEC2_cpp_
@@ -19,7 +23,7 @@
 namespace nt
 {
     template<typename T>
-    Vec2<T>::Vec2(T x, T y) : 
+    Vec2<T>::Vec2(T x, T y) :
         x(x), y(y)
     {
         assert((std::is_arithmetic_v<T>) && "Vec2 reqiures an arithmetic type!");
@@ -40,7 +44,7 @@ namespace nt
     template<typename T>
     T Vec2<T>::dot(const Vec2<T>& other) const
     {
-        return (x * other.x) + 
+        return (x * other.x) +
                (y * other.y);
     }
 

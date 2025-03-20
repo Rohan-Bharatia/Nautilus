@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #ifndef _NT_WINDOW_EVENT_cpp_
     #define _NT_WINDOW_EVENT_cpp_
@@ -20,12 +24,12 @@ namespace nt
     {
         return !isKeyDown(key);
     }
-    
+
     bool Event::isKeyPressed(int key)
     {
         return isKeyDown(key);
     }
-    
+
     bool Event::isKeyDoublePressed(int key, uint32 timeout)
     {
         Timer timer;

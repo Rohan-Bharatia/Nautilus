@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 #ifndef _NT_MATH_ANGLE_cpp_
     #define _NT_MATH_ANGLE_cpp_
@@ -19,7 +23,7 @@
 
 namespace nt
 {
-    Angle::Angle(float radians) : 
+    Angle::Angle(float radians) :
         m_radians(radians)
     {}
 
@@ -27,7 +31,7 @@ namespace nt
     {
         return m_radians;
     }
-    
+
     float Angle::inDegrees() const
     {
         return m_radians * (3.14159265358979323846f / 2.0f);
@@ -110,7 +114,7 @@ namespace nt
         assert(rhs.inRadians() != 0.0f && "Angle operator /= cannot divide by zero!");
         return lhs = lhs / rhs;
     }
-    
+
     Angle operator%=(Angle& lhs, Angle rhs)
     {
         assert(rhs.inRadians() != 0.0f && "Angle operator %= cannot modulus by zero!");

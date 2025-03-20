@@ -1,11 +1,15 @@
+#pragma region LICENSE
+
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
-// 
+//
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
 //                               ...
-//                  Copyright (C) 2024 Rohan Bharatia
+//                  Copyright (C) 2025 Rohan Bharatia
+
+#pragma endregion LICENSE
 
 
 #ifndef _NT_MATH_COLOR_cpp_
@@ -17,7 +21,7 @@
 
 namespace nt
 {
-    Color::Color(uint8 red, uint8 green, uint8 blue, float alpha) : 
+    Color::Color(uint8 red, uint8 green, uint8 blue, float alpha) :
         red(red), green(green), blue(blue), alpha(alpha)
     {
     }
@@ -34,49 +38,49 @@ namespace nt
 
     bool operator==(Color lhs, Color rhs)
     {
-        return (lhs.red == rhs.red) && 
-               (lhs.green == rhs.green) && 
-               (lhs.blue == rhs.blue) && 
+        return (lhs.red == rhs.red) &&
+               (lhs.green == rhs.green) &&
+               (lhs.blue == rhs.blue) &&
                (lhs.alpha == rhs.alpha);
     }
 
     bool operator!=(Color lhs, Color rhs)
     {
-        return (lhs.red != rhs.red) && 
-               (lhs.green != rhs.green) && 
-               (lhs.blue != rhs.blue) && 
+        return (lhs.red != rhs.red) &&
+               (lhs.green != rhs.green) &&
+               (lhs.blue != rhs.blue) &&
                (lhs.alpha != rhs.alpha);
     }
 
     bool operator<(Color lhs, Color rhs)
     {
-        return (lhs.red < rhs.red) && 
-               (lhs.green < rhs.green) && 
-               (lhs.blue < rhs.blue) && 
+        return (lhs.red < rhs.red) &&
+               (lhs.green < rhs.green) &&
+               (lhs.blue < rhs.blue) &&
                (lhs.alpha < rhs.alpha);
     }
 
     bool operator>(Color lhs, Color rhs)
     {
-        return (lhs.red > rhs.red) && 
-               (lhs.green > rhs.green) && 
-               (lhs.blue > rhs.blue) && 
+        return (lhs.red > rhs.red) &&
+               (lhs.green > rhs.green) &&
+               (lhs.blue > rhs.blue) &&
                (lhs.alpha > rhs.alpha);
     }
 
     bool operator<=(Color lhs, Color rhs)
     {
-        return (lhs.red <= rhs.red) && 
-               (lhs.green <= rhs.green) && 
-               (lhs.blue <= rhs.blue) && 
+        return (lhs.red <= rhs.red) &&
+               (lhs.green <= rhs.green) &&
+               (lhs.blue <= rhs.blue) &&
                (lhs.alpha <= rhs.alpha);
     }
 
     bool operator>=(Color lhs, Color rhs)
     {
-        return (lhs.red >= rhs.red) && 
-               (lhs.green >= rhs.green) && 
-               (lhs.blue >= rhs.blue) && 
+        return (lhs.red >= rhs.red) &&
+               (lhs.green >= rhs.green) &&
+               (lhs.blue >= rhs.blue) &&
                (lhs.alpha >= rhs.alpha);
     }
 } // namespace nt
