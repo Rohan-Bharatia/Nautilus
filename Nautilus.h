@@ -106,7 +106,7 @@ using namespace nt::literals;
 #define NT_RAY3F_BACKWARD nt::Ray3f(NT_VEC3F_BACKWARD, NT_VEC3F_BACKWARD)
 
 // Color macros
-#define NT_COLOR_DEFAULT nt::Color(27, 49, 51, 1.0f)
+#define NT_COLOR_DEFAULT nt::Color(51, 77, 77, 1.0f)
 #define NT_COLOR_RED nt::Color(255, 0, 0, 1.0f)
 #define NT_COLOR_GREEN nt::Color(0, 255, 0, 1.0f)
 #define NT_COLOR_BLUE nt::Color(0, 0, 255, 1.0f)

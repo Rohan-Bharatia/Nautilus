@@ -1,32 +1,24 @@
-if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+if(WIN32)
     add_library(window STATIC
         WindowBase.cpp
         WindowWin32.cpp
     )
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|BSD")
+elseif(UNIX AND NOT APPLE)
     add_library(window STATIC
         WindowBase.cpp
         WindowX11.cpp
     )
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+elseif(APPLE)
     add_library(window STATIC
         WindowBase.cpp
         WindowCocoa.mm
     )
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "iOS")
+elseif(IOS)
     add_library(window STATIC
         WindowBase.cpp
         WindowUIKit.mm
     )
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Android")
+elseif(ANDROID)
     add_library(window STATIC
         WindowBase.cpp
         WindowAndroid.cpp
@@ -34,5 +26,4 @@ if(CMAKE_SYSTEM_NAME MATCHES "Android")
 endif()
 
 target_include_directories(window PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
+    ${CMAKE_CURRENT_SOURCE_DIR})

@@ -43,7 +43,7 @@ namespace nt
     {
         Mat4x4<T> minor;
         int p = 0;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; ++i)
         {
             if (i == row)
                 continue;
