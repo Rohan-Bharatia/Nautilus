@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(Nautilus)
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/backends)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/core)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/math)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/window)
@@ -74,8 +75,6 @@ if (NAUTILUS_SOURCES)
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/window
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event
     )
-
-    target_link_libraries(Nautilus PUBLIC opengl32)
 
     target_link_libraries(Nautilus PUBLIC core math window event)
 endif()
