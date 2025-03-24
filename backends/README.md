@@ -4,11 +4,14 @@ Made possible by [GLAD loader](https://gen.glad.sh)
 
 My settings:
 
-|**Backend**|**Version**|
+|**Backend**|**Version (latest)**|
 |-|-|
-|OpenGL|v4.6|
-|Windows OpenGL|v1.0|
-|openGL XLib|v1.4|
-|OpenGL Embedded-System 2|v3.2|
-|Embedded OpenGL|v1.5|
-|Vulkan|v1.4|
+|gl|v4.6|
+|wgl|v1.0|
+|glx|v1.4|
+|egl|v1.5|
+|gles1|v1.0|
+|gles2|v3.2|
+|glsc2|v2.0|
+|vulkan|v1.4|
+|vulkansc|v1.4|

@@ -18,6 +18,9 @@
 
 #include "WindowBase.h"
 
+#include <../../backends/include/glad/gl.h>
+#include <../../backends/include/glad/wgl.h>
+
 #include <Windows.h>
 
 namespace nt
@@ -27,23 +30,29 @@ namespace nt
     {
     public:
         WindowWin32()                                    = default;
-        WindowWin32(const WindowDesc& desc);
+        WindowWin32(const WindowDesc& desc, const GraphicsAPI& api);
         ~WindowWin32()                                   = default;
         WindowWin32(const WindowWin32& other)            = default;
         WindowWin32& operator=(const WindowWin32& other) = default;
 
         void initialize() override;
+        void shader(std::string vertex, std::string fragment);
         bool pollEvents() override;
         void update() override;
+        void frame(std::vector<ReadableVertex> vertices) override;
+        void clear(const Color& color) override;
+        void swapBuffers() override;
         void destroy() override;
 
         void* getHandle() override;
         WindowDesc getDescription() override;
 
     private:
+        WindowDesc m_desc;
+        GraphicsAPI m_api;
         HWND m_hwnd;
         HINSTANCE m_hinstance;
-        WindowDesc m_desc;
+        GLuint m_vao, m_vbo, m_ebo, m_vertex, m_fragment, m_program;
 
         static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp);
     };

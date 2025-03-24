@@ -137,7 +137,7 @@ namespace nt
         return lhs = lhs % rhs;
     }
 
-    template <typename T>
+    template<typename T>
     bool operator==(Mat4x4<T> lhs, Mat4x4<T> rhs)
     {
         for (int i = 0; i < 4; ++i)
@@ -147,13 +147,13 @@ namespace nt
         return true;
     }
 
-    template <typename T>
+    template<typename T>
     bool operator!=(Mat4x4<T> lhs, Mat4x4<T> rhs)
     {
         return !(lhs == rhs);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<(Mat4x4<T> lhs, Mat4x4<T> rhs)
     {
         for (int i = 0; i < 4; ++i)
@@ -163,19 +163,19 @@ namespace nt
         return true;
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>(Mat4x4<T> lhs, Mat4x4<T> rhs)
     {
         return !((lhs < rhs) || (lhs == rhs));
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<=(Mat4x4<T> lhs, Mat4x4<T> rhs)
     {
         return (lhs < rhs) || (lhs == rhs);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>=(Mat4x4<T> lhs, Mat4x4<T> rhs)
     {
         return (lhs > rhs) || (lhs == rhs);

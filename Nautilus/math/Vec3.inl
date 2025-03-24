@@ -106,37 +106,37 @@ namespace nt
         return lhs = lhs % rhs;
     }
 
-    template <typename T>
+    template<typename T>
     bool operator==(Vec3<T> lhs, Vec3<T> rhs)
     {
         return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator!=(Vec3<T> lhs, Vec3<T> rhs)
     {
         return (lhs.x != rhs.x) && (lhs.y != rhs.y) && (lhs.z != rhs.z);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<(Vec3<T> lhs, Vec3<T> rhs)
     {
         return (lhs.x < rhs.x) && (lhs.y < rhs.y) && (lhs.z < rhs.z);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>(Vec3<T> lhs, Vec3<T> rhs)
     {
         return (lhs.x > rhs.x) && (lhs.y > rhs.y) && (lhs.z > rhs.z);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<=(Vec3<T> lhs, Vec3<T> rhs)
     {
         return (lhs.x <= rhs.x) && (lhs.y <= rhs.y) && (lhs.z <= rhs.z);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>=(Vec3<T> lhs, Vec3<T> rhs)
     {
         return (lhs.x >= rhs.x) && (lhs.y >= rhs.y) && (lhs.z >= rhs.z);

@@ -18,6 +18,9 @@
 
 #include "WindowBase.h"
 
+#include <../../backends/include/glad/gl.h>
+#include <../../backends/include/glad/egl.h>
+
 #include <android/native_window_jni.h>
 #include <android/native_activity.h>
 
@@ -28,22 +31,28 @@ namespace nt
     {
     public:
         WindowAndroid()                                  = default;
-        WindowAndroid(const WindowDesc& desc);
+        WindowAndroid(const WindowDesc& desc, const GraphicsAPI& api);
         ~WindowAndroid()                                 = default;
         WindowAndroid(const WindowAndroid& other)            = default;
         WindowAndroid& operator=(const WindowAndroid& other) = default;
 
         void initialize() override;
+        void shader(std::string vertex, std::string fragment);
         bool pollEvents() override;
         void update() override;
+        void frame(std::vector<ReadableVertex> vertices) override;
+        void clear(const Color& color) override;
+        void swapBuffers() override;
         void destroy() override;
 
         void* getHandle() override;
         WindowDesc getDescription() override;
 
     private:
-        ANativeWindow* m_window;
         WindowDesc m_desc;
+        GraphicsAPI m_api;
+        ANativeWindow* m_window;
+        GLuint m_vao, m_vbo, m_ebo, m_vertex, m_fragment, m_program;
     };
 } // namespace nt
 

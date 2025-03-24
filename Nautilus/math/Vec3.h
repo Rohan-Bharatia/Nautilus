@@ -75,17 +75,17 @@ namespace nt
     Vec3<T> operator%=(Vec3<T>& lhs, Vec3<T> rhs);
 
     // Relation operations
-    template <typename T>
+    template<typename T>
     bool operator==(Vec3<T> lhs, Vec3<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator!=(Vec3<T> lhs, Vec3<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator<(Vec3<T> lhs, Vec3<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator>(Vec3<T> lhs, Vec3<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator<=(Vec3<T> lhs, Vec3<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator>=(Vec3<T> lhs, Vec3<T> rhs);
 
     using Vec3f = Vec3<float>;

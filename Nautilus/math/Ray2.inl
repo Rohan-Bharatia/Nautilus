@@ -108,37 +108,37 @@ namespace nt
         return lhs = lhs % rhs;
     }
 
-    template <typename T>
+    template<typename T>
     bool operator==(Ray2<T> lhs, Ray2<T> rhs)
     {
         return (lhs.origin == rhs.origin) && (lhs.direction == rhs.direction);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator!=(Ray2<T> lhs, Ray2<T> rhs)
     {
         return (lhs.origin != rhs.origin) && (lhs.direction != rhs.direction);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<(Ray2<T> lhs, Ray2<T> rhs)
     {
         return (lhs.origin < rhs.origin) && (lhs.direction < rhs.direction);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>(Ray2<T> lhs, Ray2<T> rhs)
     {
         return (lhs.origin > rhs.origin) && (lhs.direction > rhs.direction);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<=(Ray2<T> lhs, Ray2<T> rhs)
     {
         return (lhs.origin <= rhs.origin) && (lhs.direction <= rhs.direction);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>=(Ray2<T> lhs, Ray2<T> rhs)
     {
         return (lhs.origin >= rhs.origin) && (lhs.direction >= rhs.direction);

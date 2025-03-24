@@ -66,17 +66,17 @@ namespace nt
     Ray2<T> operator%=(Ray2<T>& lhs, Ray2<T> rhs);
 
     // Relation operations
-    template <typename T>
+    template<typename T>
     bool operator==(Ray2<T> lhs, Ray2<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator!=(Ray2<T> lhs, Ray2<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator<(Ray2<T> lhs, Ray2<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator>(Ray2<T> lhs, Ray2<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator<=(Ray2<T> lhs, Ray2<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator>=(Ray2<T> lhs, Ray2<T> rhs);
 
     using Ray2f = Ray2<float>;

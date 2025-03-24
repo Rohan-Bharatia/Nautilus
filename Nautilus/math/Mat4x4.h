@@ -81,17 +81,17 @@ namespace nt
     Mat4x4<T> operator%=(Mat4x4<T>& lhs, Mat4x4<T> rhs);
 
     // Relation operations
-    template <typename T>
+    template<typename T>
     bool operator==(Mat4x4<T> lhs, Mat4x4<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator!=(Mat4x4<T> lhs, Mat4x4<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator<(Mat4x4<T> lhs, Mat4x4<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator>(Mat4x4<T> lhs, Mat4x4<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator<=(Mat4x4<T> lhs, Mat4x4<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator>=(Mat4x4<T> lhs, Mat4x4<T> rhs);
 
     // Vector operations

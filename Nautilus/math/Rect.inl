@@ -110,37 +110,37 @@ namespace nt
         return lhs = lhs % rhs;
     }
 
-    template <typename T>
+    template<typename T>
     bool operator==(Rect<T> lhs, Rect<T> rhs)
     {
         return (lhs.position == rhs.position) && (lhs.width == rhs.width) && (lhs.height == rhs.height);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator!=(Rect<T> lhs, Rect<T> rhs)
     {
         return (lhs.position != rhs.position) && (lhs.width != rhs.width) && (lhs.height != rhs.height);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<(Rect<T> lhs, Rect<T> rhs)
     {
         return (lhs.position < rhs.position) && (lhs.width < rhs.width) && (lhs.height < rhs.height);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>(Rect<T> lhs, Rect<T> rhs)
     {
         return (lhs.position > rhs.position) && (lhs.width > rhs.width) && (lhs.height > rhs.height);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<=(Rect<T> lhs, Rect<T> rhs)
     {
         return (lhs.position <= rhs.position) && (lhs.width <= rhs.width) && (lhs.height <= rhs.height);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>=(Rect<T> lhs, Rect<T> rhs)
     {
         return (lhs.position >= rhs.position) && (lhs.width >= rhs.width) && (lhs.height >= rhs.height);

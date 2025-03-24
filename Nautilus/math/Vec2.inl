@@ -102,37 +102,37 @@ namespace nt
         return lhs = lhs % rhs;
     }
 
-    template <typename T>
+    template<typename T>
     bool operator==(Vec2<T> lhs, Vec2<T> rhs)
     {
         return (lhs.x == rhs.x) && (lhs.y == rhs.y);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator!=(Vec2<T> lhs, Vec2<T> rhs)
     {
         return (lhs.x != rhs.x) && (lhs.y != rhs.y);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<(Vec2<T> lhs, Vec2<T> rhs)
     {
         return (lhs.x < rhs.x) && (lhs.y < rhs.y);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>(Vec2<T> lhs, Vec2<T> rhs)
     {
         return (lhs.x > rhs.x) && (lhs.y > rhs.y);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator<=(Vec2<T> lhs, Vec2<T> rhs)
     {
         return (lhs.x <= rhs.x) && (lhs.y <= rhs.y);
     }
 
-    template <typename T>
+    template<typename T>
     bool operator>=(Vec2<T> lhs, Vec2<T> rhs)
     {
         return (lhs.x >= rhs.x) && (lhs.y >= rhs.y);

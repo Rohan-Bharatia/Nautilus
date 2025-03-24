@@ -18,6 +18,11 @@ if(WIN32)
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/Event.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/EventWin32.cpp
     )
+
+    set(BACKENDS_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/wgl.c
+    )
 elseif(UNIX AND NOT APPLE)
     set(WINDOW_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/window/WindowBase.cpp
@@ -27,6 +32,11 @@ elseif(UNIX AND NOT APPLE)
     set(EVENT_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/Event.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/EventX11.cpp
+    )
+
+    set(BACKENDS_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/glx.c
     )
 elseif(APPLE)
     set(WINDOW_SOURCES
@@ -38,6 +48,11 @@ elseif(APPLE)
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/Event.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/EventCocoa.cpp
     )
+
+    set(BACKENDS_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/egl.c
+    )
 elseif(IOS)
     set(WINDOW_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/window/WindowBase.cpp
@@ -47,6 +62,12 @@ elseif(IOS)
     set(EVENT_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/Event.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/EventUIKit.cpp
+    )
+
+    set(BACKENDS_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gles1.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gles2.c
     )
 elseif(ANDROID)
     set(WINDOW_SOURCES
@@ -58,9 +79,16 @@ elseif(ANDROID)
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/Event.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event/EventAndroid.cpp
     )
+
+    set(BACKENDS_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gles1.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gles2.c
+    )
 endif()
 
 file(GLOB NAUTILUS_SOURCES
+    ${BACKENDS_SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/core/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/math/*.cpp
     ${WINDOW_SOURCES}
@@ -70,11 +98,26 @@ file(GLOB NAUTILUS_SOURCES
 if (NAUTILUS_SOURCES)
     add_library(Nautilus STATIC ${NAUTILUS_SOURCES})
     target_include_directories(Nautilus PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/backends/include
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/core
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/math
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/window
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event
     )
 
-    target_link_libraries(Nautilus PUBLIC core math window event)
+    find_package(OpenGL REQUIRED)
+    find_package(Vulkan REQUIRED)
+
+    include_directories(${OPENGL_INCLUDE_DIRS})
+    include_directories(${VULKAN_INCLUDE_DIRS})
+
+    target_link_libraries(Nautilus PUBLIC
+        ${OPENGL_LIBRARIES}
+        ${VULKAN_LIBRARIES}
+        backends
+        core
+        math
+        window
+        event
+    )
 endif()

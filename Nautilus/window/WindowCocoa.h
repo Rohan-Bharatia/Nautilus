@@ -18,6 +18,9 @@
 
 #include "WindowBase.h"
 
+#include <../../backends/include/glad/gl.h>
+#include <../../backends/include/glad/egl.h>
+
 #import <Cocoa/Cocoa.h>
 
 namespace nt
@@ -27,22 +30,28 @@ namespace nt
     {
     public:
         WindowCocoa()                                    = default;
-        WindowCocoa(const WindowDesc& desc);
+        WindowCocoa(const WindowDesc& desc, const GraphicsAPI& api);
         ~WindowCocoa()                                   = default;
         WindowCocoa(const WindowCocoa& other)            = default;
         WindowCocoa& operator=(const WindowCocoa& other) = default;
 
         void initialize() override;
+        void shader(std::string vertex, std::string fragment);
         bool pollEvents() override;
         void update() override;
+        void frame(std::vector<ReadableVertex> vertices) override;
+        void clear(const Color& color) override;
+        void swapBuffers() override;
         void destroy() override;
 
         void* getHandle() override;
         WindowDesc getDescription() override;
 
     private:
-        NSWindow* m_window;
         WindowDesc m_desc;
+        GraphicsAPI m_api;
+        NSWindow* m_window;
+        GLuint m_vao, m_vbo, m_ebo, m_vertex, m_fragment, m_program;
     };
 } // namespace nt
 

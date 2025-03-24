@@ -35,9 +35,23 @@ namespace nt
         float alpha;
     };
 
-    // Arithmetic & assignment operations
+    // Sign operations
+    Color operator+(Color lhs);
+    Color operator-(Color lhs);
+
+    // Arithmetic operations
     Color operator+(Color lhs, Color rhs);
+    Color operator-(Color lhs, Color rhs);
+    Color operator*(Color lhs, Color rhs);
+    Color operator/(Color lhs, Color rhs);
+    Color operator%(Color lhs, Color rhs);
+
+    // Assignment operations
     Color operator+=(Color& lhs, Color rhs);
+    Color operator-=(Color& lhs, Color rhs);
+    Color operator*=(Color& lhs, Color rhs);
+    Color operator/=(Color& lhs, Color rhs);
+    Color operator%=(Color& lhs, Color rhs);
 
     // Relation operations
     bool operator==(Color lhs, Color rhs);

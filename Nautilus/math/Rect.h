@@ -67,17 +67,17 @@ namespace nt
     Rect<T> operator%=(Rect<T>& lhs, Rect<T> rhs);
 
     // Relation operations
-    template <typename T>
+    template<typename T>
     bool operator==(Rect<T> lhs, Rect<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator!=(Rect<T> lhs, Rect<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator<(Rect<T> lhs, Rect<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator>(Rect<T> lhs, Rect<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator<=(Rect<T> lhs, Rect<T> rhs);
-    template <typename T>
+    template<typename T>
     bool operator>=(Rect<T> lhs, Rect<T> rhs);
 
     using Rectf = Rect<float>;

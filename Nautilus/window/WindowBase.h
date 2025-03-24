@@ -17,23 +17,35 @@
     #define _NT_WINDOW_WINDOW_BASE_h_
 
 #include "WindowDesc.h"
+#include "../math/Vertex.h"
 
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace nt
 {
+    enum class GraphicsAPI
+    {
+        OPENGL, // OpenGL v4.6
+        VULKAN, // OpenGL v1.4
+    };
+
     class WindowBase
     {
     public:
-        virtual void initialize()           = 0;
-        virtual bool pollEvents()           = 0;
-        virtual void update()               = 0;
-        virtual void destroy()              = 0;
-        virtual void* getHandle()           = 0;
-        virtual WindowDesc getDescription() = 0;
+        virtual void initialize()                                = 0;
+        virtual bool pollEvents()                                = 0;
+        virtual void update()                                    = 0;
+        virtual void frame(std::vector<ReadableVertex> vertices) = 0;
+        virtual void clear(const Color& color)                   = 0;
+        virtual void swapBuffers()                               = 0;
+        virtual void destroy()                                   = 0;
+        virtual void* getHandle()                                = 0;
+        virtual WindowDesc getDescription()                      = 0;
     };
 
-    std::shared_ptr<WindowBase> createWindow(const WindowDesc& desc);
+    std::shared_ptr<WindowBase> createWindow(const WindowDesc& desc, GraphicsAPI api);
 } // namespace nt
 
 #endif // _NT_WINDOW_WINDOW_BASE_h_

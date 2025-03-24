@@ -9,6 +9,7 @@ add_library(math STATIC
     Ray3.cpp
     Rect.cpp
     Color.cpp
+    Vertex.cpp
 )
 
 target_include_directories(math PUBLIC
