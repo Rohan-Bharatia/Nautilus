@@ -14,9 +14,9 @@ Nautilus uses [CMake](https://cmake.org/) for building.
 
 [Download CMake](https://cmake.org/download/)
 
-### Platform
+### Platform-Specific Dependencies
 
-|**Platform**|**System Deps**|
+|**Platform**|**Dependency**|
 |-|-|
 |Windows|~~Windows API~~|
 |Linux|[XLib](https://github.com/walklang/Xlib)|
@@ -25,59 +25,6 @@ Nautilus uses [CMake](https://cmake.org/) for building.
 |iOS|[UIKit](https://github.com/uikit/uikit)|
 |Android|[Android SDK (JNI)](https://developer.android.com/studio)|
 
-## Usage
+## Contributing
 
-Create a file called `main.cpp` and use the following `CMakeLists.txt` file for it:
-
-```cmake
-cmake_minimum_required(VERSION 3.10)
-
-project(Main)
-
-add_executable(Main main.cpp)
-
-target_link_libraries(Main PUBLIC Nautilus)
-```
-
-Here is an example of what `main.cpp` could look like:
-
-```cpp
-#include "Nautilus/Nautilus.h"
-
-int main(int argc, char* argv[])
-{
-    // Window settings
-    nt::WindowDesc desc{};
-    desc.position.x      = 100;
-    desc.position.y      = 100;
-    desc.width           = 1024;
-    desc.height          = 768;
-    desc.title           = "Nautilus Application";
-    desc.backgroundColor = NT_COLOR_DEFAULT;
-
-    // Create window agent
-    nt::WindowPtr window = nt::createWindow(desc);
-
-    if (!window)
-        return NT_EXIT_MINOR_ERROR;
-
-    // Initialize
-    window->initialize();
-
-    // Main loop
-    while (window->pollEvents())
-    {
-        // Exit condition
-        if (nt::Event::isKeyPressed(VK_ESCAPE))
-            break;
-
-        // Draw frame
-        window->update();
-    }
-
-    // Close window
-    window->destroy();
-
-    return NT_EXIT_SUCCESS;
-}
-```
+Please refer to the [CODE-OF-CONDUCT.md](https://github.com/Rohan-Bharatia/Nautilus/blob/main/.github/CODE-OF-CONDUCT.md), [SECURITY.md](https://github.com/Rohan-Bharatia/Nautilus/blob/main/.github/SECURITY.md), and [CONTRIBUTING.md](https://github.com/Rohan-Bharatia/Nautilus/blob/main/.github/CONTRIBUTING.md) for proper contribution methods.

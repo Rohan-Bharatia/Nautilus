@@ -75,7 +75,5 @@ if (NAUTILUS_SOURCES)
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event
     )
 
-    target_link_libraries(Nautilus PUBLIC opengl32)
-
     target_link_libraries(Nautilus PUBLIC core math window event)
 endif()
