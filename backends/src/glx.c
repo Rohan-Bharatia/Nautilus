@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glad/glx.h>
+#include "glad/glx.h"
 
 #ifndef GLAD_IMPL_UTIL_C_
 #define GLAD_IMPL_UTIL_C_
@@ -474,8 +474,6 @@ static void glad_glx_load_GLX_SUN_get_transparent_index( GLADuserptrloadfunc loa
 }
 
 
-static void glad_glx_resolve_aliases(void) {
-}
 
 static int glad_glx_has_extension(Display *display, int screen, const char *ext) {
 #ifndef GLX_VERSION_1_1
@@ -657,7 +655,6 @@ int gladLoadGLXUserPtr(Display *display, int screen, GLADuserptrloadfunc load, v
     glad_glx_load_GLX_SGI_video_sync(load, userptr);
     glad_glx_load_GLX_SUN_get_transparent_index(load, userptr);
 
-    glad_glx_resolve_aliases();
 
     return version;
 }
@@ -666,132 +663,8 @@ int gladLoadGLX(Display *display, int screen, GLADloadfunc load) {
     return gladLoadGLXUserPtr(display, screen, glad_glx_get_proc_from_userptr, GLAD_GNUC_EXTENSION (void*) load);
 }
 
- 
-
-#ifdef GLAD_GLX
-
-#ifndef GLAD_LOADER_LIBRARY_C_
-#define GLAD_LOADER_LIBRARY_C_
-
-#include <stddef.h>
-#include <stdlib.h>
-
-#if GLAD_PLATFORM_WIN32
-#include <windows.h>
-#else
-#include <dlfcn.h>
-#endif
 
 
-static void* glad_get_dlopen_handle(const char *lib_names[], int length) {
-    void *handle = NULL;
-    int i;
-
-    for (i = 0; i < length; ++i) {
-#if GLAD_PLATFORM_WIN32
-  #if GLAD_PLATFORM_UWP
-        size_t buffer_size = (strlen(lib_names[i]) + 1) * sizeof(WCHAR);
-        LPWSTR buffer = (LPWSTR) malloc(buffer_size);
-        if (buffer != NULL) {
-            int ret = MultiByteToWideChar(CP_ACP, 0, lib_names[i], -1, buffer, buffer_size);
-            if (ret != 0) {
-                handle = (void*) LoadPackagedLibrary(buffer, 0);
-            }
-            free((void*) buffer);
-        }
-  #else
-        handle = (void*) LoadLibraryA(lib_names[i]);
-  #endif
-#else
-        handle = dlopen(lib_names[i], RTLD_LAZY | RTLD_LOCAL);
-#endif
-        if (handle != NULL) {
-            return handle;
-        }
-    }
-
-    return NULL;
-}
-
-static void glad_close_dlopen_handle(void* handle) {
-    if (handle != NULL) {
-#if GLAD_PLATFORM_WIN32
-        FreeLibrary((HMODULE) handle);
-#else
-        dlclose(handle);
-#endif
-    }
-}
-
-static GLADapiproc glad_dlsym_handle(void* handle, const char *name) {
-    if (handle == NULL) {
-        return NULL;
-    }
-
-#if GLAD_PLATFORM_WIN32
-    return (GLADapiproc) GetProcAddress((HMODULE) handle, name);
-#else
-    return GLAD_GNUC_EXTENSION (GLADapiproc) dlsym(handle, name);
-#endif
-}
-
-#endif /* GLAD_LOADER_LIBRARY_C_ */
-
-typedef void* (GLAD_API_PTR *GLADglxprocaddrfunc)(const char*);
-
-static GLADapiproc glad_glx_get_proc(void *userptr, const char *name) {
-    return GLAD_GNUC_EXTENSION ((GLADapiproc (*)(const char *name)) userptr)(name);
-}
-
-static void* _glx_handle;
-
-static void* glad_glx_dlopen_handle(void) {
-    static const char *NAMES[] = {
-#if defined __CYGWIN__
-        "libGL-1.so",
-#endif
-        "libGL.so.1",
-        "libGL.so"
-    };
-
-    if (_glx_handle == NULL) {
-        _glx_handle = glad_get_dlopen_handle(NAMES, sizeof(NAMES) / sizeof(NAMES[0]));
-    }
-
-    return _glx_handle;
-}
-
-int gladLoaderLoadGLX(Display *display, int screen) {
-    int version = 0;
-    void *handle = NULL;
-    int did_load = 0;
-    GLADglxprocaddrfunc loader;
-
-    did_load = _glx_handle == NULL;
-    handle = glad_glx_dlopen_handle();
-    if (handle != NULL) {
-        loader = (GLADglxprocaddrfunc) glad_dlsym_handle(handle, "glXGetProcAddressARB");
-        if (loader != NULL) {
-            version = gladLoadGLXUserPtr(display, screen, glad_glx_get_proc, GLAD_GNUC_EXTENSION (void*) loader);
-        }
-
-        if (!version && did_load) {
-            gladLoaderUnloadGLX();
-        }
-    }
-
-    return version;
-}
-
-
-void gladLoaderUnloadGLX() {
-    if (_glx_handle != NULL) {
-        glad_close_dlopen_handle(_glx_handle);
-        _glx_handle = NULL;
-    }
-}
-
-#endif /* GLAD_GLX */
 
 #ifdef __cplusplus
 }

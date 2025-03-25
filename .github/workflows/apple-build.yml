@@ -1,4 +1,4 @@
-name: CMake Build and Test
+name: Apple Build
 
 on:
   push:
@@ -7,22 +7,21 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Install dependencies
         run: |
-          choco install cmake mingw
-          cmake --version
-          gcc --version
+          brew install cmake gcc
+          brew link gcc
 
       - name: Configure CMake
         run: |
           mkdir build
           cd build
-          cmake -G "MinGW Makefiles" ..
+          cmake -G "Unix Makefiles" ..
 
       - name: Build Nautilus
         run: |

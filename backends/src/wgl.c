@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glad/wgl.h>
+#include "glad/wgl.h"
 
 #ifndef GLAD_IMPL_UTIL_C_
 #define GLAD_IMPL_UTIL_C_
@@ -419,8 +419,6 @@ static void glad_wgl_load_WGL_OML_sync_control(GLADuserptrloadfunc load, void *u
 }
 
 
-static void glad_wgl_resolve_aliases(void) {
-}
 
 static int glad_wgl_has_extension(HDC hdc, const char *ext) {
     const char *terminator;
@@ -567,7 +565,6 @@ int gladLoadWGLUserPtr(HDC hdc, GLADuserptrloadfunc load, void *userptr) {
     glad_wgl_load_WGL_NV_video_output(load, userptr);
     glad_wgl_load_WGL_OML_sync_control(load, userptr);
 
-    glad_wgl_resolve_aliases();
 
     return version;
 }
@@ -575,21 +572,8 @@ int gladLoadWGLUserPtr(HDC hdc, GLADuserptrloadfunc load, void *userptr) {
 int gladLoadWGL(HDC hdc, GLADloadfunc load) {
     return gladLoadWGLUserPtr(hdc, glad_wgl_get_proc_from_userptr, GLAD_GNUC_EXTENSION (void*) load);
 }
- 
-
-#ifdef GLAD_WGL
-
-static GLADapiproc glad_wgl_get_proc(void *vuserptr, const char* name) {
-    GLAD_UNUSED(vuserptr);
-    return GLAD_GNUC_EXTENSION (GLADapiproc) wglGetProcAddress(name);
-}
-
-int gladLoaderLoadWGL(HDC hdc) {
-    return gladLoadWGLUserPtr(hdc, glad_wgl_get_proc, NULL);
-}
 
 
-#endif /* GLAD_WGL */
 
 #ifdef __cplusplus
 }

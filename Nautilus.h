@@ -149,6 +149,8 @@ using namespace nt::literals;
 #define NT_LOG_ERROR(msg, ...) nt::Logger::error(msg, ##__VA_ARGS__)
 #define NT_LOG_CRITICAL(msg, ...) nt::Logger::critical(msg, ##__VA_ARGS__)
 
+#define NT_ASSERT(condition, msg, ...) assert(condition, msg, ##__VA_ARGS__)
+
 // Timer macro
 #define NT_WAIT_MICROS(ms) nt::Timer::sleep(ms / 10)
 #define NT_WAIT_MILLIS(ms) nt::Timer::sleep(ms)

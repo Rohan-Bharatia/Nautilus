@@ -27,23 +27,26 @@ namespace nt
         public WindowBase
     {
     public:
-        WindowAndroid()                                  = default;
+        WindowAndroid()                                      = default;
         WindowAndroid(const WindowDesc& desc);
-        ~WindowAndroid()                                 = default;
+        ~WindowAndroid()                                     = default;
         WindowAndroid(const WindowAndroid& other)            = default;
         WindowAndroid& operator=(const WindowAndroid& other) = default;
 
         void initialize() override;
         bool pollEvents() override;
         void update() override;
+        void clear(const Color& color) override;
+        void swapBuffers() override;
         void destroy() override;
 
         void* getHandle() override;
         WindowDesc getDescription() override;
 
     private:
-        ANativeWindow* m_window;
         WindowDesc m_desc;
+        ANativeWindow* m_window;
+        GLuint m_vao, m_vbo, m_ebo, m_vshader, m_fshader, m_program;
     };
 } // namespace nt
 

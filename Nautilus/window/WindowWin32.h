@@ -33,17 +33,21 @@ namespace nt
         WindowWin32& operator=(const WindowWin32& other) = default;
 
         void initialize() override;
+        void useShader(std::string vertex, std::string fragment) override;
         bool pollEvents() override;
         void update() override;
+        void clear(const Color& color) override;
+        void swapBuffers() override;
         void destroy() override;
 
         void* getHandle() override;
         WindowDesc getDescription() override;
 
     private:
+        WindowDesc m_desc;
         HWND m_hwnd;
         HINSTANCE m_hinstance;
-        WindowDesc m_desc;
+        GLuint m_vao, m_vbo, m_ebo, m_vshader, m_fshader, m_program;
 
         static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp);
     };

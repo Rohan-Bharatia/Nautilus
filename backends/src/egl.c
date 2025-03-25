@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glad/egl.h>
+#include "glad/egl.h"
 
 #ifndef GLAD_IMPL_UTIL_C_
 #define GLAD_IMPL_UTIL_C_
@@ -719,22 +719,6 @@ static void glad_egl_load_EGL_WL_create_wayland_buffer_from_image( GLADuserptrlo
 }
 
 
-static void glad_egl_resolve_aliases(void) {
-    if (glad_eglClientWaitSync == NULL && glad_eglClientWaitSyncKHR != NULL) glad_eglClientWaitSync = (PFNEGLCLIENTWAITSYNCPROC)glad_eglClientWaitSyncKHR;
-    if (glad_eglClientWaitSyncKHR == NULL && glad_eglClientWaitSync != NULL) glad_eglClientWaitSyncKHR = (PFNEGLCLIENTWAITSYNCKHRPROC)glad_eglClientWaitSync;
-    if (glad_eglCreateSync == NULL && glad_eglCreateSync64KHR != NULL) glad_eglCreateSync = (PFNEGLCREATESYNCPROC)glad_eglCreateSync64KHR;
-    if (glad_eglCreateSync64KHR == NULL && glad_eglCreateSync != NULL) glad_eglCreateSync64KHR = (PFNEGLCREATESYNC64KHRPROC)glad_eglCreateSync;
-    if (glad_eglDestroyImage == NULL && glad_eglDestroyImageKHR != NULL) glad_eglDestroyImage = (PFNEGLDESTROYIMAGEPROC)glad_eglDestroyImageKHR;
-    if (glad_eglDestroyImageKHR == NULL && glad_eglDestroyImage != NULL) glad_eglDestroyImageKHR = (PFNEGLDESTROYIMAGEKHRPROC)glad_eglDestroyImage;
-    if (glad_eglDestroySync == NULL && glad_eglDestroySyncKHR != NULL) glad_eglDestroySync = (PFNEGLDESTROYSYNCPROC)glad_eglDestroySyncKHR;
-    if (glad_eglDestroySyncKHR == NULL && glad_eglDestroySync != NULL) glad_eglDestroySyncKHR = (PFNEGLDESTROYSYNCKHRPROC)glad_eglDestroySync;
-    if (glad_eglQueryDisplayAttribEXT == NULL && glad_eglQueryDisplayAttribKHR != NULL) glad_eglQueryDisplayAttribEXT = (PFNEGLQUERYDISPLAYATTRIBEXTPROC)glad_eglQueryDisplayAttribKHR;
-    if (glad_eglQueryDisplayAttribEXT == NULL && glad_eglQueryDisplayAttribNV != NULL) glad_eglQueryDisplayAttribEXT = (PFNEGLQUERYDISPLAYATTRIBEXTPROC)glad_eglQueryDisplayAttribNV;
-    if (glad_eglQueryDisplayAttribKHR == NULL && glad_eglQueryDisplayAttribEXT != NULL) glad_eglQueryDisplayAttribKHR = (PFNEGLQUERYDISPLAYATTRIBKHRPROC)glad_eglQueryDisplayAttribEXT;
-    if (glad_eglQueryDisplayAttribKHR == NULL && glad_eglQueryDisplayAttribNV != NULL) glad_eglQueryDisplayAttribKHR = (PFNEGLQUERYDISPLAYATTRIBKHRPROC)glad_eglQueryDisplayAttribNV;
-    if (glad_eglQueryDisplayAttribNV == NULL && glad_eglQueryDisplayAttribEXT != NULL) glad_eglQueryDisplayAttribNV = (PFNEGLQUERYDISPLAYATTRIBNVPROC)glad_eglQueryDisplayAttribEXT;
-    if (glad_eglQueryDisplayAttribNV == NULL && glad_eglQueryDisplayAttribKHR != NULL) glad_eglQueryDisplayAttribNV = (PFNEGLQUERYDISPLAYATTRIBNVPROC)glad_eglQueryDisplayAttribKHR;
-}
 
 static int glad_egl_get_extensions(EGLDisplay display, const char **extensions) {
     *extensions = eglQueryString(display, EGL_EXTENSIONS);
@@ -1057,7 +1041,6 @@ int gladLoadEGLUserPtr(EGLDisplay display, GLADuserptrloadfunc load, void* userp
     glad_egl_load_EGL_WL_bind_wayland_display(load, userptr);
     glad_egl_load_EGL_WL_create_wayland_buffer_from_image(load, userptr);
 
-    glad_egl_resolve_aliases();
 
     return version;
 }
@@ -1066,151 +1049,8 @@ int gladLoadEGL(EGLDisplay display, GLADloadfunc load) {
     return gladLoadEGLUserPtr(display, glad_egl_get_proc_from_userptr, GLAD_GNUC_EXTENSION (void*) load);
 }
 
- 
-
-#ifdef GLAD_EGL
-
-#ifndef GLAD_LOADER_LIBRARY_C_
-#define GLAD_LOADER_LIBRARY_C_
-
-#include <stddef.h>
-#include <stdlib.h>
-
-#if GLAD_PLATFORM_WIN32
-#include <windows.h>
-#else
-#include <dlfcn.h>
-#endif
 
 
-static void* glad_get_dlopen_handle(const char *lib_names[], int length) {
-    void *handle = NULL;
-    int i;
-
-    for (i = 0; i < length; ++i) {
-#if GLAD_PLATFORM_WIN32
-  #if GLAD_PLATFORM_UWP
-        size_t buffer_size = (strlen(lib_names[i]) + 1) * sizeof(WCHAR);
-        LPWSTR buffer = (LPWSTR) malloc(buffer_size);
-        if (buffer != NULL) {
-            int ret = MultiByteToWideChar(CP_ACP, 0, lib_names[i], -1, buffer, buffer_size);
-            if (ret != 0) {
-                handle = (void*) LoadPackagedLibrary(buffer, 0);
-            }
-            free((void*) buffer);
-        }
-  #else
-        handle = (void*) LoadLibraryA(lib_names[i]);
-  #endif
-#else
-        handle = dlopen(lib_names[i], RTLD_LAZY | RTLD_LOCAL);
-#endif
-        if (handle != NULL) {
-            return handle;
-        }
-    }
-
-    return NULL;
-}
-
-static void glad_close_dlopen_handle(void* handle) {
-    if (handle != NULL) {
-#if GLAD_PLATFORM_WIN32
-        FreeLibrary((HMODULE) handle);
-#else
-        dlclose(handle);
-#endif
-    }
-}
-
-static GLADapiproc glad_dlsym_handle(void* handle, const char *name) {
-    if (handle == NULL) {
-        return NULL;
-    }
-
-#if GLAD_PLATFORM_WIN32
-    return (GLADapiproc) GetProcAddress((HMODULE) handle, name);
-#else
-    return GLAD_GNUC_EXTENSION (GLADapiproc) dlsym(handle, name);
-#endif
-}
-
-#endif /* GLAD_LOADER_LIBRARY_C_ */
-
-struct _glad_egl_userptr {
-    void *handle;
-    PFNEGLGETPROCADDRESSPROC get_proc_address_ptr;
-};
-
-static GLADapiproc glad_egl_get_proc(void *vuserptr, const char* name) {
-    struct _glad_egl_userptr userptr = *(struct _glad_egl_userptr*) vuserptr;
-    GLADapiproc result = NULL;
-
-    result = glad_dlsym_handle(userptr.handle, name);
-    if (result == NULL) {
-        result = GLAD_GNUC_EXTENSION (GLADapiproc) userptr.get_proc_address_ptr(name);
-    }
-
-    return result;
-}
-
-static void* _egl_handle = NULL;
-
-static void* glad_egl_dlopen_handle(void) {
-#if GLAD_PLATFORM_APPLE
-    static const char *NAMES[] = {"libEGL.dylib"};
-#elif GLAD_PLATFORM_WIN32
-    static const char *NAMES[] = {"libEGL.dll", "EGL.dll"};
-#else
-    static const char *NAMES[] = {"libEGL.so.1", "libEGL.so"};
-#endif
-
-    if (_egl_handle == NULL) {
-        _egl_handle = glad_get_dlopen_handle(NAMES, sizeof(NAMES) / sizeof(NAMES[0]));
-    }
-
-    return _egl_handle;
-}
-
-static struct _glad_egl_userptr glad_egl_build_userptr(void *handle) {
-    struct _glad_egl_userptr userptr;
-    userptr.handle = handle;
-    userptr.get_proc_address_ptr = (PFNEGLGETPROCADDRESSPROC) glad_dlsym_handle(handle, "eglGetProcAddress");
-    return userptr;
-}
-
-int gladLoaderLoadEGL(EGLDisplay display) {
-    int version = 0;
-    void *handle = NULL;
-    int did_load = 0;
-    struct _glad_egl_userptr userptr;
-
-    did_load = _egl_handle == NULL;
-    handle = glad_egl_dlopen_handle();
-    if (handle != NULL) {
-        userptr = glad_egl_build_userptr(handle);
-
-        if (userptr.get_proc_address_ptr != NULL) {
-            version = gladLoadEGLUserPtr(display, glad_egl_get_proc, &userptr);
-        }
-
-        if (!version && did_load) {
-            gladLoaderUnloadEGL();
-        }
-    }
-
-    return version;
-}
-
-
-void gladLoaderUnloadEGL(void) {
-    if (_egl_handle != NULL) {
-        glad_close_dlopen_handle(_egl_handle);
-        _egl_handle = NULL;
-    }
-}
-
-#endif /* GLAD_EGL */
 
 #ifdef __cplusplus
 }

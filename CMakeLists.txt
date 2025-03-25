@@ -104,6 +104,8 @@ file(GLOB NAUTILUS_SOURCES
 )
 
 if (NAUTILUS_SOURCES)
+    find_package(OpenGL REQUIRED)
+
     add_library(Nautilus STATIC ${NAUTILUS_SOURCES})
     target_include_directories(Nautilus PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -114,5 +116,5 @@ if (NAUTILUS_SOURCES)
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event
     )
 
-    target_link_libraries(Nautilus PUBLIC backends core math window event)
+    target_link_libraries(Nautilus PUBLIC opengl32 backends core math window event)
 endif()
