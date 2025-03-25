@@ -21,21 +21,72 @@ namespace nt
 
     void WindowCocoa::initialize()
     {
+        // Set window properties
+        NSWindowStyleMask style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
+        if (!m_desc.resizable)
+            style &= ~NSWindowStyleMaskResizable;
+        if (!m_desc.movable)
+            style &= ~NSWindowStyleMaskTitled;
+        if (!m_desc.closable)
+            style &= ~NSWindowStyleMaskClosable;
+        if (!m_desc.maximizable)
+            style &= ~NSWindowStyleMaskMiniaturizable;
+        if (!m_desc.minimizable)
+            style &= ~NSWindowStyleMaskMiniaturizable;
+        if (!m_desc.canFullscreen)
+            style &= ~NSWindowStyleMaskFullSizeContentView;
+
         // Create window
         m_window = [[NSWindow alloc] initWithContentRect:NSMakeRect(m_desc.position.x, m_desc.position.y, m_desc.width, m_desc.height)
-                                               styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable
+                                               styleMask:style
                                                  backing:NSBackingStoreBuffered
                                                    defer:NO];
 
-        // Set window properties
+        // Center window (if necessary)
+        if (m_desc.centered)
+        {
+            NSRect screenRect = [[NSScreen mainScreen] frame];
+            NSRect windowRect = [m_window frame];
+            float x           = (screenRect.size.width - windowRect.size.width) / 2;
+            float y           = (screenRect.size.height - windowRect.size.height) / 2;
+            [m_window setFrameOrigin:NSMakePoint(x, y)];
+        }
+
+        // Set window title & color
         [m_window setTitle:m_desc.title.c_str()];
         [m_window setBackgroundColor:[NSColor colorWithCalibratedRed:m_desc.backgroundColor.red / 255.0
                                                                  green:m_desc.backgroundColor.green / 255.0
                                                                   blue:m_desc.backgroundColor.blue / 255.0
                                                                  alpha:1.0]];
 
-        // Make window visible
-        [m_window makeKeyAndOrderFront:nil];
+        // Set window states
+        if (m_desc.visible)
+        {
+            if (m_desc.fullscreen)
+            {
+                [m_window setContentSize:[[NSScreen mainScreen] frame].size];
+                [m_window setFrame:[[NSScreen mainScreen] frame] display:YES];
+            }
+            if (m_desc.maximized)
+            {
+                [m_window setContentSize:[[NSScreen mainScreen] frame].size];
+                [m_window setFrame:[[NSScreen mainScreen] frame] display:YES];
+            }
+            if (m_desc.minimized)
+                [m_window miniaturize:nil];
+            if (!m_desc.fullscreen && !m_desc.maximized && !m_desc.minimized)
+                [m_window orderOut:nil];
+        }
+        else
+            [m_window makeKeyAndOrderFront:nil];
+
+        // Set focus
+        if (m_desc.focus)
+            [m_window makeFirstResponder:nil];
+
+        // Set modal state
+        if (m_desc.modal)
+            [NSApp runModalForWindow:m_window];
 
         // Callback function
         if (m_desc.onCreate)

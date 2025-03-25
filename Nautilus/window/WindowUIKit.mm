@@ -21,17 +21,33 @@ namespace nt
 
     void WindowUIKit::initialize()
     {
-        // Create window
-        m_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
         // Set window properties
+        UIWindowSceneConfiguration *configuration = [[UIWindowSceneConfiguration alloc] initWithSize:[[UIScreen mainScreen] bounds].size];
+        configuration.windowSceneClass            = [UIWindowScene class];
+
+
+        // Create window
+        m_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds] windowScene:[UIWindowScene sceneWithSession:nil configuration:configuration]];
+
+        // Set window background color
         m_window.backgroundColor = [UIColor colorWithRed:m_desc.backgroundColor.red / 255.0
                                                     green:m_desc.backgroundColor.green / 255.0
-                                                     blue:m_desc.backgroundColor.blue / 255.0
+                                                    blue:m_desc.backgroundColor.blue / 255.0
                                                     alpha:1.0];
 
-        // Make window visible
-        [m_window makeKeyAndVisible];
+        // Set window states
+        if (m_desc.visible)
+            m_window.hidden = NO;
+        else
+            m_window.hidden = YES;
+
+        // Set modal state
+        if (m_desc.modal)
+        {
+            UIViewController *viewController      = [[UIViewController alloc] init];
+            viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [m_window.rootViewController presentViewController:viewController animated:YES completion:nil];
+        }
 
         // Callback function
         if (m_desc.onCreate)

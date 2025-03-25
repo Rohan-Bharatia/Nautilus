@@ -28,12 +28,35 @@ namespace nt
     struct WindowDesc
     {
         // Window properties
+    #if defined(NT_PLATFORM_DESKTOP)
         Vec2u position;
         uint width;
         uint height;
         std::string title;
+    #endif // defined(NT_PLATFORM_DESKTOP)
         Color backgroundColor;
 
+        // Window properties
+    #if defined(NT_PLATFORM_DESKTOP)
+        bool centered      = true;
+        bool resizable     = true;
+        bool canFullscreen = true;
+        bool movable       = true;
+        bool closable      = true;
+        bool maximizable   = true;
+        bool minimizable   = true;
+    #endif // defined(NT_PLATFORM_DESKTOP)
+
+        // Window states
+        bool visible    = true;
+    #if defined(NT_PLATFORM_DESKTOP)
+        bool fullscreen = false;
+        bool maximized  = false;
+        bool minimized  = false;
+        bool focused    = true;
+    #endif // defined(NT_PLATFORM_DESKTOP)
+        bool modal      = false;
+        
         // Window events
         std::function<void()> onCreate  = nullptr;
         std::function<void()> onUpdate  = nullptr;

@@ -27,11 +27,29 @@ namespace nt
         // Create window
         m_window = ANativeWindow_fromSurface(env, surface);
 
-        // Set window properties
+        // Set window size & color
         ANativeWindow_setBuffersGeometry(m_window, m_desc.width, m_desc.height, WINDOW_FORMAT_RGBA_8888);
 
-        // Make window visible
-        ANativeWindow_show(m_window);
+        // Set window states
+        if (m_desc.visible)
+            ANativeWindow_show(m_window);
+        else
+            ANativeWindow_hide(m_window);
+
+        // Set modal state
+        if (m_desc.modal)
+        {
+            JNIEnv *env      = (JNIEnv *)SDL_AndroidGetJNIEnv();
+            jobject activity = (jobject)SDL_AndroidGetActivity();
+            jclass clazz     = env->GetObjectClass(activity);
+            jmethodID method = env->GetMethodID(clazz, "startActivity", "(Landroid/content/Intent;)V");
+            jobject intent   = env->NewObject(env->FindClass("android/content/Intent"), env->GetMethodID(env->FindClass("android/content/Intent"), "<init>", "()V"));
+            env->CallVoidMethod(activity, method, intent);
+            env->DeleteLocalRef(intent);
+
+            // Set the modal window as the current window
+            ANativeWindow_setFlags(m_window, AWINDOW_FLAG_NOT_FOCUSABLE);
+        }
 
         // Callback function
         if (m_desc.onCreate)

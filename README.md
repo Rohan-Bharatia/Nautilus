@@ -23,7 +23,7 @@ Nautilus uses [CMake](https://cmake.org/) for building.
 |BSD|[XLib](https://github.com/walklang/Xlib)|
 |MAC OS|~~Cocoa~~|
 |iOS|[UIKit](https://github.com/uikit/uikit)|
-|Android|[Android SDK](https://developer.android.com/studio)|
+|Android|[Android SDK (JNI)](https://developer.android.com/studio)|
 
 ## Usage
 

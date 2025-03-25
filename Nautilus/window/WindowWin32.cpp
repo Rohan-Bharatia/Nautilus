@@ -37,18 +37,65 @@ namespace nt
         wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
         wc.lpszClassName = "NautilusWindowClass";
 
-
         RegisterClassExA(&wc);
 
+        // Set window properties
+        DWORD style = WS_OVERLAPPEDWINDOW;
+        if (!m_desc.resizable)
+            style &= ~WS_THICKFRAME;
+        if (!m_desc.movable)
+            style &= ~WS_CAPTION;
+        if (!m_desc.closable)
+            style &= ~WS_SYSMENU;
+        if (!m_desc.maximizable)
+            style &= ~WS_MAXIMIZEBOX;
+        if (!m_desc.minimizable)
+            style &= ~WS_MINIMIZEBOX;
+        if (!m_desc.canFullscreen)
+            style &= ~WS_POPUP;
+
         // Create window
-        m_hwnd = CreateWindowExA(0, wc.lpszClassName, m_desc.title.c_str(), WS_OVERLAPPEDWINDOW,
+        m_hwnd = CreateWindowExA(0, wc.lpszClassName, m_desc.title.c_str(), style,
                                  m_desc.position.x, m_desc.position.y, m_desc.width, m_desc.height,
                                  nullptr, nullptr, m_hinstance, nullptr);
 
+        // Center window (if necessary)
+        if (m_desc.centered)
+        {
+            RECT rc;
+            GetWindowRect(m_hwnd, &rc);
+            int width  = rc.right - rc.left;
+            int height = rc.bottom - rc.top;
+            int x      = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
+            int y      = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
+            SetWindowPos(m_hwnd, HWND_TOP, x, y, width, height, SWP_NOSIZE);
+        }
+
         SetWindowLongPtr(m_hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-        ShowWindow(m_hwnd, SW_SHOWDEFAULT);
+        // Set window states
+        if (m_desc.visible)
+        {
+            if (m_desc.fullscreen)
+                ShowWindow(m_hwnd, SW_SHOWMAXIMIZED);
+            if (m_desc.maximized)
+                ShowWindow(m_hwnd, SW_SHOWMAXIMIZED);
+            if (m_desc.minimized)
+                ShowWindow(m_hwnd, SW_SHOWMINIMIZED);
+            if (!m_desc.fullscreen && !m_desc.maximized && !m_desc.minimized)
+                ShowWindow(m_hwnd, SW_SHOWNORMAL);
+        }
+        else
+            ShowWindow(m_hwnd, SW_HIDE);
         UpdateWindow(m_hwnd);
+
+        // Set focus
+        if (m_desc.focused)
+            SetFocus(m_hwnd);
+
+        // Set modal state
+        if (m_desc.modal)
+            EnableWindow(GetParent(m_hwnd), false);
 
         // Callback function
         if (m_desc.onCreate)
