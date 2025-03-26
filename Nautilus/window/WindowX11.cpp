@@ -19,7 +19,8 @@
 namespace nt
 {
     WindowX11::WindowX11(const WindowDesc& desc) :
-        m_display(nullptr), m_window(None), m_desc(desc)
+        m_desc(desc), m_display(nullptr), m_window(None),
+        m_vao(0), m_vbo(0), m_ebo(0), m_vshader(0), m_fshader(0), m_program(0)
     {}
 
     void WindowX11::initialize()
@@ -106,9 +107,48 @@ namespace nt
             XGrabPointer(m_display, m_window, True, ButtonPressMask | ButtonReleaseMask, GrabModeAsync, GrabModeAsync, None, None, CurrentTime);
         }
 
+        // Initialize OpenGL
+        gladLoadGL((GLADloadfunc)glXGetProcAddress);
+        gladLoadGLX(m_display, DefaultScreen(m_display), (GLADloadfunc)glXGetProcAddress);
+
+        XVisualInfo* vi    = glXChooseVisual(m_display, DefaultScreen(m_display), NULL);
+        GLXContext context = glXCreateContext(m_display, vi, nullptr, GL_TRUE);
+        glXMakeCurrent(m_display, m_window, context);
+
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
+    }
+
+    void WindowX11::useShader(std::string vertex, std::string fragment)
+    {
+        // Create and compile vertex shader
+        m_vshader                = glCreateShader(GL_VERTEX_SHADER);
+        const char* vertexSource = vertex.c_str();
+        glShaderSource(m_vshader, 1, &vertexSource, nullptr);
+        glCompileShader(m_vshader);
+
+        // Create and compile fragment shader
+        m_fshader                  = glCreateShader(GL_FRAGMENT_SHADER);
+        const char* fragmentSource = fragment.c_str();
+        glShaderSource(m_fshader, 1, &fragmentSource, nullptr);
+        glCompileShader(m_fshader);
+
+        // Create program and attach shaders
+        GLuint program = glCreateProgram();
+        glAttachShader(program, m_vshader);
+        glAttachShader(program, m_fshader);
+        glLinkProgram(program);
+
+        // Use program
+        glUseProgram(program);
+
+        // Delete shaders (program has a reference to them)
+        glDeleteShader(m_vshader);
+        glDeleteShader(m_fshader);
+
+        // Store program ID
+        m_program = program;
     }
 
     bool WindowX11::pollEvents()
@@ -133,11 +173,31 @@ namespace nt
             m_desc.onUpdate();
     }
 
+    void WindowX11::clear(const Color& color)
+    {
+        // Clear screen with specified color
+        glClearColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void WindowX11::swapBuffers()
+    {
+        // Swap front and back buffers
+        glXSwapBuffers(m_display, m_window);
+    }
+
     void WindowX11::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
+
+        // Delete program
+        glDeleteProgram(m_program);
+
+        // Delete OpenGL context
+        glXMakeCurrent(m_display, None, nullptr);
+        glXDestroyContext(m_display, glXGetCurrentContext());
 
         // Destroy window
         if (m_window)

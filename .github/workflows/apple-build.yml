@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:.github/workflows/mingw.yml
-name: CMake Build and Test w/ MinGW
-========
-name: Windows Build
->>>>>>>> b08087ede55b60b0f4da2f80cd56374f03a666a7:.github/workflows/windows-build.yml
+name: Apple Build
 
 on:
   push:
@@ -11,22 +7,21 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Install dependencies
         run: |
-          choco install cmake mingw
-          cmake --version
-          gcc --version
+          brew install cmake gcc
+          brew link gcc
 
       - name: Configure CMake
         run: |
           mkdir build
           cd build
-          cmake -G "MinGW Makefiles" ..
+          cmake -G "Unix Makefiles" ..
 
       - name: Build Nautilus
         run: |

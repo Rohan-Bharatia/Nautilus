@@ -18,6 +18,19 @@
 
 #include "WindowDesc.h"
 
+#include "../backends/include/glad/gl.h"
+#if defined(NT_PLATFORM_WINDOWS)
+    #include "../backends/include/glad/wgl.h"
+#elif defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD)
+    #include "../backends/include/glad/glx.h"
+#elif defined(NT_PLATFORM_MACOS)
+    #include "../backends/include/glad/egl.h"
+#elif defined(NT_PLATFORM_IOS)
+    #include "../backends/include/glad/gles2.h"
+#elif defined(NT_PLATFORM_ANDROID)
+    #include "../backends/backends/include/glad/gles2.h"
+#endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
+
 #include <memory>
 
 namespace nt
@@ -25,10 +38,14 @@ namespace nt
     class WindowBase
     {
     public:
-        virtual void initialize()           = 0;
-        virtual bool pollEvents()           = 0;
-        virtual void update()               = 0;
-        virtual void destroy()              = 0;
+        virtual void initialize()                                        = 0;
+        virtual bool pollEvents()                                        = 0;
+        virtual void useShader(std::string vertex, std::string fragment) = 0;
+        virtual void update()                                            = 0;
+        virtual void clear(const Color& color)                           = 0;
+        virtual void swapBuffers()                                       = 0;
+        virtual void destroy()                                           = 0;
+
         virtual void* getHandle()           = 0;
         virtual WindowDesc getDescription() = 0;
     };
