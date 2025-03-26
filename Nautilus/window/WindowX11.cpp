@@ -27,7 +27,7 @@ namespace nt
         // Set window properties
         XSetWindowAttributes attrs;
         attrs.event_mask       = ExposureMask | KeyPressMask | ButtonPressMask;
-        attrs.background_color = m_desc.backgroundColor.red << 16 | m_desc.backgroundColor.green << 8 | m_desc.backgroundColor.blue;
+        attrs.background_pixel = m_desc.backgroundColor.red << 16 | m_desc.backgroundColor.green << 8 | m_desc.backgroundColor.blue;
 
         if (!m_desc.resizable)
             attrs.override_redirect = True;
@@ -44,9 +44,9 @@ namespace nt
 
             // Create window
             m_display = XOpenDisplay(nullptr);
-            m_window  = XCreateWindow(m_display, RootWindow(m_display, 0), m_desc.position.x, m_desc.position.y,
-                                      m_desc.width, m_desc.height, 1, BlackPixel(m_display, 0), WhitePixel(m_display, 0),
-                                      InputOutput, CopyFromParent, CWEventMask | CWOverrideRedirect, &attrs);
+            m_window = XCreateWindow(m_display, RootWindow(m_display, 0), m_desc.position.x, m_desc.position.y,
+                                     m_desc.width, m_desc.height, 1, CopyFromParent, InputOutput, NULL,
+                                     CWEventMask | CWOverrideRedirect, &attrs);
 
         // Center window (if necessary)
         if (m_desc.centered)
@@ -64,26 +64,20 @@ namespace nt
             if (m_desc.fullscreen)
             {
                 XEvent event;
-                event.type = MapNotify;
-                event.xmap.window = m_window;
-                event.xmap.event = m_window;
-                event.xmap.x = 0;
-                event.xmap.y = 0;
-                event.xmap.width = m_desc.width;
-                event.xmap.height = m_desc.height;
+                event.type                   = MapNotify;
+                event.xmap.window            = m_window;
+                event.xmap.event             = m_window;
+                event.xmap.display           = m_display;
                 event.xmap.override_redirect = False;
                 XSendEvent(m_display, m_window, False, StructureNotifyMask, &event);
             }
             if (m_desc.maximized)
             {
                 XEvent event;
-                event.type = MapNotify;
-                event.xmap.window = m_window;
-                event.xmap.event = m_window;
-                event.xmap.x = 0;
-                event.xmap.y = 0;
-                event.xmap.width = m_desc.width;
-                event.xmap.height = m_desc.height;
+                event.type                   = MapNotify;
+                event.xmap.window            = m_window;
+                event.xmap.event             = m_window;
+                event.xmap.display           = m_display;
                 event.xmap.override_redirect = False;
                 XSendEvent(m_display, m_window, False, StructureNotifyMask, &event);
             }
@@ -113,6 +107,9 @@ namespace nt
 
     bool WindowX11::pollEvents()
     {
+        Atom WM_DELETE_WINDOW = XInternAtom(m_display, "WM_DELETE_WINDOW", False);
+        XSetWMProtocols(m_display, m_window, &WM_DELETE_WINDOW, 1);
+
         XEvent event;
         while (XPending(m_display))
         {
@@ -148,7 +145,7 @@ namespace nt
 
     void* WindowX11::getHandle()
     {
-        return static_cast<void*>(m_window);
+        return static_cast<void*>(&m_window);
     }
 
     WindowDesc WindowX11::getDescription()

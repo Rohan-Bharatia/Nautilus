@@ -28,13 +28,13 @@ namespace nt
         if (display == NULL)
             return false;
 
-        XKeyboardState state;
-        XGetKeyboardState(display, &state);
+        char keys[32];
+        XQueryKeymap(display, keys);
 
         KeyCode keycode = XKeysymToKeycode(display, key);
 
         if (keycode != 0)
-            return (state.keybit[keycode >> 3] & (1 << (keycode & 7))) != 0;
+            return (keys[keycode >> 3] & (1 << (keycode & 7))) != 0;
         return false;
     }
 
@@ -44,12 +44,13 @@ namespace nt
         if (display == NULL)
             return false;
 
-        XEvent event;
-        XQueryPointer(display, DefaultRootWindow(display), &event.xbutton.same_screen,
-                      &event.xbutton.x, &event.xbutton.y, &event.xbutton.x_root, &event.xbutton.y_root,
-                      &event.xbutton.state);
+        Window root, child;
+        int rootX, rootY, winX, winY;
+        uint mask;
 
-        return (event.xbutton.state & button) != 0;
+        XQueryPointer(display, DefaultRootWindow(display), &root, &child, &rootX, &rootY, &winX, &winY, &mask);
+
+        return (mask & (1 << button)) != 0;
     }
 
     Vec2f Event::getMousePosition()
@@ -58,12 +59,12 @@ namespace nt
         if (display == NULL)
             return Vec2f(0.0f, 0.0f);
 
-        Window root = DefaultRootWindow(display);
+        Window root;
         Window child;
         int rootX, rootY, winX, winY;
-        unsigned int mask;
+        uint mask;
 
-        XQueryPointer(display, root, &root, &child, &rootX, &rootY, &winX, &winY, &mask);
+        XQueryPointer(display, DefaultRootWindow(display), &root, &child, &rootX, &rootY, &winX, &winY, &mask);
 
         return Vec2f(static_cast<float>(rootX), static_cast<float>(rootY));
     }

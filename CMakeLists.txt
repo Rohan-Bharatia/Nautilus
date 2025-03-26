@@ -67,8 +67,6 @@ file(GLOB NAUTILUS_SOURCES
 )
 
 if (NAUTILUS_SOURCES)
-    find_package(OpenGL REQUIRED)
-
     add_library(Nautilus STATIC ${NAUTILUS_SOURCES})
     target_include_directories(Nautilus PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}

@@ -1,10 +1,8 @@
 # Nautilus
 
-![Windows Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/windows-build.yml/badge.svg)
+![MinGW Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/mingw.yml/badge.svg)
 
-![Linux/BSD/Android Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/linux-build.yml/badge.svg)
-
-![MacOS/iOS Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/apple-build.yml/badge.svg)
+![Unix Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/unix.yml/badge.svg)
 
 Nautilus is a cross-platform open source game engine written in modern C++ from scratch.
 
