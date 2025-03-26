@@ -22,6 +22,27 @@
 #include "Nautilus/Window.h"
 #include "Nautilus/Event.h"
 
+// OpenGL files (GLAD generated)
+#include "Nautilus/backends/include/KHR/khrplatform.h"
+#include "Nautilus/backends/include/glad/gl.h"
+#if defined(NT_PLATFORM_WINDOWS)
+    #include "Nautilus/backends/include/glad/wgl.h"
+#elif defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD)
+    #include "Nautilus/backends/include/glad/glx.h"
+#elif defined(NT_PLATFORM_MACOS)
+    #include "Nautilus/backends/include/glad/egl.h"
+#elif defined(NT_PLATFORM_IOS)
+    #include "Nautilus/backends/include/EGL/eglplatform.h"
+    #include "Nautilus/backends/include/glad/gles1.h"
+    #include "Nautilus/backends/include/glad/gles2.h"
+#elif defined(NT_PLATFORM_ANDROID)
+    #include "Nautilus/backends/include/EGL/eglplatform.h"
+    #include "Nautilus/backends/include/glad/gles1.h"
+    #include "Nautilus/backends/include/glad/gles2.h"
+#else // (NOT) defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
+    #include "Nautilus/backends/include/glad/glsc.h"
+#endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
+
 // Aliases
 using namespace nt::literals;
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(Nautilus)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/backends)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/core)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/math)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/window)
@@ -20,9 +20,9 @@ if(WIN32)
     )
 
     set(BACKEND_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/wgl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/vulkan.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/wgl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/vulkan.c
     )
     add_definitions(-DVK_USE_PLATFORM_WIN32_KHR)
 elseif(UNIX AND NOT APPLE)
@@ -37,9 +37,9 @@ elseif(UNIX AND NOT APPLE)
     )
 
     set(BACKEND_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/glx.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/vulkan.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/glx.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/vulkan.c
     )
     add_definitions(-DVK_USE_PLATFORM_XLIB_KHR)
 elseif(APPLE)
@@ -54,9 +54,9 @@ elseif(APPLE)
     )
 
     set(BACKEND_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/egl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/vulkan.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/egl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/vulkan.c
     )
     add_definitions(-DVK_USE_PLATFORM_MACOS_MVK)
 elseif(IOS)
@@ -71,9 +71,9 @@ elseif(IOS)
     )
 
     set(BACKEND_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/egl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/vulkan.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/egl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/vulkan.c
     )
     add_definitions(-DVK_USE_PLATFORM_IOS_MVK)
 elseif(ANDROID)
@@ -88,9 +88,9 @@ elseif(ANDROID)
     )
 
     set(BACKEND_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/gl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/egl.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends/src/vulkan.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/gl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/egl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends/src/vulkan.c
     )
     add_definitions(-DVK_USE_PLATFORM_ANDROID_KHR)
 endif()
@@ -109,7 +109,7 @@ if (NAUTILUS_SOURCES)
     add_library(Nautilus STATIC ${NAUTILUS_SOURCES})
     target_include_directories(Nautilus PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/backends
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/backends
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/core
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/math
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/window

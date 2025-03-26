@@ -18,17 +18,17 @@
 
 #include "WindowDesc.h"
 
-#include "C:/Users/rohan/.vscode/Projects/Nautilus/Nautilus/backends/include/glad/gl.h"
+#include "../backends/include/glad/gl.h"
 #if defined(NT_PLATFORM_WINDOWS)
-    #include "C:/Users/rohan/.vscode/Projects/Nautilus/Nautilus/backends/include/glad/wgl.h"
+    #include "../backends/include/glad/wgl.h"
 #elif defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD)
-    #include "C:/Users/rohan/.vscode/Projects/Nautilus/Nautilus/backends/include/glad/glx.h"
+    #include "../backends/include/glad/glx.h"
 #elif defined(NT_PLATFORM_MACOS)
-    #include "C:/Users/rohan/.vscode/Projects/Nautilus/Nautilus/backends/include/glad/egl.h"
+    #include "../backends/include/glad/egl.h"
 #elif defined(NT_PLATFORM_IOS)
-    #include "C:/Users/rohan/.vscode/Projects/Nautilus/Nautilus/backends/include/glad/gles2.h"
+    #include "../backends/include/glad/gles2.h"
 #elif defined(NT_PLATFORM_ANDROID)
-    #include "C:/Users/rohan/.vscode/Projects/Nautilus/Nautilus/backends/include/glad/gles2.h"
+    #include "../backends/backends/include/glad/gles2.h"
 #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX) || defined(NT_PLATFORM_FREEBSD), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
 
 #include <memory>
