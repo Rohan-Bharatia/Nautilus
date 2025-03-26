@@ -36,8 +36,6 @@ namespace nt
         void initialize() override;
         bool pollEvents() override;
         void update() override;
-        void clear(const Color& color) override;
-        void swapBuffers() override;
         void destroy() override;
 
         void* getHandle() override;
@@ -47,7 +45,6 @@ namespace nt
         WindowDesc m_desc;
         Display* m_display;
         Window m_window;
-        GLuint m_vao, m_vbo, m_ebo, m_vshader, m_fshader, m_program;
     };
 } // namespace nt
 

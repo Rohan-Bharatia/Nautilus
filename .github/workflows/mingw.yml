@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:.github/workflows/mingw.yml
 name: CMake Build and Test w/ MinGW
-========
-name: Windows Build
->>>>>>>> b08087ede55b60b0f4da2f80cd56374f03a666a7:.github/workflows/windows-build.yml
 
 on:
   push:

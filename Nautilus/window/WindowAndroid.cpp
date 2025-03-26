@@ -51,65 +51,9 @@ namespace nt
             ANativeWindow_setFlags(m_window, AWINDOW_FLAG_NOT_FOCUSABLE);
         }
 
-        // Initialize OpenGL
-        EGLDisplay display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-        EGLint major, minor;
-        eglInitialize(display, &major, &minor);
-
-        EGLConfig config;
-        EGLint num_configs;
-        EGLint attribs[] =
-        {
-            EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
-            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-            EGL_RED_SIZE,        8,
-            EGL_GREEN_SIZE,      8,
-            EGL_BLUE_SIZE,       8,
-            EGL_DEPTH_SIZE,      24,
-            EGL_NONE
-        };
-
-        eglChooseConfig(display, attribs, &config, 1, &num_configs);
-
-        EGLSurface surface = eglCreateWindowSurface(display, config, (EGLNativeWindowType)m_window, NULL);
-        EGLContext ctx     = eglCreateContext(display, config, EGL_NO_CONTEXT, NULL);
-
-        eglMakeCurrent(display, surface, surface, ctx);
-
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
-    }
-
-    void WindowAndroid::useShader(std::string vertex, std::string fragment)
-    {
-        // Create and compile vertex shader
-        m_vshader                = glCreateShader(GL_VERTEX_SHADER);
-        const char* vertexSource = vertex.c_str();
-        glShaderSource(m_vshader, 1, &vertexSource, nullptr);
-        glCompileShader(m_vshader);
-
-        // Create and compile fragment shader
-        m_fshader                  = glCreateShader(GL_FRAGMENT_SHADER);
-        const char* fragmentSource = fragment.c_str();
-        glShaderSource(m_fshader, 1, &fragmentSource, nullptr);
-        glCompileShader(m_fshader);
-
-        // Create program and attach shaders
-        GLuint program = glCreateProgram();
-        glAttachShader(program, m_vshader);
-        glAttachShader(program, m_fshader);
-        glLinkProgram(program);
-
-        // Use program
-        glUseProgram(program);
-
-        // Delete shaders (program has a reference to them)
-        glDeleteShader(m_vshader);
-        glDeleteShader(m_fshader);
-
-        // Store program ID
-        m_program = program;
     }
 
     bool WindowAndroid::pollEvents()
@@ -139,32 +83,11 @@ namespace nt
             m_desc.onUpdate();
     }
 
-    void WindowAndroid::clear(const Color& color)
-    {
-        // Clear screen with specified color
-        glClearColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    void WindowAndroid::swapBuffers()
-    {
-        // Swap front and back buffers
-        eglSwapBuffers(EGL_NO_DISPLAY, EGL_NO_SURFACE);
-    }
-
     void WindowAndroid::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
-
-        // Delete program
-        glDeleteProgram(m_program);
-
-        // Delete OpenGL context
-        eglMakeCurrent(EGL_NO_DISPLAY, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-        eglDestroyContext(EGL_NO_DISPLAY, eglGetCurrentContext());
-        eglDestroySurface(EGL_NO_DISPLAY, eglGetCurrentSurface(EGL_DRAW));
 
         // Destroy window
         if (m_window)

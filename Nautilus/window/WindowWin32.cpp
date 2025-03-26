@@ -19,8 +19,7 @@
 namespace nt
 {
     WindowWin32::WindowWin32(const WindowDesc& desc) :
-        m_desc(desc), m_hwnd(nullptr), m_hinstance(nullptr),
-        m_vao(0), m_vbo(0), m_ebo(0), m_vshader(0), m_fshader(0), m_program(0)
+        m_desc(desc), m_hwnd(nullptr), m_hinstance(nullptr)
     {}
 
     void WindowWin32::initialize()
@@ -98,64 +97,9 @@ namespace nt
         if (m_desc.modal)
             EnableWindow(GetParent(m_hwnd), false);
 
-        // Initalize OpenGL
-        HDC hdc = GetDC(m_hwnd);
-
-        gladLoadGL((GLADloadfunc)wglGetProcAddress);
-        gladLoadWGL(hdc, (GLADloadfunc)wglGetProcAddress);
-
-        PIXELFORMATDESCRIPTOR pfd{};
-        pfd.nSize      = sizeof(PIXELFORMATDESCRIPTOR);
-        pfd.nVersion   = 1;
-        pfd.dwFlags    = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-        pfd.iPixelType = PFD_TYPE_RGBA;
-        pfd.cColorBits = 32;
-        pfd.cDepthBits = 24;
-        pfd.iLayerType = PFD_MAIN_PLANE;
-
-        int pf = ChoosePixelFormat(hdc, &pfd);
-        SetPixelFormat(hdc, pf, &pfd);
-
-        HGLRC hglrc = wglCreateContext(hdc);
-        wglMakeCurrent(hdc, hglrc);
-
-        // Enable OpenGL 3D
-        glEnable(GL_DEPTH_TEST);
-
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
-    }
-
-    void WindowWin32::useShader(std::string vertex, std::string fragment)
-    {
-        // Create and compile vertex shader
-        m_vshader                = glCreateShader(GL_VERTEX_SHADER);
-        const char* vertexSource = vertex.c_str();
-        glShaderSource(m_vshader, 1, &vertexSource, nullptr);
-        glCompileShader(m_vshader);
-
-        // Create and compile fragment shader
-        m_fshader                  = glCreateShader(GL_FRAGMENT_SHADER);
-        const char* fragmentSource = fragment.c_str();
-        glShaderSource(m_fshader, 1, &fragmentSource, nullptr);
-        glCompileShader(m_fshader);
-
-        // Create program and attach shaders
-        GLuint program = glCreateProgram();
-        glAttachShader(program, m_vshader);
-        glAttachShader(program, m_fshader);
-        glLinkProgram(program);
-
-        // Use program
-        glUseProgram(program);
-
-        // Delete shaders (program has a reference to them)
-        glDeleteShader(m_vshader);
-        glDeleteShader(m_fshader);
-
-        // Store program ID
-        m_program = program;
     }
 
     bool WindowWin32::pollEvents()
@@ -181,31 +125,11 @@ namespace nt
             m_desc.onUpdate();
     }
 
-    void WindowWin32::clear(const Color& color)
-    {
-        // Clear screen with specified color
-        glClearColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    void WindowWin32::swapBuffers()
-    {
-        // Swap front and back buffers
-        SwapBuffers(GetDC(m_hwnd));
-    }
-
     void WindowWin32::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
-
-        // Delete program
-        glDeleteProgram(m_program);
-
-        // Delete OpenGL context
-        wglDeleteContext(wglGetCurrentContext());
-        ReleaseDC(m_hwnd, GetDC(m_hwnd));
 
         if (m_hwnd)
             DestroyWindow(m_hwnd);

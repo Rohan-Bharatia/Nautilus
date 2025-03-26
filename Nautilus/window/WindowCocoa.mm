@@ -16,8 +16,7 @@
 namespace nt
 {
     WindowCocoa::WindowCocoa(const WindowDesc& desc) :
-        m_desc(desc), m_window(nullptr),
-        m_vao(0), m_vbo(0), m_ebo(0), m_vshader(0), m_fshader(0), m_program(0)
+        m_desc(desc), m_window(nullptr)
     {}
 
     void WindowCocoa::initialize()
@@ -89,60 +88,9 @@ namespace nt
         if (m_desc.modal)
             [NSApp runModalForWindow:m_window];
 
-        // Initialize OpenGL
-        NSOpenGLPixelFormatAttribute attrs[] =
-        {
-            NSOpenGLPFADoubleBuffer,
-            NSOpenGLPFADepthSize,     24,
-            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-            0
-        };
-
-        NSOpenGLPixelFormat* pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-        NSOpenGLContext* ctx    = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
-        EGLDisplay display      = [EAGLContext currentContext].eglDisplay;
-        EGLConfig config;
-        EGLint num_configs;
-        eglChooseConfig(display, attrs, &config, 1, &num_configs);
-        EGLSurface surface      = eglCreateWindowSurface(display, config, (EGLNativeWindowType)[ctx view], NULL);
-        EGLContext ctx          = eglCreateContext(display, config, EGL_NO_CONTEXT, NULL);
-
-        eglMakeCurrent(display, surface, surface, ctx);
-
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
-    }
-
-    void WindowCocoa::useShader(std::string vertex, std::string fragment)
-    {
-        // Create and compile vertex shader
-        m_vshader                = glCreateShader(GL_VERTEX_SHADER);
-        const char* vertexSource = vertex.c_str();
-        glShaderSource(m_vshader, 1, &vertexSource, nullptr);
-        glCompileShader(m_vshader);
-
-        // Create and compile fragment shader
-        m_fshader                  = glCreateShader(GL_FRAGMENT_SHADER);
-        const char* fragmentSource = fragment.c_str();
-        glShaderSource(m_fshader, 1, &fragmentSource, nullptr);
-        glCompileShader(m_fshader);
-
-        // Create program and attach shaders
-        GLuint program = glCreateProgram();
-        glAttachShader(program, m_vshader);
-        glAttachShader(program, m_fshader);
-        glLinkProgram(program);
-
-        // Use program
-        glUseProgram(program);
-
-        // Delete shaders (program has a reference to them)
-        glDeleteShader(m_vshader);
-        glDeleteShader(m_fshader);
-
-        // Store program ID
-        m_program = program;
     }
 
     bool WindowCocoa::pollEvents()
@@ -172,30 +120,11 @@ namespace nt
             m_desc.onUpdate();
     }
 
-    void WindowCocoa::clear(const Color& color)
-    {
-        // Clear screen with specified color
-        glClearColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    void WindowCocoa::swapBuffers()
-    {
-        // Swap front and back buffers
-        [m_window display];
-    }
-
     void WindowCocoa::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
-
-        // Delete program
-        glDeleteProgram(m_program);
-
-        // Delete OpenGL context
-        [EAGLContext setCurrentContext:nil];
 
         // Destroy window
         if (m_window)
