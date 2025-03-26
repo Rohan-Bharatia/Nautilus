@@ -746,7 +746,7 @@ typedef void (*GLADpostcallback)(void *ret, const char *name, GLADapiproc apipro
 
 
 #include "KHR/khrplatform.h"
-#include "KHR/eglplatform.h"
+#include "EGL/eglplatform.h"
 
 
 
