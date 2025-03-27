@@ -16,6 +16,9 @@
 
 #include "WindowWin32.h"
 
+#include <GL/gl.h>
+#include <GL/wgl.h>
+
 namespace nt
 {
     WindowWin32::WindowWin32(const WindowDesc& desc) :
@@ -97,6 +100,28 @@ namespace nt
         if (m_desc.modal)
             EnableWindow(GetParent(m_hwnd), false);
 
+        // Initialize OpenGL
+        PIXELFORMATDESCRIPTOR pfd{};
+        pfd.nSize      = sizeof(PIXELFORMATDESCRIPTOR);
+        pfd.nVersion   = 1;
+        pfd.dwFlags    = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+        pfd.iPixelType = PFD_TYPE_RGBA;
+        pfd.cColorBits = 32;
+        pfd.cDepthBits = 24;
+        pfd.iLayerType = PFD_MAIN_PLANE;
+
+        int pf = ChoosePixelFormat(GetDC(m_hwnd), &pfd);
+        SetPixelFormat(GetDC(m_hwnd), pf, &pfd);
+
+        HGLRC hglrc = wglCreateContext(GetDC(m_hwnd));
+        wglMakeCurrent(GetDC(m_hwnd), hglrc);
+
+        glEnable(GL_DEPTH_TEST);
+
+        RECT rc;
+        GetClientRect(m_hwnd, &rc);
+        glViewport(0, 0, rc.right - rc.left, rc.bottom - rc.top);
+
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
@@ -125,11 +150,49 @@ namespace nt
             m_desc.onUpdate();
     }
 
+    void WindowWin32::frame(std::vector<ReadableVertex>& vertices)
+    {
+        // Enable vertex arrays
+        glVertexPointer(3, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].position);
+        glEnableClientState(GL_VERTEX_ARRAY);
+
+        // Enable texture arrays
+        glTexCoordPointer(2, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].uv);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        // Enable color arrays
+        glColorPointer(4, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].color);
+        glEnableClientState(GL_COLOR_ARRAY);
+
+        // Draw the vertices
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+
+        // Disable v/t/c arrays
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+    }
+
+    void WindowWin32::clear(const Color& color)
+    {
+        glClearColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void WindowWin32::swapBuffers()
+    {
+        SwapBuffers(GetDC(m_hwnd));
+    }
+
     void WindowWin32::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
+
+        // Destroy OpenGL
+        wglDeleteContext(wglGetCurrentContext());
+        ReleaseDC(m_hwnd, GetDC(m_hwnd));
 
         if (m_hwnd)
             DestroyWindow(m_hwnd);

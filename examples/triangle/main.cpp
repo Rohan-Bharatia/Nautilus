@@ -3,6 +3,7 @@
 int main(int argc, char* argv[])
 {
     nt::Logger::debug("Nautilus API v%d.%d.%d", NT_API_VERSION_MAJOR, NT_API_VERSION_MINOR, NT_API_VERSION_PATCH);
+    nt::Logger::debug("OpenGL API v%d.%d.%d", NT_OPENGL_VERSION_MAJOR, NT_OPENGL_VERSION_MINOR, NT_OPENGL_VERSION_PATCH);
 
     // Window settings
     nt::WindowDesc desc{};
@@ -21,7 +22,15 @@ int main(int argc, char* argv[])
 
     // Initialize
     nt::Logger::info("Initializing window...");
-    window->initialize(false);
+    window->initialize();
+
+    // Normal triangle
+    nt::VertexList vertices =
+    {
+        nt::Vertex(nt::Vec3f( 0.0f,  1.0f, 0.0f), nt::Vec2f(0.5f, 1.0f), NT_COLOR_RED).makeReadable(),
+        nt::Vertex(nt::Vec3f(-1.0f, -1.0f, 0.0f), nt::Vec2f(0.0f, 0.0f), NT_COLOR_GREEN).makeReadable(),
+        nt::Vertex(nt::Vec3f( 1.0f, -1.0f, 0.0f), nt::Vec2f(1.5f, 1.0f), NT_COLOR_BLUE).makeReadable(),
+    };
 
     // Main loop
     while (window->pollEvents())
@@ -35,6 +44,9 @@ int main(int argc, char* argv[])
 
         // Draw frame
         window->update();
+        window->clear(NT_COLOR_WHITE);
+        window->frame(vertices);
+        window->swapBuffers();
     }
 
     // Destroy window

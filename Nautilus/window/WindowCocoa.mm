@@ -13,6 +13,9 @@
 
 #import "WindowCocoa.h"
 
+#import <OpenGL/gl.h>
+#import <EGL/egl.h>
+
 namespace nt
 {
     WindowCocoa::WindowCocoa(const WindowDesc& desc) :
@@ -88,6 +91,18 @@ namespace nt
         if (m_desc.modal)
             [NSApp runModalForWindow:m_window];
 
+        // Initialize OpenGL
+        EGLDisplay display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+        EGLSurface surface = eglCreateWindowSurface(display, EGL_NO_CONFIG, [m_window CGLContextObj], NULL);
+        EGLContext context = eglCreateContext(display, EGL_NO_CONFIG, EGL_NO_CONTEXT, NULL);
+        eglMakeCurrent(display, surface, surface, context);
+
+        glEnable(GL_DEPTH_TEST);
+
+        NSView view  = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, m_desc.width, m_desc.height)];
+        NSRect frame = [view frame];
+        glViewport(0, 0, frame.size.width, frame.size.height);
+
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
@@ -120,11 +135,51 @@ namespace nt
             m_desc.onUpdate();
     }
 
+    void WindowCocoa::frame(std::vector<ReadableVertex>& vertices)
+    {
+        // Enable vertex arrays
+        glVertexPointer(3, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].position);
+        glEnableClientState(GL_VERTEX_ARRAY);
+
+        // Enable texture arrays
+        glTexCoordPointer(2, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].uv);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        // Enable color arrays
+        glColorPointer(4, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].color);
+        glEnableClientState(GL_COLOR_ARRAY);
+
+        // Draw the vertices
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+
+        // Disable v/t/c arrays
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+    }
+
+    void WindowCocoa::clear(const Color& color)
+    {
+        glClearColor(color.red / 255.0, color.green / 255.0, color.blue / 255.0, color.alpha);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void WindowCocoa::swapBuffers()
+    {
+        eglSwapBuffers(eglGetDisplay(EGL_DEFAULT_DISPLAY), eglGetCurrentSurface(EGL_DRAW));
+    }
+
     void WindowCocoa::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
+
+        // Destroy OpenGL
+        EGLDisplay display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+        eglDestroyContext(display, eglGetCurrentContext());
+        eglDestroySurface(display, eglGetCurrentSurface(EGL_DRAW));
+        eglTerminate(display);
 
         // Destroy window
         if (m_window)

@@ -26,5 +26,6 @@
 #include "math/Ray3.h"
 #include "math/Color.h"
 #include "math/Rect.h"
+#include "math/Vertex.h"
 
 #endif // _NT_MATH_h_

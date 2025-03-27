@@ -17,7 +17,9 @@
 
 #include "Color.h"
 
-#include <cmath>
+#include "Internal.h"
+
+#include <cassert>
 
 namespace nt
 {
@@ -26,14 +28,79 @@ namespace nt
     {
     }
 
+    Color operator+(Color lhs)
+    {
+        return Color(+lhs.red, +lhs.green, +lhs.blue, +lhs.alpha);
+    }
+    Color operator-(Color lhs)
+    {
+        return Color(-lhs.red, -lhs.green, -lhs.blue, -lhs.alpha);
+    }
+
     Color operator+(Color lhs, Color rhs)
     {
         return Color(lhs.red + rhs.red, lhs.green + rhs.green, lhs.blue + rhs.blue, lhs.alpha + rhs.alpha);
     }
 
+    Color operator-(Color lhs, Color rhs)
+    {
+        return Color(lhs.red - rhs.red, lhs.green - rhs.green, lhs.blue - rhs.blue, lhs.alpha - rhs.alpha);
+    }
+
+    Color operator*(Color lhs, Color rhs)
+    {
+        return Color(lhs.red * rhs.red, lhs.green * rhs.green, lhs.blue * rhs.blue, lhs.alpha * rhs.alpha);
+    }
+
+    Color operator/(Color lhs, Color rhs)
+    {
+        assert(rhs.red != 0 && "Color operator / cannot divide by zero!");
+        assert(rhs.green != 0 && "Color operator / cannot divide by zero!");
+        assert(rhs.blue != 0 && "Color operator / cannot divide by zero!");
+        assert(rhs.alpha != 0 && "Color operator / cannot divide by zero!");
+        return Color(lhs.red / rhs.red, lhs.green / rhs.green, lhs.blue / rhs.blue, lhs.alpha / rhs.alpha);
+    }
+
+    Color operator%(Color lhs, Color rhs)
+    {
+        assert(rhs.red != 0 && "Color operator % cannot modulus by zero!");
+        assert(rhs.green != 0 && "Color operator % cannot modulus by zero!");
+        assert(rhs.blue != 0 && "Color operator % cannot modulus by zero!");
+        assert(rhs.alpha != 0 && "Color operator % cannot modulus by zero!");
+        return Color(lhs.red % rhs.red, lhs.green % rhs.green, lhs.blue % rhs.blue, internal::positiveRemainder<float>(lhs.alpha, rhs.alpha));
+    }
+
     Color operator+=(Color& lhs, Color rhs)
     {
         return lhs = lhs + rhs;
+    }
+
+    Color operator-=(Color& lhs, Color rhs)
+    {
+        return lhs = lhs - rhs;
+    }
+
+    Color operator*=(Color& lhs, Color rhs)
+    {
+        return lhs = lhs * rhs;
+    }
+
+    Color operator/=(Color& lhs, Color rhs)
+    {
+        assert(rhs.red != 0 && "Color operator /= cannot divide by zero!");
+        assert(rhs.green != 0 && "Color operator /= cannot divide by zero!");
+        assert(rhs.blue != 0 && "Color operator /= cannot divide by zero!");
+        assert(rhs.alpha != 0 && "Color operator /= cannot divide by zero!");
+        return lhs = lhs / rhs;
+    }
+
+    Color operator%=(Color& lhs, Color rhs)
+    {
+        assert(rhs.red != 0 && "Color operator %= cannot modulus by zero!");
+        assert(rhs.green != 0 && "Color operator %= cannot modulus by zero!");
+        assert(rhs.blue != 0 && "Color operator %= cannot modulus by zero!");
+        assert(rhs.alpha != 0 && "Color operator %= cannot modulus by zero!");
+        return lhs = lhs % rhs;
     }
 
     bool operator==(Color lhs, Color rhs)

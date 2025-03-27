@@ -25,11 +25,17 @@
 // Aliases
 using namespace nt::literals;
 
-// Version
-#define NT_VERSION_MAJOR 1
-#define NT_VERSION_MINOR 0
-#define NT_VERSION_PATCH 0
-#define NT_VERSION_STRING "1.0.0"
+// Nautilus version
+#define NT_API_VERSION_MAJOR 1
+#define NT_API_VERSION_MINOR 0
+#define NT_API_VERSION_PATCH 0
+#define NT_API_VERSION_STRING "1.0.0"
+
+// OpenGL version
+#define NT_OPENGL_VERSION_MAJOR 1
+#define NT_OPENGL_VERSION_MINOR 1
+#define NT_OPENGL_VERSION_PATCH 0
+#define NT_OPENGL_VERSION_STRING "1.1.0"
 
 // C/C++ exit codes
 #define NT_EXIT_SUCCESS 0

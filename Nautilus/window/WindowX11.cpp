@@ -16,6 +16,9 @@
 
 #include "WindowX11.h"
 
+#include <GL/gl.h>
+#include <GL/glx.h>
+
 namespace nt
 {
     WindowX11::WindowX11(const WindowDesc& desc) :
@@ -100,6 +103,31 @@ namespace nt
             XGrabPointer(m_display, m_window, True, ButtonPressMask | ButtonReleaseMask, GrabModeAsync, GrabModeAsync, None, None, CurrentTime);
         }
 
+        // Initialize OpenGL
+        int glAttrs[] =
+        {
+            GLX_RGBA,
+            GLX_DOUBLEBUFFER,
+            GLX_RED_SIZE,   8,
+            GLX_GREEN_SIZE, 8,
+            GLX_BLUE_SIZE,  8,
+            GLX_DEPTH_SIZE, 24,
+            None,
+        };
+
+        XVisualInfo* vi = XGetVisualInfo(m_display, VisualScreenMask, nullptr, glAttrs);
+        GLXContext glxc = glXCreateContext(m_display, vi, nullptr, True);
+        glXMakeCurrent(m_display, m_window, glxc);
+
+        glEnable(GL_DEPTH_TEST);
+
+        Window root, parent;
+        int x, y;
+        unsigned int width, height, border, depth;
+
+        XGetGeometry(m_display, m_window, &root, &x, &y, &width, &height, &border, &depth);
+        glViewport(0, 0, width, height);
+
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
@@ -130,11 +158,48 @@ namespace nt
             m_desc.onUpdate();
     }
 
+    void WindowX11::frame(std::vector<ReadableVertex>& vertices)
+    {
+        // Enable vertex arrays
+        glVertexPointer(3, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].position);
+        glEnableClientState(GL_VERTEX_ARRAY);
+
+        // Enable texture arrays
+        glTexCoordPointer(2, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].uv);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        // Enable color arrays
+        glColorPointer(4, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].color);
+        glEnableClientState(GL_COLOR_ARRAY);
+
+        // Draw the vertices
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+
+        // Disable v/t/c arrays
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+    }
+
+    void WindowX11::clear(const Color& color)
+    {
+        glClearColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void WindowX11::swapBuffers()
+    {
+        glXSwapBuffers(m_display, m_window);
+    }
+
     void WindowX11::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
+
+        // Destroy OpenGL
+        glXMakeCurrent(m_display, None, nullptr);
 
         // Destroy window
         if (m_window)

@@ -16,6 +16,9 @@
 
 #include "WindowAndroid.h"
 
+#include <EGL/egl.h>
+#include <GLES2/gl2.h>
+
 namespace nt
 {
     WindowAndroid::WindowAndroid(const WindowDesc& desc) :
@@ -51,6 +54,25 @@ namespace nt
             ANativeWindow_setFlags(m_window, AWINDOW_FLAG_NOT_FOCUSABLE);
         }
 
+        // Initialize OpenGL
+        EGLDisplay display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+        EGLint major, minor;
+        eglInitialize(display, &major, &minor);
+
+        EGLConfig config;
+        EGLint configCount;
+        eglChooseConfig(display, NULL, &config, 1, &configCount);
+        EGLSurface surface = eglCreateWindowSurface(display, config, m_window, NULL);
+
+        eglMakeCurrent(display, surface, surface, NULL);
+
+        glEnable(EGL_DEPTH_TEST);
+
+        int width  = ANativeWindow_getWidth(m_window);
+        int height = ANativeWindow_getHeight(m_window);
+
+        glViewport(0, 0, width, height);
+
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
@@ -83,11 +105,49 @@ namespace nt
             m_desc.onUpdate();
     }
 
+    void WindowAndroid::frame(std::vector<ReadableVertex>& vertices)
+    {
+        // Enable vertex arrays
+        glVertexPointer(3, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].position);
+        glEnableClientState(GL_VERTEX_ARRAY);
+
+        // Enable texture arrays
+        glTexCoordPointer(2, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].uv);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        // Enable color arrays
+        glColorPointer(4, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].color);
+        glEnableClientState(GL_COLOR_ARRAY);
+
+        // Draw the vertices
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+
+        // Disable v/t/c arrays
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+    }
+
+    void WindowAndroid::clear(const Color& color)
+    {
+        glClearColor(color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void WindowAndroid::swapBuffers()
+    {
+        eglSwapBuffers(eglGetDisplay(EGL_DEFAULT_DISPLAY), eglGetSurface(EGL_DEFAULT_DISPLAY, EGL_BACK_BUFFER));
+    }
+
     void WindowAndroid::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
+
+        // Destroy OpenGL
+        eglDestroySurface(eglGetDisplay(EGL_DEFAULT_DISPLAY), eglGetSurface(EGL_DEFAULT_DISPLAY, EGL_BACK_BUFFER));
+        eglTerminate(eglGetDisplay(EGL_DEFAULT_DISPLAY));
 
         // Destroy window
         if (m_window)

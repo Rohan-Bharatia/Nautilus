@@ -17,18 +17,23 @@
     #define _NT_WINDOW_WINDOW_BASE_h_
 
 #include "WindowDesc.h"
+#include "../math/Vertex.h"
 
 #include <memory>
+#include <vector>
 
 namespace nt
 {
     class WindowBase
     {
     public:
-        virtual void initialize() = 0;
-        virtual bool pollEvents() = 0;
-        virtual void update()     = 0;
-        virtual void destroy()    = 0;
+        virtual void initialize()                                 = 0;
+        virtual bool pollEvents()                                 = 0;
+        virtual void update()                                     = 0;
+        virtual void frame(std::vector<ReadableVertex>& vertices) = 0;
+        virtual void clear(const Color& color)                    = 0;
+        virtual void swapBuffers()                                = 0;
+        virtual void destroy()                                    = 0;
 
         virtual void* getHandle()           = 0;
         virtual WindowDesc getDescription() = 0;

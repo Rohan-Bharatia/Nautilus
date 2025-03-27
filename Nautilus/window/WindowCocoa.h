@@ -35,6 +35,9 @@ namespace nt
         void initialize() override;
         bool pollEvents() override;
         void update() override;
+        void frame(std::vector<ReadableVertex>& vertices) override;
+        void clear(const Color& color) override;
+        void swapBuffers() override;
         void destroy() override;
 
         void* getHandle() override;

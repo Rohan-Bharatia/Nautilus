@@ -32,7 +32,8 @@
 
 namespace nt
 {
-    using WindowPtr = std::shared_ptr<WindowBase>;
+    using WindowPtr  = std::shared_ptr<WindowBase>;
+    using VertexList = std::vector<ReadableVertex>;
 } // namespace nt
 
 #endif // _NT_WINDOW_h_

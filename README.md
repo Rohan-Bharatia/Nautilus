@@ -22,10 +22,10 @@ Nautilus uses [CMake](https://cmake.org/) for building.
 
 |**Platform**|**Dependency**|
 |-|-|
-|Windows|~~Windows API~~|
+|Windows|~~Windows API~~ (Preinstalled)|
 |Linux|[XLib](https://github.com/walklang/Xlib)|
 |BSD|[XLib](https://github.com/walklang/Xlib)|
-|MAC OS|~~Cocoa~~|
+|MAC OS|~~Cocoa~~ (Preinstalled)|
 |iOS|[UIKit](https://github.com/uikit/uikit)|
 |Android|[Android SDK (JNI)](https://developer.android.com/studio)|
 

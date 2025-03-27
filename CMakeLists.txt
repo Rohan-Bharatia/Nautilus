@@ -70,11 +70,39 @@ if (NAUTILUS_SOURCES)
     add_library(Nautilus STATIC ${NAUTILUS_SOURCES})
     target_include_directories(Nautilus PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/core
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/math
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/window
         ${CMAKE_CURRENT_SOURCE_DIR}/Nautilus/event
     )
+
+    find_package(OpenGL REQUIRED)
+    include_directories(${OPENGL_INCLUDE_DIR})
+    link_directories(${OPENGL_LIBRARY_DIR})
+    target_link_libraries(Nautilus PUBLIC ${OPENGL_LIBRARIES})
+
+    if(UNIX AND NOT APPLE)
+        find_package(X11 REQUIRED)
+        include_directories(${X11_INCLUDE_DIR})
+        link_directories(${X11_LIBRARY_DIR})
+        target_link_libraries(Nautilus PUBLIC ${X11_LIBRARIES})
+    elseif(APPLE)
+        find_package(Cocoa REQUIRED)
+        include_directories(${Cocoa_INCLUDE_DIR})
+        link_directories(${Cocoa_LIBRARY_DIR})
+        target_link_libraries(Nautilus PUBLIC ${Cocoa_LIBRARIES})
+    elseif(IOS)
+        find_package(UIKit REQUIRED)
+        include_directories(${UIKit_INCLUDE_DIR})
+        link_directories(${UIKit_LIBRARY_DIR})
+        target_link_libraries(Nautilus PUBLIC ${UIKit_LIBRARIES})
+    elseif(ANDROID)
+        find_package(Android REQUIRED)
+        include_directories(${Android_INCLUDE_DIR})
+        link_directories(${Android_LIBRARY_DIR})
+        target_link_libraries(Nautilus PUBLIC ${Android_LIBRARIES})
+    endif()
 
     target_link_libraries(Nautilus PUBLIC core math window event)
 endif()

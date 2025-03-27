@@ -13,6 +13,9 @@
 
 #import "WindowUIKit.h"
 
+#import <EGL/egl.h>
+#import <GLES2/gl2.h>
+
 namespace nt
 {
     WindowUIKit::WindowUIKit(const WindowDesc& desc) :
@@ -49,6 +52,16 @@ namespace nt
             [m_window.rootViewController presentViewController:viewController animated:YES completion:nil];
         }
 
+        // Initialize OpenGL
+        EAGLContext* context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        [EAGLContext setCurrentContext:context];
+
+        glEnable(GL_DEPTH_TEST);
+
+        UIView view  = [[UIView alloc] initWithFrame:CGRectMake(0, 0, m_window.frame.size.width, m_window.frame.size.height)];
+        CGRect frame = view.frame;
+        glViewport(0, 0, frame.size.width, frame.size.height);
+
         // Callback function
         if (m_desc.onCreate)
             m_desc.onCreate();
@@ -72,11 +85,50 @@ namespace nt
             m_desc.onUpdate();
     }
 
+    void WindowUIKit::frame(std::vector<ReadableVertex>& vertices)
+    {
+        // Enable vertex arrays
+        glVertexPointer(3, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].position);
+        glEnableClientState(GL_VERTEX_ARRAY);
+
+        // Enable texture arrays
+        glTexCoordPointer(2, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].uv);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+        // Enable color arrays
+        glColorPointer(4, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].color);
+        glEnableClientState(GL_COLOR_ARRAY);
+
+        // Draw the vertices
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+
+        // Disable v/t/c arrays
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+    }
+
+    void WindowUIKit::clear(const Color& color)
+    {
+        glClearColor(color.red / 255.0, color.green / 255.0, color.blue / 255.0, color.alpha);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void WindowUIKit::swapBuffers()
+    {
+        [[EAGLContext currentContext] presentRenderbuffer:GL_RENDERBUFFER];
+    }
+
     void WindowUIKit::destroy()
     {
         // Callback function
         if (m_desc.onDestroy)
             m_desc.onDestroy();
+
+        // Destroy OpenGL
+        EAGLContext* context = [EAGLContext currentContext];
+        [EAGLContext setCurrentContext:nil];
+        [context release];
 
         // Destroy window
         if (m_window)
