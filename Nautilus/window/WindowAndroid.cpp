@@ -16,13 +16,15 @@
 
 #include "WindowAndroid.h"
 
+#include "../core/Timer.h"
+
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
 
 namespace nt
 {
     WindowAndroid::WindowAndroid(const WindowDesc& desc) :
-        m_window(nullptr), m_desc(desc)
+        m_desc(desc), m_scale(1.0f, 1.0f, 1.0f),  m_window(nullptr)
     {}
 
     void WindowAndroid::initialize()
@@ -119,6 +121,15 @@ namespace nt
         glColorPointer(4, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].color);
         glEnableClientState(GL_COLOR_ARRAY);
 
+        // Manipulate w/ matrix
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glRotatef(m_pitch.inRadians(), 1.0f, 0.0f, 0.0f);
+        glRotatef(m_roll.inRadians(), 0.0f, 1.0f, 0.0f);
+        glRotatef(m_yaw.inRadians(), 0.0f, 0.0f, 1.0f);
+        glTranslatef(m_translation.x, m_translation.y, m_translation.z);
+        glScalef(m_scale.x, m_scale.y, m_scale.z);
+
         // Draw the vertices
         glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
@@ -137,6 +148,31 @@ namespace nt
     void WindowAndroid::swapBuffers()
     {
         eglSwapBuffers(eglGetDisplay(EGL_DEFAULT_DISPLAY), eglGetSurface(EGL_DEFAULT_DISPLAY, EGL_BACK_BUFFER));
+    }
+
+    void WindowAndroid::translate(float x, float y, float z)
+    {
+        m_translation += Vec3f(x, y, z);
+    }
+
+    void WindowAndroid::scale(float x, float y, float z)
+    {
+        m_scale += Vec3f(x, y, z);
+    }
+
+    void WindowAndroid::rotateX(float x)
+    {
+        m_pitch += radians(x);
+    }
+
+    void WindowAndroid::rotateY(float y)
+    {
+        m_roll += radians(y);
+    }
+
+    void WindowAndroid::rotateZ(float z)
+    {
+        m_yaw += radians(z);
     }
 
     void WindowAndroid::destroy()

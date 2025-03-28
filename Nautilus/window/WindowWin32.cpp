@@ -16,13 +16,15 @@
 
 #include "WindowWin32.h"
 
+#include "../core/Timer.h"
+
 #include <GL/gl.h>
 #include <GL/wgl.h>
 
 namespace nt
 {
     WindowWin32::WindowWin32(const WindowDesc& desc) :
-        m_desc(desc), m_hwnd(nullptr), m_hinstance(nullptr)
+        m_desc(desc), m_scale(1.0f, 1.0f, 1.0f), m_hwnd(nullptr), m_hinstance(nullptr)
     {}
 
     void WindowWin32::initialize()
@@ -164,6 +166,15 @@ namespace nt
         glColorPointer(4, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].color);
         glEnableClientState(GL_COLOR_ARRAY);
 
+        // Manipulate w/ matrix
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glRotatef(m_pitch.inRadians(), 1.0f, 0.0f, 0.0f);
+        glRotatef(m_roll.inRadians(), 0.0f, 1.0f, 0.0f);
+        glRotatef(m_yaw.inRadians(), 0.0f, 0.0f, 1.0f);
+        glTranslatef(m_translation.x, m_translation.y, m_translation.z);
+        glScalef(m_scale.x, m_scale.y, m_scale.z);
+
         // Draw the vertices
         glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
@@ -182,6 +193,31 @@ namespace nt
     void WindowWin32::swapBuffers()
     {
         SwapBuffers(GetDC(m_hwnd));
+    }
+
+    void WindowWin32::translate(float x, float y, float z)
+    {
+        m_translation += Vec3f(x, y, z);
+    }
+
+    void WindowWin32::scale(float x, float y, float z)
+    {
+        m_scale += Vec3f(x, y, z);
+    }
+
+    void WindowWin32::rotateX(float x)
+    {
+        m_pitch += radians(x);
+    }
+
+    void WindowWin32::rotateY(float y)
+    {
+        m_roll += radians(y);
+    }
+
+    void WindowWin32::rotateZ(float z)
+    {
+        m_yaw += radians(z);
     }
 
     void WindowWin32::destroy()

@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     window->initialize();
 
     // Normal triangle
-    nt::VertexList vertices =
+    nt::Mesh vertices =
     {
         nt::Vertex(nt::Vec3f( 0.0f,  1.0f, 0.0f), nt::Vec2f(0.5f, 1.0f), NT_COLOR_RED).makeReadable(),
         nt::Vertex(nt::Vec3f(-1.0f, -1.0f, 0.0f), nt::Vec2f(0.0f, 0.0f), NT_COLOR_GREEN).makeReadable(),

@@ -13,13 +13,15 @@
 
 #import "WindowUIKit.h"
 
+#import "../core/Timer.h"
+
 #import <EGL/egl.h>
 #import <GLES2/gl2.h>
 
 namespace nt
 {
     WindowUIKit::WindowUIKit(const WindowDesc& desc) :
-        m_desc(desc), m_window(nullptr)
+        m_desc(desc), m_scale(1.0f, 1.0f, 1.0f),  m_window(nullptr)
     {}
 
     void WindowUIKit::initialize()
@@ -99,6 +101,15 @@ namespace nt
         glColorPointer(4, GL_FLOAT, sizeof(ReadableVertex), &vertices[0].color);
         glEnableClientState(GL_COLOR_ARRAY);
 
+        // Manipulate w/ matrix
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glRotatef(m_pitch.inRadians(), 1.0f, 0.0f, 0.0f);
+        glRotatef(m_roll.inRadians(), 0.0f, 1.0f, 0.0f);
+        glRotatef(m_yaw.inRadians(), 0.0f, 0.0f, 1.0f);
+        glTranslatef(m_translation.x, m_translation.y, m_translation.z);
+        glScalef(m_scale.x, m_scale.y, m_scale.z);
+
         // Draw the vertices
         glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
@@ -117,6 +128,31 @@ namespace nt
     void WindowUIKit::swapBuffers()
     {
         [[EAGLContext currentContext] presentRenderbuffer:GL_RENDERBUFFER];
+    }
+
+    void WindowUIKit::translate(float x, float y, float z)
+    {
+        m_translation += Vec3f(x, y, z);
+    }
+
+    void WindowUIKit::scale(float x, float y, float z)
+    {
+        m_scale += Vec3f(x, y, z);
+    }
+
+    void WindowUIKit::rotateX(float x)
+    {
+        m_pitch += radians(x);
+    }
+
+    void WindowUIKit::rotateY(float y)
+    {
+        m_roll += radians(y);
+    }
+
+    void WindowUIKit::rotateZ(float z)
+    {
+        m_yaw += radians(z);
     }
 
     void WindowUIKit::destroy()

@@ -38,6 +38,11 @@ namespace nt
         void frame(std::vector<ReadableVertex>& vertices) override;
         void clear(const Color& color) override;
         void swapBuffers() override;
+        void translate(float x, float y, float z) override;
+        void scale(float x, float y, float z) override;
+        void rotateX(float x) override;
+        void rotateY(float y) override;
+        void rotateZ(float z) override;
         void destroy() override;
 
         void* getHandle() override;
@@ -45,6 +50,11 @@ namespace nt
 
     private:
         WindowDesc m_desc;
+        Vec3f m_translation;
+        Vec3f m_scale;
+        Angle m_pitch; // X-axis
+        Angle m_roll; // Y-axis
+        Angle m_yaw; // Z-axis
         UIWindow* m_window;
     };
 } // namespace nt

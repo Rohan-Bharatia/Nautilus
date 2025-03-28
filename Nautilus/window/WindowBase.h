@@ -18,6 +18,7 @@
 
 #include "WindowDesc.h"
 #include "../math/Vertex.h"
+#include "../math/Mat4x4.h"
 
 #include <memory>
 #include <vector>
@@ -33,6 +34,11 @@ namespace nt
         virtual void frame(std::vector<ReadableVertex>& vertices) = 0;
         virtual void clear(const Color& color)                    = 0;
         virtual void swapBuffers()                                = 0;
+        virtual void translate(float x, float y, float z)         = 0;
+        virtual void scale(float x, float y, float z)             = 0;
+        virtual void rotateX(float x)                             = 0;
+        virtual void rotateY(float y)                             = 0;
+        virtual void rotateZ(float z)                             = 0;
         virtual void destroy()                                    = 0;
 
         virtual void* getHandle()           = 0;
