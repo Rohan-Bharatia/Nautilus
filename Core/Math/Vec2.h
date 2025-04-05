@@ -17,9 +17,11 @@
 #ifndef _NT_CORE_MATH_VEC2_H_
     #define _NT_CORE_MATH_VEC2_H_
 
+#include "../Platform/Platform.h"
+
 namespace nt
 {
-    template<typename T> class Vec2
+    template<typename T> class NT_API Vec2
     {
     public:
         Vec2()                             = default;

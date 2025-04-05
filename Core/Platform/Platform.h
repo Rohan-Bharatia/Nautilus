@@ -22,6 +22,7 @@
     #define NT_PLATFORM_WINDOWS
     #define NT_API_WIN32
 #elif defined(__unix__)
+    #define NT_PLATFORM_UNIX
     #if defined(__linux__)
         #define NT_PLATFORM_LINUX
     #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
@@ -114,6 +115,7 @@
 #if defined(NT_STATIC) // Static library
     #define NT_IMPORT
     #define NT_EXPORT
+    #define NT_API NT_IMPORT
 #elif defined(NT_SHARED) // Shared library
     #if defined(NT_PLATFORM_WINDOWS)
         #define NT_IMPORT __declspec(dllimport)
@@ -122,6 +124,7 @@
         #define NT_IMPORT __attribute__((visibility("default")))
         #define NT_EXPORT __attribute__((visibility("default")))
     #endif // defined(NT_PLATFORM_WINDOWS)
+    #define NT_API NT_EXPORT
 #endif // defined(NT_STATIC), defined(NT_SHARED)
 
 // Define calling conventions
@@ -141,5 +144,17 @@
 #define NT_CONCATENATE(x, y) x##y
 #define NT_TOCONCATENATE(x, y) NT_CONCATENATE(x, y)
 #define NT_MODULUS(x, y) (x - (int)(x / y) * y) >= 0 ? (x - (int)(x / y) * y) : (x - (int)(x / y) * y) + y
+
+// Memory macros
+#ifndef NT_MEMORY
+    #include <memory>
+    #define NT_ALLOCATE(size) malloc(size)
+    #define NT_FREE(ptr) free(ptr)
+    #define NT_REALLOC(ptr, size) realloc(ptr, size)
+    #define NT_ZERO_MEMORY(ptr, size) memset(ptr, 0, size)
+    #define NT_SET_MEMORY(ptr, value, size) memset(ptr, value, size)
+    #define NT_COPY_MEMORY(dest, src, size) memcpy(dest, src, size)
+    #define NT_MOVE_MEMORY(dest, src, size) memmove(dest, src, size)
+#endif // NT_MEMORY
 
 #endif // _NT_CORE_PLATFORM_PLATFORM_H_

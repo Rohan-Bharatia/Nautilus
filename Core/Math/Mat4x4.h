@@ -17,11 +17,12 @@
 #ifndef _NT_CORE_MATH_MAT4X4_H_
     #define _NT_CORE_MATH_MAT4X4_H_
 
+#include "../Platform/Platform.h"
 #include "Vec3.h"
 
 namespace nt
 {
-    template<typename T> class Mat4x4
+    template<typename T> class NT_API Mat4x4
     {
     public:
         Mat4x4()                               = default;

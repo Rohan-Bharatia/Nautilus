@@ -17,9 +17,11 @@
 #ifndef _NT_CORE_MATH_RECT_H_
     #define _NT_CORE_MATH_RECT_H_
 
+#include "../Platform/Platform.h"
+
 namespace nt
 {
-    class Rect
+    class NT_API Rect
     {
     public:
         Rect()                             = default;

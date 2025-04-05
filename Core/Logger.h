@@ -17,6 +17,8 @@
 #ifndef _NT_CORE_LOGGER_H_
     #define _NT_CORE_LOGGER_H_
 
+#include "Platform/Platform.h"
+
 #include <string>
 #include <unordered_map>
 
@@ -33,7 +35,7 @@ namespace nt
         LOG_CRITICAL,
     };
 
-    class Logger
+    class NT_API Logger
     {
     public:
         static void log(const LogLevel& level, const std::string& message, ...);

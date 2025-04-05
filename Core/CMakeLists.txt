@@ -10,6 +10,8 @@ add_library(Core STATIC
     Math/Rect.cpp
     Math/Plane.cpp
     Logger.cpp
+    File.cpp
+    Threading.cpp
 )
 
 target_link_directories(Core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} )

@@ -17,11 +17,12 @@
 #ifndef _NT_CORE_MATH_RAY2_H_
     #define _NT_CORE_MATH_RAY2_H_
 
+#include "../Platform/Platform.h"
 #include "Vec2.h"
 
 namespace nt
 {
-    template<typename T> class Ray2
+    template<typename T> class NT_API Ray2
     {
     public:
         Ray2()                             = default;

@@ -18,6 +18,7 @@
     #define _NT_CORE_H_
 
 #include "Platform/Platform.h"
+#include "Platform/API.h"
 
 #include "Math/Vec2.h"
 #include "Math/Vec3.h"
@@ -25,5 +26,7 @@
 #include "Math/Mat4x4.h"
 
 #include "Logger.h"
+#include "File.h"
+#include "Threading.h"
 
 #endif // _NT_CORE_H_

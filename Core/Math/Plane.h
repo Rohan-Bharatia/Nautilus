@@ -17,9 +17,11 @@
 #ifndef _NT_CORE_MATH_PLANE_H_
     #define _NT_CORE_MATH_PLANE_H_
 
+#include "../Platform/Platform.h"
+
 namespace nt
 {
-    class Plane
+    class NT_API Plane
     {
     public:
         Plane()                              = default;
