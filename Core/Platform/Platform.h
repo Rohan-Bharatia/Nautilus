@@ -20,7 +20,7 @@
 // Define operating system & API
 #if defined(_WIN32) || defined(_WIN64)
     #define NT_PLATFORM_WINDOWS
-    #define NT_API_WIN32
+    #define NT_API_DIRECTX
 #elif defined(__unix__)
     #define NT_PLATFORM_UNIX
     #if defined(__linux__)

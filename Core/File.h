@@ -27,11 +27,11 @@ namespace nt
     class NT_API FileReader
     {
     public:
-        FileReader()                             = default;
+        FileReader()                                   = default;
         FileReader(const std::string& filepath, const std::string& mode);
         ~FileReader();
-        FileReader(const FileReader&)            = default;
-        FileReader& operator=(const FileReader&) = default;
+        FileReader(const FileReader& other)            = default;
+        FileReader& operator=(const FileReader& other) = default;
 
         // File reading methods
         std::string getExtension() const;
@@ -49,11 +49,11 @@ namespace nt
     class NT_API FileWriter
     {
     public:
-        FileWriter()                             = default;
+        FileWriter()                                   = default;
         FileWriter(const std::string& filepath, const std::string& mode);
         ~FileWriter();
-        FileWriter(const FileWriter&)            = default;
-        FileWriter& operator=(const FileWriter&) = default;
+        FileWriter(const FileWriter& other)            = default;
+        FileWriter& operator=(const FileWriter& other) = default;
 
         // File writing methods
         std::string getExtension() const;

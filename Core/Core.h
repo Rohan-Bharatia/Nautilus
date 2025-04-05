@@ -19,6 +19,8 @@
 
 #include "Platform/Platform.h"
 #include "Platform/API.h"
+#include "Platform/Window.h"
+#include "Platform/Event.h"
 
 #include "Math/Vec2.h"
 #include "Math/Vec3.h"

@@ -24,7 +24,7 @@
 
 namespace nt
 {
-    enum class LogLevel
+    enum LogLevel
     {
         LOG_TRACE,
         LOG_DEBUG,

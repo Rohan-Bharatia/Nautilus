@@ -34,9 +34,7 @@
     #include <X11/Xlib.h>
     #include <X11/Xutil.h>
     #include <X11/Xatom.h>
-    #include <X11/Xresource.h>
-    #include <X11/Xcursor/Xcursor.h>
-    #include <X11/Xkeyboard/XKeyboard.h>
+    #include <X11/keysym.h>
 #elif defined(NT_PLATFORM_MACOS) // Cocoa & Metal
     #include <Cocoa/Cocoa.h>
     #define NS_PRIVATE_IMPLEMENTATION
@@ -55,15 +53,8 @@
     #include <QuartzCore/QuartzCore.hpp>
 #elif defined(NT_PLATFORM_ANDROID) // Android JNI
     #include <jni.h>
+    #include <android/native_window_jni.h>
     #include <android/native_activity.h>
-    #include <android/log.h>
-    #include <android/asset_manager.h>
-    #include <android/asset_manager_jni.h>
-    #include <android/looper.h>
-    #include <android/native_window.h>
-    #include <android/sensor.h>
-    #include <android/bitmap.h>
-    #include <android/configuration.h>
     #include <android/input.h>
     #include <android/keycodes.h>
 #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_UNIX), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
