@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_PLATFORM_H_
-    #define _NT_CORE_PLATFORM_H_
+#ifndef _NT_CORE_PLATFORM_PLATFORM_H_
+    #define _NT_CORE_PLATFORM_PLATFORM_H_
 
 // Define operating system & API
 #if defined(_WIN32) || defined(_WIN64)
@@ -140,5 +140,6 @@
 #define NT_TOSTRING(x) NT_STRINGIFY(x)
 #define NT_CONCATENATE(x, y) x##y
 #define NT_TOCONCATENATE(x, y) NT_CONCATENATE(x, y)
+#define NT_MODULUS(x, y) (x - (int)(x / y) * y) >= 0 ? (x - (int)(x / y) * y) : (x - (int)(x / y) * y) + y
 
-#endif // _NT_CORE_PLATFORM_H_
+#endif // _NT_CORE_PLATFORM_PLATFORM_H_

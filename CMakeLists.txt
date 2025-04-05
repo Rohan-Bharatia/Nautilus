@@ -7,6 +7,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Core)
 file(GLOB NAUTILUS_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Platform/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Math/*.cpp
 )
 
 if(NAUTILUS_SOURCES)

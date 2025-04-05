@@ -19,6 +19,11 @@
 
 #include "Platform/Platform.h"
 
+#include "Math/Vec2.h"
+#include "Math/Vec3.h"
+#include "Math/Vec4.h"
+#include "Math/Mat4x4.h"
+
 #include "Logger.h"
 
 #endif // _NT_CORE_H_
