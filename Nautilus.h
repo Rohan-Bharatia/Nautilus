@@ -17,9 +17,11 @@
 #ifndef _NT_NAUTILUS_H_
     #define _NT_NAUTILUS_H_
 
+// Include headers
+#include "Core/Core.h"
+
 // Version macros
-#define STRINGIFY(x) #x
-#define NT_MAKE_VERSION(major, minor, patch) STRINGIFY(major) "." STRINGIFY(minor) "." STRINGIFY(patch)
+#define NT_MAKE_VERSION(major, minor, patch) NT_STRINGIFY(major) "." NT_STRINGIFY(minor) "." NT_STRINGIFY(patch)
 #define NT_VERSION_MAJOR 1
 #define NT_VERSION_MINOR 0
 #define NT_VERSION_PATCH 0
