@@ -19,14 +19,28 @@
 
 namespace nt
 {
-
     void Window::create(const WindowDesc& desc)
     {
-        m_desc   = desc;
+        m_desc = desc;
+
+        NSWindowStyleMask style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable;
+
+        if (!desc.resizable)
+            style &= ~(NSWindowStyleMaskResizable);
+        if (desc.borderless)
+            style &= ~(NSWindowStyleMaskTitled);
+        if (desc.fullscreenable)
+            style |= NSWindowStyleMaskFullScreen;
+        if (!desc.maximizable)
+            style &= ~(NSWindowStyleMaskZoomable);
+        if (!desc.minimizable)
+            style &= ~(NSWindowStyleMaskMiniaturizable);
+
         m_window = [[NSWindow alloc] initWithContentRect:NSMakeRect(desc.x, desc.y, desc.width, desc.height)
-                                                styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable
-                                                backing:NSBackingStoreBuffered
+                                                styleMask:style
+                                                  backing:NSBackingStoreBuffered
                                                     defer:NO];
+
         if (!m_window)
         {
             Logger::error("Failed to create window!");
@@ -35,6 +49,22 @@ namespace nt
 
         [m_window setTitle:[NSString stringWithUTF8String:desc.title.c_str()]];
         [m_window setBackgroundColor:[NSColor colorWithRed:m_desc.bgColor.r green:m_desc.bgColor.g blue:m_desc.bgColor.b alpha:m_desc.bgColor.a]];
+
+        if (desc.fullscreen)
+        {
+            [m_window setFrame:[[NSScreen mainScreen] frame] display:YES];
+            [m_window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
+        }
+        else if (desc.maximized)
+        {
+            [m_window setFrame:[[NSScreen mainScreen] frame] display:YES];
+            [m_window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenAuxiliary];
+        }
+        else if (desc.minimized)
+            [m_window miniaturize:nil];
+        else if (desc.modal)
+            [m_window setLevel:NSModalPanelWindowLevel];
+
         [m_window makeKeyAndOrderFront:nil];
     }
 

@@ -28,12 +28,26 @@ namespace nt
 {
     struct NT_API WindowDesc
     {
+        // Window settings
         uint32_t x;
         uint32_t y;
         uint32_t width;
         uint32_t height;
         std::string title;
         Color bgColor;
+
+        // Window options
+        bool resizable      = true;
+        bool borderless     = false;
+        bool fullscreenable = true;
+        bool maximizable    = true;
+        bool minimizable    = true;
+
+        // Window states
+        bool fullscreen = false;
+        bool maximized  = false;
+        bool minimized  = false;
+        bool modal      = false;
     };
 
     class NT_API Window

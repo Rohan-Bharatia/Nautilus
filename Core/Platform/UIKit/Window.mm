@@ -24,10 +24,10 @@
 
 namespace nt
 {
-
     void Window::create(const WindowDesc& desc)
     {
-        m_desc   = desc;
+        m_desc = desc;
+
         m_window = [[UIWindow alloc] initWithFrame:CGRectMake(desc.x, desc.y, desc.width, desc.height)];
 
         if (!m_window)
@@ -37,19 +37,49 @@ namespace nt
         }
 
         [m_window setBackgroundColor:[UIColor colorWithRed:m_desc.bgColor.r green:m_desc.bgColor.g blue:m_desc.bgColor.b alpha:m_desc.bgColor.a]];
-        [m_window setTitle: [NSString stringWithUTF8String:desc.title.c_str()]];
+        [m_window setTitle:[NSString stringWithUTF8String:desc.title.c_str()]];
+
+        if (!desc.resizable)
+        {
+            m_window.frame = CGRectMake(desc.x, desc.y, desc.width, desc.height);
+            m_window.autoresizingMask = UIViewAutoresizingNone;
+        }
+        if (desc.borderless)
+            m_window.windowLevel = UIWindowLevelStatusBar;
+        if (desc.fullscreenable)
+            m_window.frame = [[UIScreen mainScreen] bounds];
+        if (!desc.maximizable)
+            m_window.autoresizingMask = UIViewAutoresizingNone;
+        if (!desc.minimizable)
+            m_window.autoresizingMask = UIViewAutoresizingNone;
+
+        if (desc.fullscreen)
+        {
+            [m_window setFrame:[[UIScreen mainScreen] bounds]];
+            [m_window setWindowLevel:UIWindowLevelStatusBar];
+        }
+        else if (desc.maximized)
+        {
+            [m_window setFrame:[[UIScreen mainScreen] bounds]];
+            [m_window setWindowLevel:UIWindowLevelNormal];
+        }
+        else if (desc.minimized)
+            // Not applicable on iOS
+        else if (desc.modal)
+            [m_window setWindowLevel:UIWindowLevelAlert];
+
         [m_window makeKeyAndVisible];
     }
 
     bool Window::pollEvents()
     {
-        // In UIKit, events are handled by the UIResponder chains
+        // Events are handled by the UIResponder chains with UIKit
         return true;
     }
 
     void Window::update()
     {
-        // In UIKit, the window is updated automatically
+        // The window is updated automatically with UIKit
     }
 
     void Window::destroy()

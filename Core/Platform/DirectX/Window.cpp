@@ -45,7 +45,20 @@ namespace nt
             return;
         }
 
-        m_hwnd = CreateWindowA(wc.lpszClassName, desc.title.c_str(), WS_OVERLAPPEDWINDOW, desc.x, desc.y, desc.width, desc.height, NULL, NULL, wc.hInstance, NULL);
+        DWORD style = WS_OVERLAPPEDWINDOW;
+
+        if (desc.borderless)
+            style &= ~WS_BORDER;
+        if (!desc.resizable)
+            style &= ~(WS_SIZEBOX | WS_THICKFRAME);
+        if (desc.fullscreenable)
+            style |= WS_MAXIMIZEBOX;
+        if (!desc.maximizable)
+            style &= ~WS_MAXIMIZEBOX;
+        if (!desc.minimizable)
+            style &= ~WS_MINIMIZEBOX;
+
+        m_hwnd = CreateWindowA(wc.lpszClassName, desc.title.c_str(), style, desc.x, desc.y, desc.width, desc.height, NULL, NULL, wc.hInstance, NULL);
         if (!m_hwnd)
         {
             Logger::error("Failed to create window!");
@@ -54,7 +67,24 @@ namespace nt
 
         SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR)this);
 
-        ShowWindow(m_hwnd, SW_SHOW);
+        if (desc.fullscreen)
+        {
+            ShowWindow(m_hwnd, SW_SHOWMAXIMIZED);
+            SetWindowPos(m_hwnd, HWND_TOPMOST, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_FRAMECHANGED);
+        }
+        else if (desc.maximized)
+            ShowWindow(m_hwnd, SW_SHOWMAXIMIZED);
+        else if (desc.minimized)
+            ShowWindow(m_hwnd, SW_SHOWMINIMIZED);
+        else
+            ShowWindow(m_hwnd, SW_SHOW);
+
+        if (desc.modal)
+        {
+            SetWindowLongPtr(m_hwnd, GWL_STYLE, GetWindowLongPtr(m_hwnd, GWL_STYLE) & ~WS_OVERLAPPEDWINDOW);
+            SetWindowPos(m_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        }
+
         UpdateWindow(m_hwnd);
     }
 

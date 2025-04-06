@@ -41,14 +41,23 @@ namespace nt
 
         // Get the Java class and method IDs
         javaClass              = env->GetObjectClass(activity->clazz);
-        javaMethodCreate       = env->GetMethodID(javaClass, "create", "(IIIIILjava/lang/String;IIIF)V");
+        javaMethodCreate       = env->GetMethodID(javaClass, "create", "(IIIIILjava/lang/String;IIIFZIZZZZZ)V");
         javaMethodUpdate       = env->GetMethodID(javaClass, "update", "()V");
         javaMethodDestroy      = env->GetMethodID(javaClass, "destroy", "()V");
         javaMethodGetDeltaTime = env->GetMethodID(javaClass, "getDeltaTime", "()F");
 
         // Call the Java method to create the window
-        jstring titleStr = env->NewStringUTF(desc.title.c_str());
-        env->CallVoidMethod(activity->clazz, javaMethodCreate, desc.x, desc.y, desc.width, desc.height, titleStr, desc.bgColor.r, desc.bgColor.g, desc.bgColor.b, desc.bgColor.a);
+        jstring titleStr        = env->NewStringUTF(desc.title.c_str());
+        jboolean resizable      = desc.resizable      ? JNI_TRUE : JNI_FALSE;
+        jboolean borderless     = desc.borderless     ? JNI_TRUE : JNI_FALSE;
+        jboolean fullscreenable = desc.fullscreenable ? JNI_TRUE : JNI_FALSE;
+        jboolean fullscreen     = desc.fullscreen     ? JNI_TRUE : JNI_FALSE;
+        jboolean maximized      = desc.maximized      ? JNI_TRUE : JNI_FALSE;
+        jboolean minimized      = desc.minimized      ? JNI_TRUE : JNI_FALSE;
+        jboolean modal          = desc.modal          ? JNI_TRUE : JNI_FALSE;
+
+        env->CallVoidMethod(activity->clazz, javaMethodCreate, desc.x, desc.y, desc.width, desc.height, titleStr, desc.bgColor.r, desc.bgColor.g, desc.bgColor.b, desc.bgColor.a, resizable, borderless, fullscreenable, fullscreen, maximized, minimized, modal);
+
         env->DeleteLocalRef(titleStr);
 
         if (!m_native)
