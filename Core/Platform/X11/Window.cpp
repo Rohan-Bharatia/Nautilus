@@ -21,29 +21,36 @@
 
 namespace nt
 {
-    void Window::create(const std::string& title)
+    void Window::create(const WindowDesc& desc)
     {
+        m_desc    = desc;
         m_display = XOpenDisplay(NULL);
         if (!m_display)
         {
             Logger::error("Failed to open display!");
-            return;
+            abort();
         }
 
-        m_handle = XCreateSimpleWindow(display, RootWindow(display, DefaultScreen(display)), 100, 100, 800, 600, 1, BlackPixel(m_display, 0), WhitePixel(m_display, 0));
-        if (!m_handle)
+        m_window = XCreateSimpleWindow(display, RootWindow(display, DefaultScreen(display)), desc.x, desc.y, desc.width, desc.height, 1, BlackPixel(m_display, 0), WhitePixel(m_display, 0));
+        if (!m_window)
         {
             Logger::error("Failed to create window!");
-            return;
+            abort();
         }
 
         // Set the window title
-        XTextProperty name;
-        name.value    = (unsigned char*)title.c_str();
-        name.encoding = XA_STRING;
-        name.format   = 8;
-        name.nitems   = title.length();
-        XSetWMName(m_display, m_window, &name);
+        // XTextProperty name;
+        // name.value    = (unsigned char*)desc.title.c_str();
+        // name.encoding = XA_STRING;
+        // name.format   = 8;
+        // name.nitems   = desc.title.length();
+        // XSetWMName(m_display, m_window, &name);
+
+        // Set the window title & color (RGB)
+        uint32_t color = desc.bgColor.r << 16 | desc.bgColor.g << 8 | desc.bgColor.b;
+        XStoreName(m_display, m_window, desc.title.c_str());
+        XSetWindowBackground(m_display, m_window, color);
+
 
         // Map the window to the screen
         XMapWindow(m_display, m_window);
@@ -97,6 +104,13 @@ namespace nt
         float deltaTime               = (currentTime - lastTime) / 1000.0f;
         lastTime                      = currentTime;
         return deltaTime;
+    }
+
+    Rect Window::getSize()
+    {
+        XWindowAttributes attributes;
+        XGetWindowAttributes(m_display, m_window, &attributes);
+        return Rect(attributes.x, attributes.y, attributes.width, attributes.height);
     }
 }
 

@@ -12,6 +12,11 @@
 
 #import "../../Logger.h"
 
+@interface Window : WindowDesc
+{
+    WindowDesc m_desc;
+}
+
 @interface Window : NSObject
 {
     NSWindow* m_window;
@@ -20,10 +25,19 @@
 namespace nt
 {
 
-    void Window::create(const std::string& title)
+    void Window::create(const WindowDesc& desc)
     {
-        m_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        [m_window setBackgroundColor:[UIColor whiteColor]];
+        m_desc   = desc;
+        m_window = [[UIWindow alloc] initWithFrame:CGRectMake(desc.x, desc.y, desc.width, desc.height)];
+
+        if (!m_window)
+        {
+            Logger::error("Failed to create window!");
+            abort();
+        }
+
+        [m_window setBackgroundColor:[UIColor colorWithRed:m_desc.bgColor.r green:m_desc.bgColor.g blue:m_desc.bgColor.b alpha:m_desc.bgColor.a]];
+        [m_window setTitle: [NSString stringWithUTF8String:desc.title.c_str()]];
         [m_window makeKeyAndVisible];
     }
 

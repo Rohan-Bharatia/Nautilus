@@ -170,6 +170,11 @@ namespace nt
             return false;
         }
     }
+
+    Vec2f Event<EVENT_MOUSE>::getMousePosition()
+    {
+        return Vec2f(0.0f, 0.0f);
+    }
 }
 
 #endif // _NT_CORE_PLATFORM_ANDROID_KEYBOARD_CPP_

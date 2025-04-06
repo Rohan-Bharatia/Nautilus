@@ -20,13 +20,21 @@
 namespace nt
 {
 
-    void Window::create(const std::string& title)
+    void Window::create(const WindowDesc& desc)
     {
-        m_window = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 800, 600)
+        m_desc   = desc;
+        m_window = [[NSWindow alloc] initWithContentRect:NSMakeRect(desc.x, desc.y, desc.width, desc.height)
                                                 styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable
                                                 backing:NSBackingStoreBuffered
                                                     defer:NO];
-        [m_window setTitle:[NSString stringWithUTF8String:title.c_str()]];
+        if (!m_window)
+        {
+            Logger::error("Failed to create window!");
+            abort();
+        }
+
+        [m_window setTitle:[NSString stringWithUTF8String:desc.title.c_str()]];
+        [m_window setBackgroundColor:[NSColor colorWithRed:m_desc.bgColor.r green:m_desc.bgColor.g blue:m_desc.bgColor.b alpha:m_desc.bgColor.a]];
         [m_window makeKeyAndOrderFront:nil];
     }
 
@@ -34,10 +42,7 @@ namespace nt
     {
         NSEvent* event;
         while ((event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:YES]))
-        {
             [NSApp sendEvent:event];
-        }
-
         return true;
     }
 
@@ -67,5 +72,10 @@ namespace nt
         float deltaTime                = (currentTime - lastTime);
         lastTime                       = currentTime;
         return deltaTime;
+    }
+
+    Rect Window::getSize()
+    {
+        return Rect(m_window.frame.origin.x, m_window.frame.origin.y, m_window.frame.size.width, m_window.frame.size.height);
     }
 }

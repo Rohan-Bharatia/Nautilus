@@ -18,6 +18,7 @@
     #define _NT_CORE_PLATFORM_EVENT_H_
 
 #include "Platform.h"
+#include "../Math/Vec2.h"
 
 namespace nt
 {
@@ -47,6 +48,7 @@ namespace nt
         static bool isButtonReleased(int button);
         static bool isButtonHeld(int button);
         static bool isButtonRepeated(int button, int count=2);
+        static Vec2f getMousePosition();
     };
 }
 

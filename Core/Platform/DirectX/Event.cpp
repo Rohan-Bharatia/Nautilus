@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_PLATFORM_D3D12_EVENT_CPP_
-    #define _NT_CORE_PLATFORM_D3D12_EVENT_CPP_
+#ifndef _NT_CORE_PLATFORM_DIRECTX_EVENT_CPP_
+    #define _NT_CORE_PLATFORM_DIRECTX_EVENT_CPP_
 
 #include "../Event.h"
 
@@ -76,6 +76,13 @@ namespace nt
             return false;
         }
     }
+
+    Vec2f Event<EVENT_MOUSE>::getMousePosition()
+    {
+        POINT pos;
+        GetCursorPos(&pos);
+        return Vec2f((float)pos.x, (float)pos.y);
+    }
 }
 
-#endif // _NT_CORE_PLATFORM_D3D12_EVENT_CPP_
+#endif // _NT_CORE_PLATFORM_DIRECTX_EVENT_CPP_

@@ -26,6 +26,11 @@
 #include "Math/Vec3.h"
 #include "Math/Vec4.h"
 #include "Math/Mat4x4.h"
+#include "Math/Ray2.h"
+#include "Math/Ray3.h"
+#include "Math/Rect.h"
+#include "Math/Plane.h"
+#include "Math/Color.h"
 
 #include "Logger.h"
 #include "File.h"

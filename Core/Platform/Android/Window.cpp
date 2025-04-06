@@ -27,8 +27,10 @@ static jmethodID javaMethodGetDeltaTime = NULL;
 
 namespace nt
 {
-    void Window::create(const std::string& title)
+    void Window::create(const WindowDesc& desc)
     {
+        m_desc = desc;
+
         // Get the JavaVM and JNIEnv
         JavaVM* javaVM            = NULL;
         JNIEnv* env               = NULL;
@@ -39,15 +41,21 @@ namespace nt
 
         // Get the Java class and method IDs
         javaClass              = env->GetObjectClass(activity->clazz);
-        javaMethodCreate       = env->GetMethodID(javaClass, "create", "(Ljava/lang/String;)V");
+        javaMethodCreate       = env->GetMethodID(javaClass, "create", "(IIIIILjava/lang/String;IIIF)V");
         javaMethodUpdate       = env->GetMethodID(javaClass, "update", "()V");
         javaMethodDestroy      = env->GetMethodID(javaClass, "destroy", "()V");
         javaMethodGetDeltaTime = env->GetMethodID(javaClass, "getDeltaTime", "()F");
 
         // Call the Java method to create the window
-        jstring titleStr = env->NewStringUTF(title.c_str());
-        env->CallVoidMethod(activity->clazz, javaMethodCreate, titleStr);
+        jstring titleStr = env->NewStringUTF(desc.title.c_str());
+        env->CallVoidMethod(activity->clazz, javaMethodCreate, desc.x, desc.y, desc.width, desc.height, titleStr, desc.bgColor.r, desc.bgColor.g, desc.bgColor.b, desc.bgColor.a);
         env->DeleteLocalRef(titleStr);
+
+        if (!m_native)
+        {
+            Logger::error("Failed to create window!");
+            abort();
+        }
     }
 
     bool Window::pollEvents()

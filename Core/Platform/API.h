@@ -26,6 +26,7 @@
     #include <wrl.h>
     #include <wrl/client.h>
     #include <wrl/module.h>
+    using namespace Microsoft::WRL;
 #elif defined(NT_PLATFORM_UNIX) // X11
     #include <unistd.h>
     #include <fcntl.h>
@@ -35,6 +36,11 @@
     #include <X11/Xutil.h>
     #include <X11/Xatom.h>
     #include <X11/keysym.h>
+    #include <GL/gl.h>
+    #include <GL/glx.h>
+    #include <GL/glxext.h>
+    #include <GL/glext.h>
+    #include <GL/glu.h>
 #elif defined(NT_PLATFORM_MACOS) // Cocoa & Metal
     #include <Cocoa/Cocoa.h>
     #define NS_PRIVATE_IMPLEMENTATION
@@ -57,6 +63,9 @@
     #include <android/native_activity.h>
     #include <android/input.h>
     #include <android/keycodes.h>
+    #include <GLES2/gl2.h>
+    #include <GLES2/gl2ext.h>
+    #include <EGL/egl.h>
 #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_UNIX), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
 
 #endif // _NT_PLATFORM_API_H_

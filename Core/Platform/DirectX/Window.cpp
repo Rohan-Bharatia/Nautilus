@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_PLATFORM_D3D12_WINDOW_CPP_
-    #define _NT_CORE_PLATFORM_D3D12_WINDOW_CPP_
+#ifndef _NT_CORE_PLATFORM_DIRECTX_WINDOW_CPP_
+    #define _NT_CORE_PLATFORM_DIRECTX_WINDOW_CPP_
 
 #include "../Window.h"
 
@@ -21,28 +21,14 @@
 
 namespace nt
 {
-    static LRESULT NT_CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
+    void Window::create(const WindowDesc& desc)
     {
-        switch (msg)
-        {
-        case WM_CLOSE:
-            DestroyWindow(hwnd);
-            break;
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            break;
-        default:
-            return DefWindowProc(hwnd, msg, wp, lp);
-        }
-        return 0;
-    }
+        m_desc = desc;
 
-    void Window::create(const std::string& title)
-    {
         WNDCLASSEXA wc;
         wc.cbSize        = sizeof(WNDCLASSEXA);
         wc.style         = CS_CLASSDC;
-        wc.lpfnWndProc   = &wndProc;
+        wc.lpfnWndProc   = &Window::wndProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
         wc.hInstance     = GetModuleHandle(NULL);
@@ -50,7 +36,7 @@ namespace nt
         wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
         wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
         wc.lpszMenuName  = NULL;
-        wc.lpszClassName = title.c_str();
+        wc.lpszClassName = desc.title.c_str();
         wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
 
         if (!RegisterClassExA(&wc))
@@ -59,12 +45,14 @@ namespace nt
             return;
         }
 
-        m_hwnd = CreateWindowA(wc.lpszClassName, title.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, wc.hInstance, NULL);
+        m_hwnd = CreateWindowA(wc.lpszClassName, desc.title.c_str(), WS_OVERLAPPEDWINDOW, desc.x, desc.y, desc.width, desc.height, NULL, NULL, wc.hInstance, NULL);
         if (!m_hwnd)
         {
             Logger::error("Failed to create window!");
-            return;
+            abort();
         }
+
+        SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR)this);
 
         ShowWindow(m_hwnd, SW_SHOW);
         UpdateWindow(m_hwnd);
@@ -118,6 +106,56 @@ namespace nt
 
         return deltaTime;
     }
+
+    Rect Window::getSize()
+    {
+        RECT rect;
+        GetClientRect(m_hwnd, &rect);
+        return Rect(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+    }
+
+    LRESULT NT_CALLBACK Window::wndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
+    {
+        Window* wnd = nullptr;
+        if (msg == WM_NCCREATE)
+        {
+            CREATESTRUCT* cs = (CREATESTRUCT*)lp;
+            wnd              = (Window*)cs->lpCreateParams;
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)wnd);
+        }
+        else
+            wnd = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+
+        if (!wnd)
+            return DefWindowProcA(hwnd, msg, wp, lp);
+
+        switch (msg)
+        {
+        case WM_CLOSE:
+        {
+            DestroyWindow(hwnd);
+            break;
+        }
+        case WM_DESTROY:
+        {
+            PostQuitMessage(0);
+            break;
+        }
+        case WM_PAINT:
+        {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hwnd, &ps);
+            FillRect(hdc, &ps.rcPaint, CreateSolidBrush(RGB(wnd->m_desc.bgColor.r, wnd->m_desc.bgColor.g, wnd->m_desc.bgColor.b)));
+            EndPaint(hwnd, &ps);
+            break;
+        }
+        default:
+        {
+            return DefWindowProc(hwnd, msg, wp, lp);
+        }
+        }
+        return 0;
+    }
 }
 
-#endif // _NT_CORE_PLATFORM_D3D12_WINDOW_CPP_
+#endif // _NT_CORE_PLATFORM_DIRECTX_WINDOW_CPP_

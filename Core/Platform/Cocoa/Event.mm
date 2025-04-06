@@ -83,4 +83,10 @@ namespace nt
             return false;
         }
     }
+
+    Vec2f Event<EVENT_MOUSE>::getMousePosition()
+    {
+        NSEvent* event = [NSApp currentEvent];
+        return Vec2f([event locationInWindow].x, [event locationInWindow].y);
+    }
 }

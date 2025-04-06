@@ -171,6 +171,24 @@ namespace nt
             return false;
         }
     }
+
+    Vec2f Event<EVENT_MOUSE>::getMousePosition()
+    {
+        Display* display = XOpenDisplay(NULL);
+        if (display == NULL)
+        {
+            Logger::error("Failed to open display!");
+            return Vec2f();
+        }
+
+        Window root = RootWindow(display, DefaultScreen(display));
+        Window child;
+        int x, y;
+        unsigned int mask;
+        XQueryPointer(display, root, &child, &child, &x, &y, &x, &y, &mask);
+        XCloseDisplay(display);
+        return Vec2f((float)x, (float)y);
+    }
 }
 
 #endif // _NT_CORE_PLATFORM_X11_KEYBOARD_CPP_

@@ -125,4 +125,9 @@ namespace nt
 
         }
     }
+
+    Vec2f Event<EVENT_MOUSE>::getMousePosition()
+    {
+        return Vec2f(0.0f, 0.0f);
+    }
 }
