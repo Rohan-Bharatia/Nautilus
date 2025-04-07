@@ -113,9 +113,9 @@ namespace nt
             DestroyWindow(m_hwnd);
     }
 
-    void* Window::getNativeHandle()
+    HWND Window::getNativeHandle()
     {
-        return (void*)&m_hwnd;
+        return m_hwnd;
     }
 
     float Window::getDeltaTime()

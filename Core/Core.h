@@ -17,10 +17,10 @@
 #ifndef _NT_CORE_H_
     #define _NT_CORE_H_
 
-#include "Platform/Platform.h"
-#include "Platform/API.h"
-#include "Platform/Window.h"
-#include "Platform/Event.h"
+#include "Logger.h"
+#include "File.h"
+#include "Threading.h"
+#include "Application.h"
 
 #include "Math/Vec2.h"
 #include "Math/Vec3.h"
@@ -31,9 +31,13 @@
 #include "Math/Rect.h"
 #include "Math/Plane.h"
 #include "Math/Color.h"
+#include "Math/Vertex.h"
 
-#include "Logger.h"
-#include "File.h"
-#include "Threading.h"
+#include "Platform/Platform.h"
+#include "Platform/API.h"
+#include "Platform/Window.h"
+#include "Platform/Event.h"
+
+#include "Rendering/Renderer.h"
 
 #endif // _NT_CORE_H_

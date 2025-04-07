@@ -12,9 +12,14 @@
 
 #import "../../Logger.h"
 
+@interface Window : WindowDesc
+{
+    WindowDesc m_desc;
+}
+
 @interface Window : NSObject
 {
-    NSWindow* m_window;
+    UIWindow* m_window;
 }
 
 namespace nt
@@ -90,9 +95,9 @@ namespace nt
         }
     }
 
-    void* Window::getNativeHandle()
+    NSWindow* Window::getNativeHandle()
     {
-        return (void*)m_window;
+        return m_window;
     }
 
     float Window::getDeltaTime()

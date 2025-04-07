@@ -142,9 +142,9 @@ namespace nt
             XCloseDisplay(m_display);
     }
 
-    void* Window::getNativeHandle()
+    Window* Window::getNativeHandle()
     {
-        return (void*)m_window;
+        return m_window;
     }
 
     float Window::getDeltaTime()

@@ -63,7 +63,17 @@ namespace nt
         void update();
         void destroy();
 
-        void* getNativeHandle();
+    #if defined(NT_PLATFORM_WINDOWS)
+        HWND getNativeHandle();
+    #elif defined(NT_PLATFORM_UNIX)
+        Window* getNativeHandle();
+    #elif defined(NT_PLATFORM_MACOS)
+        NSWindow* getNativeHandle();
+    #elif defined(NT_PLATFORM_IOS)
+        UIWindow* getNativeHandle();
+    #elif defined(NT_PLATFORM_ANDROID)
+        ANativeActivity* getNativeHandle();
+    #endif // defined(NT_PLATFORM_WINDOWS)
         float getDeltaTime();
         Rect getSize();
 

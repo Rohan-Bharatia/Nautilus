@@ -92,9 +92,9 @@ namespace nt
         }
     }
 
-    void* Window::getNativeHandle()
+    ANativeActivity* Window::getNativeHandle()
     {
-        return (void*)m_native;
+        return m_native;
     }
 
     float Window::getDeltaTime()
