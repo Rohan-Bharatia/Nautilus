@@ -81,7 +81,7 @@ int main()
 }
 """
 
-# Define the constants of CMakeLists.txt
+# Define the contents of CMakeLists.txt
 cmake_contents = """
 cmake_minimum_required(VERSION 3.10)
 
@@ -97,6 +97,35 @@ add_executable(${PROJECT_NAME} Main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC Nautilus)
 """
 
+# Define the contents of Build.bat/Build.sh
+if os.name == 'nt':
+    build_contents = """
+@echo off
+
+@echo Creating build directory...
+if not exist Build mkdir Build
+
+cd Build
+@echo Building project with CMake -> MinGW Makefiles...
+cmake -G "MinGW Makefiles" ..
+cmake --build .
+cd ..
+    """
+else:
+    build_contents = """
+#!/bin/bash
+
+echo "Creating build directory..."
+if [ ! -d "Build" ]; then
+    mkdir Build
+fi
+cd Build
+echo "Building project with CMake -> Unix Makefiles..."
+cmake -G "Unix Makefiles" ..
+cmake --build .
+cd ..
+    """
+
 # Generate App.h
 if not os.path.exists(os.path.join(gen_dir, 'App.h')):
     with open(os.path.join(gen_dir, 'App.h'), 'w') as f:
@@ -111,3 +140,13 @@ if not os.path.exists(os.path.join(gen_dir, 'Main.cpp')):
 if not os.path.exists(os.path.join(gen_dir, 'CMakeLists.txt')):
     with open(os.path.join(gen_dir, 'CMakeLists.txt'), 'w') as f:
         f.write(cmake_contents)
+
+# Generate Build.bat/Build.sh
+if os.name == 'nt':
+    if not os.path.exists(os.path.join(gen_dir, 'Build.bat')):
+        with open(os.path.join(gen_dir, 'Build.bat'), 'w') as f:
+            f.write(build_contents)
+else:
+    if not os.path.exists(os.path.join(gen_dir, 'Build.sh')):
+        with open(os.path.join(gen_dir, 'Build.sh'), 'w') as f:
+            f.write(build_contents)

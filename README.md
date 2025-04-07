@@ -10,10 +10,10 @@ This project is released under the [GNU General Public License](https://www.gnu.
 
 This project is built in C++23.
 
-|*Operating System*|*Graphics API*|
-|-|-|
-|Windows|DirectX 12|
-|Linux|<td colspan="2">XLib, OpenGL 4.6</td>|
-|MacOS|<td colspan="2">Cocoa, Metal 3</td>|
-|iOS|<td colspan="2">UIKit, Metal 3</td>|
-|Android|<td colspan="2">JNI, OpenGL ES 3.2</td>|
+|*Platform*|*Windowing API*|*Graphics API*|
+|-|-|-|
+|Windows|Win32 API<td colspan="2">DirectX 12</td>|
+|Unix (Not Apple)|XLib<td colspan="2">OpenGL 4.6</td>|
+|MacOS|Cocoa<td colspan="2">Metal 3</td>|
+|iOS|UIKit<td colspan="2">Metal 3</td>|
+|Android|JNI<td colspan="2">OpenGL ES 3.2</td>|
