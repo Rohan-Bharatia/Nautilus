@@ -10,7 +10,7 @@ app_h_contents = """
 #ifndef _APP_H_
     #define _APP_H_
 
-#include "Nautilus/Nautilus.h"
+#include \"Nautilus/Nautilus.h\"
 
 class MyApplication :
     public nt::Application
@@ -18,8 +18,11 @@ class MyApplication :
 public:
     MyApplication()
     {
-        nt::Logger::debug("Nautilus Engine v%s", NT_VERSION_STR);
-        nt::Logger::debug(R"(
+        window   = std::make_unique<nt::Window>();
+        renderer = std::make_unique<nt::Renderer>();
+
+        nt::Logger::debug(\"Nautilus Engine v%s\", NT_VERSION_STR);
+        nt::Logger::debug(R\"(
                                GNU GENERAL PUBLIC LICENSE
                                   Version 3, 29 June 2007
 
@@ -29,39 +32,50 @@ public:
                                             ...
 
                              Copyright (c) Rohan Bharatia 2025
-        )");
+        )\");
 
         nt::WindowDesc desc;
         desc.x       = 100;
         desc.y       = 100;
         desc.width   = 1024;
         desc.height  = 768;
-        desc.title   = "Nautilus Engine Application";
+        desc.title   = \"Nautilus Engine Application\";
         desc.bgColor = NT_COLOR_DEFAULT;
-        window.create(desc);
+        window->create(desc);
 
-        if (!renderer.initialize(window.getNativeHandle(), window.getSize()))
+        if (!renderer->initialize(window->getNativeHandle(), window->getSize()))
+        {
+            nt::Logger::error(\"Failed to initialize renderer!\");
             abort();
+        }
+    }
+
+    ~MyApplication()
+    {
+        renderer.reset();
+        window.reset();
     }
 
     void run() override
     {
-        while (window.pollEvents())
+        while (window->pollEvents())
         {
             if (nt::Event<nt::EVENT_KEYBOARD>::isKeyPressed(VK_ESCAPE))
                 break;
 
-            window.update();
-            renderer.clear(NT_COLOR_WHITE);
+            window->update();
+            renderer->clear(NT_COLOR_WHITE);
+            renderer->beginFrame();
+            renderer->endFrame();
         }
 
-        renderer.shutdown();
-        window.destroy();
+        window->destroy();
+        renderer->shutdown();
     }
 
 private:
-    nt::Window window;
-    nt::Renderer renderer;
+    std::unique_ptr<nt::Window> window;
+    std::unique_ptr<nt::Renderer> renderer;
 };
 
 #endif // _APP_H_
@@ -69,16 +83,21 @@ private:
 
 # Define the contents of Main.cpp
 main_cpp_contents = """
+#ifndef _MAIN_CPP_
+    #define _MAIN_CPP_
+
 #include \"App.h\"
 
 int main()
 {
-    MyApplication app;
+    std::unique_ptr<MyApplication> app = std::make_unique<MyApplication>();
 
-    app.run();
+    app->run();
 
     return 0;
 }
+
+#endif // _MAIN_CPP_
 """
 
 # Define the contents of CMakeLists.txt
@@ -107,7 +126,7 @@ if not exist Build mkdir Build
 
 cd Build
 @echo Building project with CMake -> MinGW Makefiles...
-cmake -G "MinGW Makefiles" ..
+cmake -G \"MinGW Makefiles\" ..
 cmake --build .
 cd ..
     """
@@ -115,13 +134,13 @@ else:
     build_contents = """
 #!/bin/bash
 
-echo "Creating build directory..."
+echo \"Creating build directory...\"
 if [ ! -d "Build" ]; then
     mkdir Build
 fi
 cd Build
-echo "Building project with CMake -> Unix Makefiles..."
-cmake -G "Unix Makefiles" ..
+echo \"Building project with CMake -> Unix Makefiles...\"
+cmake -G \"Unix Makefiles\" ..
 cmake --build .
 cd ..
     """

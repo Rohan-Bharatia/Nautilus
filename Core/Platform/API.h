@@ -63,8 +63,8 @@
     #include <android/native_activity.h>
     #include <android/input.h>
     #include <android/keycodes.h>
-    #include <GLES2/gl2.h>
-    #include <GLES2/gl2ext.h>
+    #include <GLES3/gl2.h>
+    #include <GLES3/gl2ext.h>
     #include <EGL/egl.h>
 #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_UNIX), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID)
 

@@ -65,7 +65,7 @@ elseif(ANDROID)
     target_link_libraries(Core PRIVATE
         android
         EGL
-        GLESv2
+        GLESv3
     )
 endif()
 

@@ -61,6 +61,7 @@ namespace nt
         ComPtr<ID3D12DescriptorHeap> m_renderTargetViews[2];
         ComPtr<ID3D12CommandAllocator> m_commandAllocator;
         ComPtr<ID3D12GraphicsCommandList> m_commandList;
+        D3D12_RECT m_viewport;
     #elif defined(NT_API_OPENGL)
         Display* m_display;
         int m_screen;

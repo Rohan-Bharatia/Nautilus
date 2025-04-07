@@ -22,10 +22,13 @@ namespace nt
 {
     bool Renderer::initialize(HWND hwnd, Rect size)
     {
-        HRESULT hr = S_OK;
+        m_viewport.left   = size.x;
+        m_viewport.top    = size.y;
+        m_viewport.right  = size.x + size.width;
+        m_viewport.bottom = size.y + size.height;
 
         // Create the DirectX12 device
-        hr = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&m_device));
+        HRESULT hr = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&m_device));
         if (FAILED(hr))
         {
             Logger::error("Failed to create the DirectX 12 device!");
@@ -81,9 +84,21 @@ namespace nt
             }
 
             // Create the render target view
-            m_device->CreateRenderTargetView(m_renderTargets[i].Get(), nullptr, m_renderTargetViews[i]->GetCPUDescriptorHandleForHeapStart());
-        }
+            ComPtr<ID3D12DescriptorHeap> renderTargetViewHeap;
+            D3D12_DESCRIPTOR_HEAP_DESC renderTargetViewHeapDesc{};
+            renderTargetViewHeapDesc.NumDescriptors = 2;
+            renderTargetViewHeapDesc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+            renderTargetViewHeapDesc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
+            hr = m_device->CreateDescriptorHeap(&renderTargetViewHeapDesc, IID_PPV_ARGS(&renderTargetViewHeap));
+            if (FAILED(hr))
+            {
+                Logger::error("Failed to create render target view heap!");
+                return false;
+            }
+
+            m_renderTargetViews[i] = renderTargetViewHeap;
+        }
 
         // Create the command allocator
         hr = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_commandAllocator));
@@ -93,6 +108,7 @@ namespace nt
             return false;
         }
 
+        // Create the command list
         hr = m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_commandList));
         if (FAILED(hr))
         {
@@ -107,8 +123,8 @@ namespace nt
     {
         float clearColor[4] = { col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, col.a };
 
-        m_commandList->ClearRenderTargetView(m_renderTargetViews[0]->GetCPUDescriptorHandleForHeapStart(), clearColor, 0, nullptr);
-        m_commandList->ClearDepthStencilView(m_renderTargetViews[0]->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+        m_commandList->ClearRenderTargetView(m_renderTargetViews[0]->GetCPUDescriptorHandleForHeapStart(), clearColor, 0, &m_viewport);
+        m_commandList->ClearDepthStencilView(m_renderTargetViews[0]->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, &m_viewport);
     }
 
     void Renderer::beginFrame()
