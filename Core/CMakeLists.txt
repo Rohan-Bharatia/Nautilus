@@ -33,6 +33,7 @@ elseif(EMSCRIPTEN)
         ${CMAKE_CURRENT_SOURCE_DIR}/Platform/Emscripten/*.cpp
     )
 endif()
+
 list(APPEND CORE_SOURCES ${PLATFORM_SOURCES})
 
 add_library(Core STATIC ${CORE_SOURCES})

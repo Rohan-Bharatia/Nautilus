@@ -14,12 +14,13 @@ This project is built in C++23.
 
 |*Platform*|*Windowing API*|*Graphics API*|
 |-|-|-|
-|Windows|Win32 API|DirectX 12|
-|Unix (Not Apple)|XLib|OpenGL 4.6|
-|MacOS|Cocoa|Metal 3|
-|iOS|UIKit|Metal 3|
-|Android|Android JNI|OpenGL ES 3.2|
+|Windows|Win32 API|OpenGL (WGL)|
+|Unix (Not Apple)|XLib|OpenGL (GLX)|
+|MacOS|Cocoa|OpenGL (CGL)|
+|iOS|UIKit|OpenGL (CGL)|
+|Android|Android JNI|OpenGL (GLES)|
+|WASM|Emscripten HTML5|OpenGL (GLES)|
 
 ## Project Generation
 
-Run the [`Genproj.py`](https://github.com/Rohan-Bharatia/Nautilus/blob/main/Genproj.py) script to generate a CMake project for your platform.
+Run the [`Genproj.py`](https://github.com/Rohan-Bharatia/Nautilus/blob/main/genproj.py) script to generate a CMake project for your platform.
