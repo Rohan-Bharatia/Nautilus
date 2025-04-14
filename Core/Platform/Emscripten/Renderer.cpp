@@ -52,15 +52,11 @@ namespace nt
             return false;
         }
 
-        glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
 
-        glViewport(0, 0, window.getWindowDesc().width, window.getWindowDesc().height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, window.getWindowDesc().width, window.getWindowDesc().height, 0, -1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        int width                               = emscripten_get_canvas_element_width("canvas");
+        int height                              = emscripten_get_canvas_element_height("canvas");
+        glViewport(0, 0, width, height);
 
         return true;
     }

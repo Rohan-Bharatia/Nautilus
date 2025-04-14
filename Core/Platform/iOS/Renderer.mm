@@ -49,15 +49,11 @@ namespace nt
 
         CGLSetCurrentContext(m_handle.context);
 
-        glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
 
-        glViewport(0, 0, window.getWindowDesc().width, window.getWindowDesc().height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, window.getWindowDesc().width, window.getWindowDesc().height, 0, -1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        CGRect rect          = m_handle.view.bounds;
+        EAGLContext* context = [EAGLContext currentContext];
+        glViewport(0, 0, rect.size.width, rect.size.height);
 
         return true;
     }

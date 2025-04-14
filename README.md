@@ -19,7 +19,7 @@ This project is built in C++23.
 |MacOS|Cocoa|OpenGL (CGL)|
 |iOS|UIKit|OpenGL (CGL)|
 |Android|Android JNI|OpenGL (GLES)|
-|WASM|Emscripten HTML5|OpenGL (GLES)|
+|WASM|Emscripten HTML5|OpenGL (WebGL)|
 
 ## Project Generation
 

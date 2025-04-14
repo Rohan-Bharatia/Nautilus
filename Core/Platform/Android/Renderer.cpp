@@ -88,15 +88,15 @@ namespace nt
             return false;
         }
 
-        glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
 
-        glViewport(0, 0, window.getWindowDesc().width, window.getWindowDesc().height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, window.getWindowDesc().width, window.getWindowDesc().height, 0, -1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        jobject view              = m_handle.view;
+        jclass viewClass          = env->GetObjectClass(view);
+        jmethodID getWidthMethod  = env->GetMethodID(viewClass, "getWidth", "()I");
+        jmethodID getHeightMethod = env->GetMethodID(viewClass, "getHeight", "()I");
+        int width = env->CallIntMethod(view, getWidthMethod);
+        int height = env->CallIntMethod(view, getHeightMethod);
+        glViewport(0, 0, width, height);
 
         return true;
     }

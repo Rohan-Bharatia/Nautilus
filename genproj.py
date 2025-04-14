@@ -77,9 +77,9 @@ MyApplication::~MyApplication()
 
 void MyApplication::run()
 {
-    nt::Vertex a(nt::Vec3f(-5.0f,  5.0f, 0.0f), nt::Vec2f(0.0f,  0.0f), NT_COLOR_RED);
-    nt::Vertex b(nt::Vec3f( 0.0f, -5.0f, 0.0f), nt::Vec2f(0.25f, 0.5f), NT_COLOR_GREEN);
-    nt::Vertex c(nt::Vec3f( 5.0f,  5.0f, 0.0f), nt::Vec2f(0.5f,  0.0f), NT_COLOR_BLUE);
+    nt::Vertex a(nt::Vec3f( 0.5f, -0.5f, 0.0f), nt::Vec2f(0.0f, 0.0f), NT_COLOR_RED);
+    nt::Vertex b(nt::Vec3f(-0.5f, -0.5f, 0.0f), nt::Vec2f(1.0f, 0.0f), NT_COLOR_GREEN);
+    nt::Vertex c(nt::Vec3f(-0.0f,  0.5f, 0.0f), nt::Vec2f(0.5f, 1.0f), NT_COLOR_BLUE);
 
     while (m_window->pollEvents())
     {
@@ -87,11 +87,11 @@ void MyApplication::run()
             break;
 
         m_window->update();
+        m_renderer->clear(NT_COLOR_WHITE);
         m_renderer->beginFrame();
-            m_renderer->clear(NT_COLOR_WHITE);
-            m_renderer->drawTriangle(a, b, c);
-            m_renderer->swapBuffers();
+        m_renderer->drawTriangle(a, b, c);
         m_renderer->endFrame();
+        m_renderer->swapBuffers();
     }
 
     m_window->close();

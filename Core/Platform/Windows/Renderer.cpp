@@ -27,9 +27,9 @@ namespace nt
 
         // Initialize OpenGL
         PIXELFORMATDESCRIPTOR pfd{};
-        pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
-        pfd.nVersion = 1;
-        pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+        pfd.nSize      = sizeof(PIXELFORMATDESCRIPTOR);
+        pfd.nVersion   = 1;
+        pfd.dwFlags    = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
         pfd.iPixelType = PFD_TYPE_RGBA;
         pfd.cColorBits = 32;
         pfd.cDepthBits = 24;
@@ -40,6 +40,12 @@ namespace nt
         int pf = ChoosePixelFormat(hdc, &pfd);
         SetPixelFormat(hdc, pf, &pfd);
 
+        if (!pf)
+        {
+            Logger::error("Failed to choose pixel format!");
+            return false;
+        }
+
         m_handle.hglrc = wglCreateContext(hdc);
         wglMakeCurrent(hdc, m_handle.hglrc);
 
@@ -49,15 +55,11 @@ namespace nt
             return false;
         }
 
-        glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
 
-        glViewport(0, 0, window.getWindowDesc().width, window.getWindowDesc().height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, window.getWindowDesc().width, window.getWindowDesc().height, 0, -1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        RECT rc;
+        GetClientRect(m_handle.hwnd, &rc);
+        glViewport(0, 0, rc.right - rc.left, rc.bottom - rc.top);
 
         return true;
     }

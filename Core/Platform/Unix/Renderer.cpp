@@ -26,8 +26,11 @@ namespace nt
         m_handle = window.getHandle();
 
         // Initialize OpenGL
-        m_handle.screen = DefaultScreen(m_handle.display);
-        m_handle.colormap = XCreateColorMap(m_handle.display, m_handle.window, DefaultVisual(m_handle.display, m_handle.screen), AllocNone);
+        XWindowAttributes attrs;
+        XGetWindowAttributes(m_handle.display, m_handle.window, &attrs);
+
+        m_handle.screen   = DefaultScreen(m_handle.display);
+        m_handle.colormap = XCreateColorMap(m_handle.display, m_handle.window, attrs.visual, AllocNone);
 
         if (!m_handle.colormap)
         {
@@ -35,7 +38,7 @@ namespace nt
             return false;
         }
 
-        m_handle.context = glXCreateContext(m_handle.display, DefaultVisual(m_handle.display, m_handle.screen), m_handle.colormap, GL_TRUE);
+        m_handle.context = glXCreateContext(m_handle.display, attrs.visual, m_handle.colormap, GL_TRUE);
 
         if (!m_handle.context)
         {
@@ -45,15 +48,9 @@ namespace nt
 
         glXMakeCurrent(m_handle.display, m_handle.window, m_handle.context);
 
-        glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
 
-        glViewport(0, 0, window.getWindowDesc().width, window.getWindowDesc().height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, window.getWindowDesc().width, window.getWindowDesc().height, 0, -1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        glViewport(0, 0, attrs.width, attrs.height);
 
         return true;
     }
