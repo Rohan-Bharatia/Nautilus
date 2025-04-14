@@ -15,8 +15,10 @@ file(GLOB NAUTILUS_SOURCES
 )
 
 find_package(OpenGL REQUIRED)
+message("OpenGL found: ${OPENGL_FOUND}")
+message("OpenGL libraries: ${OPENGL_LIBRARIES}")
 
-if(NAUTILUS_SOURCES)
+if(OPENGL_FOUND AND NAUTILUS_SOURCES)
     add_library(${PROJECT_NAME} STATIC ${NAUTILUS_SOURCES})
     add_dependencies(${PROJECT_NAME} Core)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Core)

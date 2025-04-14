@@ -17,11 +17,11 @@ elseif(UNIX AND NOT APPLE)
 elseif(APPLE)
     if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
         file(GLOB PLATFORM_SOURCES
-            ${CMAKE_CURRENT_SOURCE_DIR}/Platform/MacOS/*.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Platform/MacOS/*.mm
         )
     elseif(CMAKE_SYSTEM_NAME MATCHES "iOS")
         file(GLOB PLATFORM_SOURCES
-            ${CMAKE_CURRENT_SOURCE_DIR}/Platform/iOS/*.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Platform/iOS/*.mm
         )
     endif()
 elseif(ANDROID)
