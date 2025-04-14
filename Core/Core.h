@@ -20,6 +20,7 @@
 #include "Logger.h"
 #include "File.h"
 #include "Threading.h"
+#include "Clock.h"
 #include "Application.h"
 
 #include "Math/Vec2.h"
@@ -35,9 +36,8 @@
 
 #include "Platform/Platform.h"
 #include "Platform/API.h"
+#include "Platform/NativeHandle.h"
 #include "Platform/Window.h"
-#include "Platform/Event.h"
-
-#include "Rendering/Renderer.h"
+#include "Platform/Input.h"
 
 #endif // _NT_CORE_H_

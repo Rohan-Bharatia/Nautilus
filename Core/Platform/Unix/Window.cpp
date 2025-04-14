@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_PLATFORM_X11_WINDOW_CPP_
-    #define _NT_CORE_PLATFORM_X11_WINDOW_CPP_
+#ifndef _NT_CORE_PLATFORM_UNIX_WINDOW_CPP_
+    #define _NT_CORE_PLATFORM_UNIX_WINDOW_CPP_
 
 #include "../Window.h"
 
@@ -21,15 +21,16 @@
 
 namespace nt
 {
-    void Window::create(const WindowDesc& desc)
+    bool Window::initialize(const WindowDesc& desc)
     {
         m_desc = desc;
 
-        m_display = XOpenDisplay(NULL);
-        if (!m_display)
+        m_handle.display = XOpenDisplay(NULL);
+
+        if (!m_handle.display)
         {
             Logger::error("Failed to open display!");
-            abort();
+            return false;
         }
 
         XSetWindowAttributes attributes;
@@ -48,11 +49,12 @@ namespace nt
         if (desc.minimizable)
             attributes.event_mask |= StructureNotifyMask;
 
-        m_window = XCreateWindow(m_display, RootWindow(m_display, DefaultScreen(m_display)), desc.x, desc.y, desc.width, desc.height, attributes.border_width, CopyFromParent, InputOutput, CopyFromParent, CWEventMask | CWBorderWidth, &attributes);
-        if (!m_window)
+        m_handle.window = XCreateWindow(m_handle.display, RootWindow(m_handle.display, DefaultScreen(m_handle.display)), desc.x, desc.y, desc.width, desc.height, attributes.border_width, CopyFromParent, InputOutput, CopyFromParent, CWEventMask | CWBorderWidth, &attributes);
+
+        if (!m_handle.window)
         {
             Logger::error("Failed to create window!");
-            abort();
+            return false;
         }
 
         // Set the window title
@@ -61,65 +63,69 @@ namespace nt
         name.encoding = XA_STRING;
         name.format   = 8;
         name.nitems   = desc.title.length();
-        XSetWMName(m_display, m_window, &name);
+        XSetWMName(m_handle.display, m_handle.window, &name);
 
         // Set the window title & color (RGB)
         uint32_t color = desc.bgColor.r << 16 | desc.bgColor.g << 8 | desc.bgColor.b;
-        XStoreName(m_display, m_window, desc.title.c_str());
-        XSetWindowBackground(m_display, m_window, color);
+        XStoreName(m_handle.display, m_handle.window, desc.title.c_str());
+        XSetWindowBackground(m_handle.display, m_handle.window, color);
 
         // Map the window to the screen
-        XMapWindow(m_display, m_window);
+        XMapWindow(m_handle.display, m_handle.window);
 
         // Set up the window's event mask
-        XSelectInput(m_display, m_window, attributes.event_mask);
+        XSelectInput(m_handle.display, m_handle.window, attributes.event_mask);
 
         if (desc.fullscreen)
         {
             XEvent event;
             event.type = MapNotify;
-            event.xmap.window = m_window;
-            event.xmap.event  = m_window;
+            event.xmap.window = m_handle.window;
+            event.xmap.event  = m_handle.window;
             event.xmap.x      = 0;
             event.xmap.y      = 0;
-            event.xmap.width  = DisplayWidth(m_display, DefaultScreen(m_display));
-            event.xmap.height = DisplayHeight(m_display, DefaultScreen(m_display));
-            XSendEvent(m_display, m_window, False, StructureNotifyMask, &event);
+            event.xmap.width  = DisplayWidth(m_handle.display, DefaultScreen(m_handle.display));
+            event.xmap.height = DisplayHeight(m_handle.display, DefaultScreen(m_handle.display));
+            XSendEvent(m_handle.display, m_handle.window, False, StructureNotifyMask, &event);
         }
         else if (desc.maximized)
         {
             XEvent event;
             event.type              = ConfigureNotify;
-            event.xconfigure.window = m_window;
-            event.xconfigure.event  = m_window;
+            event.xconfigure.window = m_handle.window;
+            event.xconfigure.event  = m_handle.window;
             event.xconfigure.x      = 0;
             event.xconfigure.y      = 0;
-            event.xconfigure.width  = DisplayWidth(m_display, DefaultScreen(m_display));
-            event.xconfigure.height = DisplayHeight(m_display, DefaultScreen(m_display));
-            XSendEvent(m_display, m_window, False, StructureNotifyMask, &event);
+            event.xconfigure.width  = DisplayWidth(m_handle.display, DefaultScreen(m_handle.display));
+            event.xconfigure.height = DisplayHeight(m_handle.display, DefaultScreen(m_handle.display));
+            XSendEvent(m_handle.display, m_handle.window, False, StructureNotifyMask, &event);
         }
         else if (desc.minimized)
         {
-            XIconifyWindow(m_display, m_window, DefaultScreen(m_display));
+            XIconifyWindow(m_handle.display, m_handle.window, DefaultScreen(m_display));
         }
         else if (desc.modal)
         {
             XSetWindowAttributes attr;
             attr.override_redirect = True;
-            XChangeWindowAttributes(m_display, m_window, CWOverrideRedirect, &attr);
+            XChangeWindowAttributes(m_handle.display, m_handle.window, CWOverrideRedirect, &attr);
         }
+
+        if (desc.onCreate)
+            desc.onCreate();
+
+        return true;
     }
 
     bool Window::pollEvents()
     {
         XEvent event;
-        while (XPending(m_display))
+        while (XPending(m_handle.display))
         {
-            XNextEvent(m_display, &event);
+            XNextEvent(m_handle.display, &event);
 
             if (event.type == ClientMessage)
             {
-                // Handle client message event (e.g. window close request)
                 if (event.xclient.data.l[0] == XInternAtom(m_display, "WM_DELETE_WINDOW", False))
                     return false;
             }
@@ -130,38 +136,32 @@ namespace nt
 
     void Window::update()
     {
-        XFlush(m_display);
+        XFlush(m_handle.display);
+
+        if (m_desc.onUpdate)
+            m_desc.onUpdate();
     }
 
-    void Window::destroy()
+    void Window::close()
     {
-        if (m_window)
-            XDestroyWindow(m_display, m_window);
+        if (m_desc.onClose)
+            m_desc.onClose();
 
-        if (m_display)
-            XCloseDisplay(m_display);
+        if (m_handle.window)
+            XDestroyWindow(m_handle.display, m_handle.window);
+        if (m_handle.display)
+            XCloseDisplay(m_handle.display);
     }
 
-    Window* Window::getNativeHandle()
+    const WindowDesc& Window::getWindowDesc() const
     {
-        return m_window;
+        return m_desc;
     }
 
-    float Window::getDeltaTime()
+    const NativeHandle& Window::getHandle() const
     {
-        static unsigned long lastTime = 0;
-        unsigned long currentTime     = XGetTime(m_display);
-        float deltaTime               = (currentTime - lastTime) / 1000.0f;
-        lastTime                      = currentTime;
-        return deltaTime;
+        return m_handle;
     }
+} // namespace nt
 
-    Rect Window::getSize()
-    {
-        XWindowAttributes attributes;
-        XGetWindowAttributes(m_display, m_window, &attributes);
-        return Rect(attributes.x, attributes.y, attributes.width, attributes.height);
-    }
-}
-
-#endif // _NT_CORE_PLATFORM_X11_WINDOW_CPP_
+#endif // _NT_CORE_PLATFORM_UNIX_WINDOW_CPP_

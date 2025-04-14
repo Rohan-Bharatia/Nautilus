@@ -18,23 +18,24 @@
     #define _NT_CORE_PLATFORM_WINDOW_H_
 
 #include "Platform.h"
-#include "API.h"
-#include "../Math/Rect.h"
+#include "NativeHandle.h"
 #include "../Math/Color.h"
 
+#include <cstdint>
 #include <string>
+#include <functional>
 
 namespace nt
 {
-    struct NT_API WindowDesc
+    struct WindowDesc
     {
-        // Window settings
-        uint32_t x;
-        uint32_t y;
-        uint32_t width;
-        uint32_t height;
-        std::string title;
-        Color bgColor;
+        // Window properties
+        uint32_t x        = 100;
+        uint32_t y        = 100;
+        uint32_t width    = 1024;
+        uint32_t height   = 768;
+        std::string title = "Nautilus Application";
+        Color background  = nt::Color(51, 77, 77, 1.0f);
 
         // Window options
         bool resizable      = true;
@@ -48,54 +49,37 @@ namespace nt
         bool maximized  = false;
         bool minimized  = false;
         bool modal      = false;
+
+        // Window callbacks
+        std::function<void()> onCreate = nullptr;
+        std::function<void()> onUpdate = nullptr;
+        std::function<void()> onClose  = nullptr;
     };
 
     class NT_API Window
     {
     public:
-        Window()                               = default;
-        ~Window()                              = default;
-        Window(const Window& other)            = default;
-        Window &operator=(const Window& other) = default;
+        Window()                         = default;
+        ~Window()                        = default;
+        Window(const Window&)            = default;
+        Window& operator=(const Window&) = default;
 
-        void create(const WindowDesc& desc);
+        bool initialize(const WindowDesc& desc);
         bool pollEvents();
         void update();
-        void destroy();
+        void close();
 
-    #if defined(NT_PLATFORM_WINDOWS)
-        HWND getNativeHandle();
-    #elif defined(NT_PLATFORM_UNIX)
-        Window* getNativeHandle();
-    #elif defined(NT_PLATFORM_MACOS)
-        NSWindow* getNativeHandle();
-    #elif defined(NT_PLATFORM_IOS)
-        UIWindow* getNativeHandle();
-    #elif defined(NT_PLATFORM_ANDROID)
-        ANativeActivity* getNativeHandle();
-    #endif // defined(NT_PLATFORM_WINDOWS)
-        float getDeltaTime();
-        Rect getSize();
+        const WindowDesc& getWindowDesc() const;
+        const NativeHandle& getHandle() const;
 
     private:
         WindowDesc m_desc;
-    #if defined(NT_API_DIRECTX)
-        HWND m_hwnd = nullptr;
-    #elif defined(NT_API_X11)
-        Window* m_window = nullptr;
-        Display* m_display = nullptr;
-    #elif defined(NT_API_COCOA)
-        NSWindow* m_window = nullptr;
-    #elif defined(NT_API_UIKIT)
-        UIWindow* m_window = nullptr;
-    #elif defined(NT_API_ANDROID)
-        ANativeActivity* m_native = nullptr;
-    #endif // defined(NT_API_DIRECTX), defined(NT_API_X11), defined(NT_API_COCOA), defined(NT_API_UIKIT), defined(NT_API_ANDROID)
+        NativeHandle m_handle;
 
-    #if defined(NT_API_DIRECTX)
-        static LRESULT NT_CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp);
-    #endif // defined(NT_API_DIRECTX)
+    #if defined(NT_PLATFORM_WINDOWS)
+        static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wprm, LPARAM lprm);
+    #endif // defined(NT_PLATFORM_WINDOWS)
     };
-}
+} // namespace nt
 
 #endif // _NT_CORE_PLATFORM_WINDOW_H_

@@ -18,8 +18,7 @@ class MyApplication :
 public:
     MyApplication()
     {
-        window   = std::make_unique<nt::Window>();
-        renderer = std::make_unique<nt::Renderer>();
+        m_window = std::make_unique<nt::Window>();
 
         nt::Logger::debug(\"Nautilus Engine v%s\", NT_VERSION_STR);
         nt::Logger::debug(R\"(
@@ -34,48 +33,34 @@ public:
                              Copyright (c) Rohan Bharatia 2025
         )\");
 
-        nt::WindowDesc desc;
-        desc.x       = 100;
-        desc.y       = 100;
-        desc.width   = 1024;
-        desc.height  = 768;
-        desc.title   = \"Nautilus Engine Application\";
-        desc.bgColor = NT_COLOR_DEFAULT;
-        window->create(desc);
+        nt::WindowDesc desc{};
 
-        if (!renderer->initialize(window->getNativeHandle(), window->getSize()))
+        if (!m_window->initialize(desc))
         {
-            nt::Logger::error(\"Failed to initialize renderer!\");
+            nt::Logger::error(\"Failed to initialize window!\");
             abort();
         }
     }
 
     ~MyApplication()
     {
-        renderer.reset();
-        window.reset();
+        m_window.reset();
     }
 
     void run() override
     {
-        while (window->pollEvents())
+        while (m_window->pollEvents())
         {
-            if (nt::Event<nt::EVENT_KEYBOARD>::isKeyPressed(VK_ESCAPE))
+            if (nt::Input<nt::InputType::KEYBOARD>::isKeyPressed(nt::Key::ESCAPE))
                 break;
-
-            window->update();
-            renderer->clear(NT_COLOR_WHITE);
-            renderer->beginFrame();
-            renderer->endFrame();
+            m_window->update();
         }
 
-        window->destroy();
-        renderer->shutdown();
+        m_window->close();
     }
 
 private:
-    std::unique_ptr<nt::Window> window;
-    std::unique_ptr<nt::Renderer> renderer;
+    std::unique_ptr<nt::Window> m_window;
 };
 
 #endif // _APP_H_
@@ -83,9 +68,6 @@ private:
 
 # Define the contents of Main.cpp
 main_cpp_contents = """
-#ifndef _MAIN_CPP_
-    #define _MAIN_CPP_
-
 #include \"App.h\"
 
 int main()
@@ -96,8 +78,6 @@ int main()
 
     return 0;
 }
-
-#endif // _MAIN_CPP_
 """
 
 # Define the contents of CMakeLists.txt
@@ -165,7 +145,7 @@ if os.name == 'nt':
     if not os.path.exists(os.path.join(gen_dir, 'Build.bat')):
         with open(os.path.join(gen_dir, 'Build.bat'), 'w') as f:
             f.write(build_contents)
-else:
+elif :
     if not os.path.exists(os.path.join(gen_dir, 'Build.sh')):
         with open(os.path.join(gen_dir, 'Build.sh'), 'w') as f:
             f.write(build_contents)

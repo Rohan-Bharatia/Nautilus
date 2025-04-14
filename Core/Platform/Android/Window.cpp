@@ -19,15 +19,15 @@
 
 #include "../../Logger.h"
 
-static jclass javaClass                 = NULL;
-static jmethodID javaMethodCreate       = NULL;
-static jmethodID javaMethodUpdate       = NULL;
-static jmethodID javaMethodDestroy      = NULL;
-static jmethodID javaMethodGetDeltaTime = NULL;
-
 namespace nt
 {
-    void Window::create(const WindowDesc& desc)
+    static jclass javaClass                 = NULL;
+    static jmethodID javaMethodCreate       = NULL;
+    static jmethodID javaMethodUpdate       = NULL;
+    static jmethodID javaMethodDestroy      = NULL;
+    static jmethodID javaMethodGetDeltaTime = NULL;
+
+    bool Window::initialize(const WindowDesc& desc)
     {
         m_desc = desc;
 
@@ -35,7 +35,7 @@ namespace nt
         JavaVM* javaVM            = NULL;
         JNIEnv* env               = NULL;
         ANativeActivity* activity = NULL;
-        activity                  = (ANativeActivity*)m_native;
+        activity                  = (ANativeActivity*)m_handle.native;
         activity->vm->GetEnv((void**)&env, JNI_VERSION_1_6);
         activity->vm->AttachCurrentThread(&env, NULL);
 
@@ -60,11 +60,16 @@ namespace nt
 
         env->DeleteLocalRef(titleStr);
 
-        if (!m_native)
+        if (!m_handle.native)
         {
             Logger::error("Failed to create window!");
-            abort();
+            return false;
         }
+
+        if (m_desc.onCreate)
+            m_desc.onCreate();
+
+        return true;
     }
 
     bool Window::pollEvents()
@@ -76,38 +81,37 @@ namespace nt
     void Window::update()
     {
         // In Android, the window is updated automatically
+
+        if (m_desc.onUpdate)
+            m_desc.onUpdate();
     }
 
     void Window::destroy()
     {
+        if (m_desc.onClose)
+            m_desc.onClose();
+            
         JavaVM* javaVM            = NULL;
         JNIEnv* env               = NULL;
         ANativeActivity* activity = NULL;
-        if (m_native)
+        if (m_handle.native)
         {
-            activity                  = (ANativeActivity*)m_native;
+            activity                  = (ANativeActivity*)m_handle.native;
             activity->vm->GetEnv((void**)&env, JNI_VERSION_1_6);
             activity->vm->AttachCurrentThread(&env, NULL);
             env->CallVoidMethod(activity->clazz, javaMethodDestroy);
         }
     }
 
-    ANativeActivity* Window::getNativeHandle()
+    const WindowDesc& Window::getWindowDesc() const
     {
-        return m_native;
+        return m_desc;
     }
 
-    float Window::getDeltaTime()
+    const NativeHandle& Window::getHandle() const
     {
-        JavaVM* javaVM            = NULL;
-        JNIEnv* env               = NULL;
-        ANativeActivity* activity = NULL;
-        activity                  = (ANativeActivity*)m_native;
-        activity->vm->GetEnv((void**)&env, JNI_VERSION_1_6);
-        activity->vm->AttachCurrentThread(&env, NULL);
-        float deltaTime = env->CallFloatMethod(activity->clazz, javaMethodGetDeltaTime);
-        return deltaTime;
+        return m_handle;
     }
-}
+} // namespace nt
 
 #endif // _NT_CORE_PLATFORM_ANDROID_WINDOW_CPP_

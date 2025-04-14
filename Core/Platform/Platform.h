@@ -19,8 +19,12 @@
 
 // Define operating system & API
 #if defined(_WIN32) || defined(_WIN64)
-    #define NT_PLATFORM_WINDOWS
-    #define NT_API_DIRECTX
+    #include <winapifamily.h>
+    #if WINAPI_FAMILY != WINAPI_FAMILY_APP
+        #define NT_PLATFORM_WINDOWS
+    #else // (NOT) WINAPI_FAMILY != WINAPI_FAMILY_APP
+        #error "This Microsoft Operating System is not supported by Nautilus Engine!"
+    #endif // WINAPI_FAMILY != WINAPI_FAMILY_APP
 #elif defined(__unix__)
     #define NT_PLATFORM_UNIX
     #if defined(__linux__)
@@ -36,23 +40,21 @@
     #elif defined(__CYGWIN__)
         #define NT_PLATFORM_CYGWIN
     #else // (NOT) defined(__linux__), defined(__FreeBSD__) || defined(__FreeBSD_kernel__), defined(__NetBSD__), defined(__OpenBSD__), defined(__DragonFly__), defined(__CYGWIN__)
-        #error "This Unix Operatning System is not supported by Nautilus Engine!"
+        #error "This Unix Operating System is not supported by Nautilus Engine!"
     #endif // defined(__linux__), defined(__FreeBSD__) || defined(__FreeBSD_kernel__), defined(__NetBSD__), defined(__OpenBSD__), defined(__DragonFly__), defined(__CYGWIN__)
-    #define NT_API_X11
 #elif defined(__APPLE__) && defined(__MACH__)
     #include <TargetConditionals.h>
     #if TARGET_OS_IPHONE
         #define NT_PLATFORM_IOS
-        #define NT_API_UIKIT
     #elif TARGET_OS_MAC
         #define NT_PLATFORM_MACOS
-        #define NT_API_APPKIT
     #else // (NOT) TARGET_OS_IPHONE, TARGET_OS_MAC
         #error "This Apple Operating System is not supported by Nautilus Engine!"
     #endif // TARGET_OS_IPHONE, TARGET_OS_MAC
 #elif defined(__ANDROID__)
     #define NT_PLATFORM_ANDROID
-    #define NT_API_ANDROID
+#elif defined(EMSCRIPTEN)
+    #define NT_PLATFORM_WASM
 #else // (NOT) defined(_WIN32) || defined(_WIN64), defined(__unix__), defined(__APPLE__) && defined(__MACH__), defined(__ANDROID__)
     #error "This Operating System is not supported by Nautilus Engine!"
 #endif // defined(_WIN32) || defined(_WIN64), defined(__unix__), defined(__APPLE__) && defined(__MACH__), defined(__ANDROID__)
@@ -74,25 +76,49 @@
     #error "This Architecture is not supported by Nautilus Engine!"
 #endif // defined(_M_X64) || defined(__x86_64__) || defined(__ppc64__), defined(_M_IX86) || defined(__i386__) || defined(__ppc__), defined(_M_ARM) || defined(__arm__) || defined(__aarch32__), defined(_M_ARM64) || defined(__aarch64__), defined(__mips__) || defined(__mips64__), defined(__riscv) || defined(__riscv_xlen__)
 
-// Define compiler
+// Define compiler & calling conventions
 #if defined(_MSC_VER)
     #define NT_COMPILER_MSVC
     #define NT_COMPILER_VERSION _MSC_VER
+    #define NT_CDECL __cdecl
+    #define NT_STDCALL __stdcall
+    #define NT_THISCALL __thiscall
 #elif defined(__clang__)
     #define NT_COMPILER_CLANG
     #define NT_COMPILER_VERSION __clang_major__ * 100 + __clang_minor__ * 10 + __clang_patchlevel__
+    #define NT_CDECL __attribute__((cdecl))
+    #define NT_STDCALL __attribute__((stdcall))
+    #define NT_THISCALL __attribute__((thiscall))
 #elif defined(__GNUC__)
     #define NT_COMPILER_GCC
     #define NT_COMPILER_VERSION __GNUC__ * 100 + __GNUC_MINOR__ * 10 + __GNUC_PATCHLEVEL__
+    #if defined(__MINGW32__) || defined(__MINGW64__)
+        #undef NT_COMPILER_GCC
+        #undef NT_COMPILER_VERSION
+        #define NT_COMPILER_MINGW
+        #define NT_COMPILER_VERSION __MINGW32_MAJOR_VERSION * 100 + __MINGW32_MINOR_VERSION * 10 + __MINGW32_PATCHLEVEL__
+    #endif // defined(__MINGW32__) || defined(__MINGW64__)
+    #define NT_CDECL __attribute__((cdecl))
+    #define NT_STDCALL __attribute__((stdcall))
+    #define NT_THISCALL __attribute__((thiscall))
 #elif defined(__INTEL_COMPILER)
     #define NT_COMPILER_INTEL
     #define NT_COMPILER_VERSION __INTEL_COMPILER
+    #define NT_CDECL __cdecl
+    #define NT_STDCALL __stdcall
+    #define NT_THISCALL __thiscall
 #elif defined(__BORLANDC__)
     #define NT_COMPILER_BORLAND
     #define NT_COMPILER_VERSION __BORLANDC__
+    #define NT_CDECL __cdecl
+    #define NT_STDCALL __stdcall
+    #define NT_THISCALL __thiscall
 #elif defined(__MINGW32__) || defined(__MINGW64__)
     #define NT_COMPILER_MINGW
     #define NT_COMPILER_VERSION __MINGW32_MAJOR_VERSION * 100 + __MINGW32_MINOR_VERSION * 10 + __MINGW32_PATCHLEVEL__
+    #define NT_CDECL __cdecl
+    #define NT_STDCALL __stdcall
+    #define NT_THISCALL __thiscall
 #else // (NOT) defined(_MSC_VER), defined(__clang__), defined(__GNUC__), defined(__INTEL_COMPILER), defined(__BORLANDC__), defined(__MINGW32__) || defined(__MINGW64__)
     #error "This Compiler is not supported by Nautilus Engine!"
 #endif // defined(_MSC_VER), defined(__clang__), defined(__GNUC__), defined(__INTEL_COMPILER), defined(__BORLANDC__), defined(__MINGW32__) || defined(__MINGW64__)
@@ -126,15 +152,6 @@
     #endif // defined(NT_PLATFORM_WINDOWS)
     #define NT_API NT_EXPORT
 #endif // defined(NT_STATIC), defined(NT_SHARED)
-
-// Define calling conventions
-#if defined(NT_PLATFORM_WINDOWS)
-    #define NT_CALLBACK __stdcall
-    #define NT_CDECL __cdecl
-#else // (NOT) defined(NT_PLATFORM_WINDOWS)
-    #define NT_CALLBACK __attribute__((stdcall))
-    #define NT_CDECL __attribute__((cdecl))
-#endif // defined(NT_PLATFORM_WINDOWS)
 
 // Define other macros
 #define NT_UNUSED(x) (void)(x)
