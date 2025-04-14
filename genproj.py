@@ -145,7 +145,7 @@ if os.name == 'nt':
     if not os.path.exists(os.path.join(gen_dir, 'Build.bat')):
         with open(os.path.join(gen_dir, 'Build.bat'), 'w') as f:
             f.write(build_contents)
-elif :
+else:
     if not os.path.exists(os.path.join(gen_dir, 'Build.sh')):
         with open(os.path.join(gen_dir, 'Build.sh'), 'w') as f:
             f.write(build_contents)
