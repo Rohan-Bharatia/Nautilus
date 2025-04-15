@@ -39,6 +39,5 @@
 #include "Platform/NativeHandle.h"
 #include "Platform/Window.h"
 #include "Platform/Input.h"
-#include "Platform/Renderer.h"
 
 #endif // _NT_CORE_H_

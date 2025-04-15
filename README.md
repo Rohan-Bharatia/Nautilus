@@ -8,19 +8,19 @@ This project is released under the [GNU General Public License](https://www.gnu.
 
 ## Requirements & Dependencies
 
-This project is built in C++23.
+This project is built in C++23 with [CMake](https://cmake.org).
 
 ---
 
-|*Platform*|*Windowing API*|*Graphics API*|
-|-|-|-|
-|Windows|Win32 API|OpenGL (WGL)|
-|Unix (Not Apple)|XLib|OpenGL (GLX)|
-|MacOS|Cocoa|OpenGL (CGL)|
-|iOS|UIKit|OpenGL (CGL)|
-|Android|Android JNI|OpenGL (GLES)|
-|WASM|Emscripten HTML5|OpenGL (WebGL)|
+|*Platform*|*Windowing API*|
+|-|-|
+|Windows|Win32 API|
+|Unix (Not Apple)|XLib|
+|MacOS|Cocoa|
+|iOS|UIKit|
+|Android|Android JNI|
+|WASM|Emscripten HTML5|
 
 ## Project Generation
 
-Run the [`Genproj.py`](https://github.com/Rohan-Bharatia/Nautilus/blob/main/genproj.py) script to generate a CMake project for your platform.
+Run the [`genproj.py`](https://github.com/Rohan-Bharatia/Nautilus/blob/main/genproj.py) script to generate a CMake project for your platform.

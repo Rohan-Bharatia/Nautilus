@@ -23,7 +23,6 @@ public:
 
 private:
     std::unique_ptr<nt::Window> m_window;
-    std::unique_ptr<nt::Renderer> m_renderer;
 };
 
 #endif // _APP_H_
@@ -38,8 +37,7 @@ app_cpp_contents = """
 
 MyApplication::MyApplication()
 {
-    m_window   = std::make_unique<nt::Window>();
-    m_renderer = std::make_unique<nt::Renderer>();
+    m_window = std::make_unique<nt::Window>();
 
     nt::Logger::debug(\"Nautilus Engine v%s\", NT_VERSION_STR);
     nt::Logger::debug(R\"(
@@ -61,37 +59,21 @@ MyApplication::MyApplication()
         nt::Logger::error(\"Failed to initialize window!\");
         abort();
     }
-
-    if (!m_renderer->initialize(*m_window))
-    {
-        nt::Logger::error(\"Failed to initialize renderer!\");
-        abort();
-    }
 }
 
 MyApplication::~MyApplication()
 {
     m_window.reset();
-    m_renderer.reset();
 }
 
 void MyApplication::run()
 {
-    nt::Vertex a(nt::Vec3f( 0.5f, -0.5f, 0.0f), nt::Vec2f(0.0f, 0.0f), NT_COLOR_RED);
-    nt::Vertex b(nt::Vec3f(-0.5f, -0.5f, 0.0f), nt::Vec2f(1.0f, 0.0f), NT_COLOR_GREEN);
-    nt::Vertex c(nt::Vec3f(-0.0f,  0.5f, 0.0f), nt::Vec2f(0.5f, 1.0f), NT_COLOR_BLUE);
-
     while (m_window->pollEvents())
     {
         if (nt::Input<nt::InputType::KEYBOARD>::isKeyPressed(nt::Key::ESCAPE))
             break;
 
         m_window->update();
-        m_renderer->clear(NT_COLOR_WHITE);
-        m_renderer->beginFrame();
-        m_renderer->drawTriangle(a, b, c);
-        m_renderer->endFrame();
-        m_renderer->swapBuffers();
     }
 
     m_window->close();
