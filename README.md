@@ -12,14 +12,16 @@ This project is built in C++23 with [CMake](https://cmake.org).
 
 ---
 
-|*Platform*|*Windowing API*|
-|-|-|
-|Windows|Win32 API|
-|Unix (Not Apple)|XLib|
-|MacOS|Cocoa|
-|iOS|UIKit|
-|Android|Android JNI|
-|WASM|Emscripten HTML5|
+### Platform Specific Dependencies
+
+|*Platform*|*Windowing API*|*Graphics API*|
+|-|-|-|
+|Windows|Win32 API|OpenGL or Vulkan|
+|Linux/BSD|XLib|OpenGL or Vulkan|
+|MacOS|Cocoa|OpenGL or Vulkan|
+|iOS|UIKit|OpenGL or Vulkan|
+|Android|Android JNI|OpenGL or Vulkan|
+|WASM|Emscripten HTML5|OpenGL ~~or Vulkan~~|
 
 ## Project Generation
 
