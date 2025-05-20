@@ -1,10 +1,4 @@
-build/
-build-*/
-!build-scripts/
-buildbot/
-/VERSION.txt
-__pycache__
-
+# Compiled files
 *.so
 *.so.*
 *.dll
@@ -28,34 +22,14 @@ __pycache__
 *.tmp
 *.rej
 
-# for CMake
-.cmake
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-cmake_uninstall.cmake
-install_manifest.txt
-*Targets.cmake
-*Config.cmake
-*ConfigVersion.cmake
-CTestTestfile.cmake
-Testing
-compile_commands.json
-.cache/
-/include-config-*
-/include-revision
-/Makefile
-.ninja_*
-*.ninja
-*.pc
-test/*.test
-wayland-generated-protocols
+# CMake
+Build/
 
-# for CLion
+# CLion IDE
 .idea
 cmake-build-*
 
-# for Xcode
+# Xcode IDE
 *.mode1*
 *.perspective*
 *.pbxuser
@@ -65,10 +39,10 @@ xcuserdata
 *.xcworkspace
 Xcode/build.xcconfig
 
-# for Visual Studio Code
+# Visual Studio Code IDE
 .vscode/
 
-# for Visual C++
+# Visual C++ IDE
 .vs
 Debug
 Release
@@ -99,6 +73,6 @@ src/render/direct3d12/D3D12_*_Series.h
 src/gpu/d3d12/D3D12_*_One.h
 src/gpu/d3d12/D3D12_*_Series.h
 
-# for Android
+# Android IDE
 android-project/local.properties
 android-project/.gradle/
