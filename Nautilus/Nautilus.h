@@ -17,7 +17,7 @@
 #ifndef _NAUTILUS_H_
     #define _NAUTILUS_H_
 
-#include "Core/Preprocessor.h"
+#include "Core.h"
 #include "EntryPoint.h"
 
 #define NT_VERSION_MAJOR 1
@@ -25,7 +25,7 @@
 #define NT_VERSION_PATCH 0
 #define NT_VERSION_INT (NT_VERSION_MAJOR * 100 + NT_VERSION_MINOR * 10 + NT_VERSION_PATCH)
 #define NT_VERSION_STRING NT_STRINGIFY(NT_VERSION_MAJOR) "." NT_STRINGIFY(NT_VERSION_MINOR) "." NT_STRINGIFY(NT_VERSION_PATCH)
-#define NT_VERSION_PRETTY "v" NT_STRINGIFY(NT_VERSION_MAJOR) "." NT_STRINGIFY(NT_VERSION_MINOR) "." NT_STRINGIFY(NT_VERSION_PATCH)
+#define NT_VERSION_PRETTY "v" NT_VERSION_STRING
 #define NT_VERSION_CHECK(major, minor, patch)                                                    \
     (NT_VERSION_MAJOR > (major) ||                                                               \
     (NT_VERSION_MAJOR == (major) && NT_VERSION_MINOR > (minor)) ||                               \

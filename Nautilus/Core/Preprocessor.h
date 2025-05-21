@@ -193,32 +193,6 @@
 	#endif // defined(__USING_MCFGTHREAD__), defined(_REENTRANT)
 #endif // NT_COMPILER_MINGW
 
-// C preprocessors
-#ifdef NT_CPP_VERSION
-    #ifndef NULL
-        #define NULL 0
-    #endif // NULL
-    #ifndef nullptr
-        #define nullptr 0
-    #endif // nullptr
-#else // (NOT) NT_CPP_VERSION
-    #ifndef NULL
-        #define NULL ((void*)0)
-    #endif // NULL
-    #ifndef nullptr
-        #define nullptr ((void*)0)
-    #endif // nullptr
-    #ifndef bool
-        #define bool unsigned char
-    #endif // bool
-    #ifndef true
-        #define true 1
-    #endif // true
-    #ifndef false
-        #define false 0
-    #endif // false
-#endif // NT_CPP_VERSION
-
 // Platform detection
 #if defined(_WIN32) || defined(_WIN64)
     #ifndef WIN32_LEAN_AND_MEAN
@@ -340,10 +314,14 @@
 #endif // defined(_DEBUG) || defined(DEBUG)
 
 // Miscellaneous macros
-#define NT_PREFIX(a, prefix) prefix##a
-#define NT_SUFFIX(a, suffix) a##suffix
-#define NT_CONCAT(a, b) a##b
-#define NT_STRINGIFY(x) #x
+#define __NT_PREFIX__(a, prefix) prefix##a
+#define NT_PREFIX(a, prefix) __NT_PREFIX__(a, prefix)
+#define __NT_SUFFIX__(a, suffix) a##suffix
+#define NT_SUFFIX(a, suffix) __NT_SUFFIX__(a, suffix)
+#define __NT_CONCAT__(a, b) a##b
+#define NT_CONCAT(a, b) __NT_CONCAT__(a, b)
+#define __NT_STRINGIFY__(x) #x
+#define NT_STRINGIFY(x) __NT_STRINGIFY__(x)
 #define NT_EXPAND(x) x
 #define NT_DISCARD(x) (void)x
 #define NT_CLEAR(x) memset(&x, 0, sizeof(x))
@@ -367,5 +345,50 @@ namespace Nt
     using float32 = float;
     using float64 = double;
 } // namespace Nt
+
+// Type casting macros
+#ifdef NT_CPP_VERSION
+    #define NT_STATIC_CAST(type, value) static_cast<type>(value)
+    #define NT_REINTERPRET_CAST(type, value) reinterpret_cast<type>(value)
+    #define NT_CONST_CAST(type, value) const_cast<type>(value)
+    #define NT_DYNAMIC_CAST(type, value) dynamic_cast<type>(value)
+#else // (NOT) NT_CPP_VERSION
+    #define NT_STATIC_CAST(type, value) (type)(value)
+    #define NT_REINTERPRET_CAST(type, value) (type)(value)
+    #define NT_CONST_CAST(type, value) (type)(value)
+    #define NT_DYNAMIC_CAST(type, value) (type)(value)
+#endif // NT_CPP_VERSION
+
+// Min/max macros
+#define NT_INT8_MIN NT_STATIC_CAST(signed char, ~0x7F)
+#define NT_INT8_MAX NT_STATIC_CAST(signed char, 0x7F)
+#define NT_INT8_EPSILON NT_STATIC_CAST(signed char, 1)
+#define NT_INT16_MIN NT_STATIC_CAST(signed short, ~0x7FFF)
+#define NT_INT16_MAX NT_STATIC_CAST(signed short, 0x7FFF)
+#define NT_INT16_EPSILON NT_STATIC_CAST(signed short, 1)
+#define NT_INT32_MIN NT_STATIC_CAST(signed long, ~0x7FFFFFFF)
+#define NT_INT32_MAX NT_STATIC_CAST(signed long, 0x7FFFFFFF)
+#define NT_INT32_EPSILON NT_STATIC_CAST(signed long, 1)
+#define NT_INT64_MIN NT_STATIC_CAST(signed long long, ~0x7FFFFFFFFFFFFFFF)
+#define NT_INT64_MAX NT_STATIC_CAST(signed long long, 0x7FFFFFFFFFFFFFFF)
+#define NT_INT64_EPSILON NT_STATIC_CAST(signed long long, 1)
+#define NT_UINT8_MIN NT_STATIC_CAST(unsigned char, 0)
+#define NT_UINT8_MAX NT_STATIC_CAST(unsigned char, 0xFF)
+#define NT_UINT8_EPSILON NT_STATIC_CAST(unsigned char, 1)
+#define NT_UINT16_MIN NT_STATIC_CAST(unsigned short, 0)
+#define NT_UINT16_MAX NT_STATIC_CAST(unsigned short, 0xFFFF)
+#define NT_UINT16_EPSILON NT_STATIC_CAST(unsigned short, 1)
+#define NT_UINT32_MIN NT_STATIC_CAST(unsigned long, 0)
+#define NT_UINT32_MAX NT_STATIC_CAST(unsigned long, 0xFFFFFFFF)
+#define NT_UINT32_EPSILON NT_STATIC_CAST(unsigned long, 1)
+#define NT_UINT64_MIN NT_STATIC_CAST(unsigned long long, 0)
+#define NT_UINT64_MAX NT_STATIC_CAST(unsigned long long, 0xFFFFFFFFFFFFFFFF)
+#define NT_UINT64_EPSILON NT_STATIC_CAST(unsigned long long, 1)
+#define NT_FLOAT32_MIN NT_STATIC_CAST(float, 1.175494351e-38F)
+#define NT_FLOAT32_MAX NT_STATIC_CAST(float, 3.402823466e+38F)
+#define NT_FLOAT32_EPSILON NT_STATIC_CAST(float, 1.192092896e-07F)
+#define NT_FLOAT64_MIN NT_STATIC_CAST(double, 2.2250738585072014e-308)
+#define NT_FLOAT64_MAX NT_STATIC_CAST(double, 1.7976931348623158e+308)
+#define NT_FLOAT64_EPSILON NT_STATIC_CAST(double, 2.2204460492503131e-16)
 
 #endif // _CORE_PREPROCESSOR_H_

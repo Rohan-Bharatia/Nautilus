@@ -17,6 +17,8 @@
 #ifndef _PCH_H_
     #define _PCH_H_
 
+#include "Core/Preprocessor.h"
+
 #if __has_include(<algorithm>)
     #include <algorithm>
 #endif // __has_include(<algorithm>)

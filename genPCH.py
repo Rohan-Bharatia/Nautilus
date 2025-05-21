@@ -128,6 +128,8 @@ with open("Nautilus/PCH.h", "w") as f:
 
 #ifndef _PCH_H_
     #define _PCH_H_
+
+#include "Core/Preprocessor.h"
 \n""")
     for include in includes:
         f.write(f"#if __has_include(<{include}>)\n")

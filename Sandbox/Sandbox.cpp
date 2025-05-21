@@ -17,11 +17,19 @@
 
 #include <Nautilus/Nautilus.h>
 
-class SandboxApplication : public Nt::Application
+class SandboxApplication :
+    public Nt::Application
 {
 public:
     SandboxApplication(void)
-    {}
+    {
+        Nt::Logger::Trace("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
+        Nt::Logger::Debug("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
+        Nt::Logger::Info("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
+        Nt::Logger::Warn("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
+        Nt::Logger::Error("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
+        Nt::Logger::Critical("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
+    }
 
     ~SandboxApplication(void)
     {}

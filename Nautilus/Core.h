@@ -14,21 +14,11 @@
 
 #pragma once
 
-#ifndef _CORE_APPLICATION_H_
-    #define _CORE_APPLICATION_H_
+#ifndef _CORE_H_
+    #define _CORE_H_
 
-#include "PCH.h"
+#include "Core/Preprocessor.h"
+#include "Core/Application.h"
+#include "Core/Logger.h"
 
-namespace Nt
-{
-    class NT_API Application
-    {
-    public:
-        Application(void);
-        virtual ~Application(void);
-
-        void Run(void);
-    };
-} // namespace Nt
-
-#endif // _CORE_APPLICATION_H_
+#endif // _CORE_H_

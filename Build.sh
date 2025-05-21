@@ -7,7 +7,7 @@ mkdir -p Build
 
 echo "Compiling with CMake..."
 cd Build
-cmake -G "Unix Makefiles" ../Sandbox
+cmake -G "Unix Makefiles" -S ../Sandbox
 cmake --build .
 
 echo "Done..."
