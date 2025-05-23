@@ -12,21 +12,24 @@
 
 #pragma endregion LICENSE
 
-#ifndef _CORE_APPLICATION_CPP_
-    #define _CORE_APPLICATION_CPP_
+#ifndef _CORE_ANDROID_BATTERY_CPP_
+    #define _CORE_ANDROID_BATTERY_CPP_
 
-#include "Application.h"
+#include "../DeviceInfo.h"
 
 namespace Nt
 {
-    Application::Application(int32 argc, char** argv)
-    {}
-
-    void Application::Run(void)
+    float32 GetBatteryLevel(void)
     {
-        while (true);
+        BatteryManager bm = (BatteryManager)Context::Get().GetSystemService(Context::BATTERY_SERVICE);
+
+        if (bm == nullptr)
+            return -1.0f;
+
+        int32 level = bm->GetIntProperty(BatteryManager::BATTERY_PROPERTY_CAPACITY);
+
+        return level < 0 ? -1.0f : NT_STATIC_CAST(float32, level) / 100.0f;
     }
 } // namespace Nt
 
-
-#endif // _CORE_APPLICATION_CPP_
+#endif // _CORE_ANDROID_BATTERY_CPP_

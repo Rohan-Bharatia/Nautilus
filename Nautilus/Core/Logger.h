@@ -30,11 +30,14 @@ namespace Nt
         Warn,
         Error,
         Critical,
+        Count,
     };
 
     class NT_API Logger
     {
     public:
+        NT_CLASS_DEFAULTS(Logger)
+
         static void Log(LogLevel level, const std::string& message, ...);
         static void Trace(const std::string& message, ...);
         static void Debug(const std::string& message, ...);

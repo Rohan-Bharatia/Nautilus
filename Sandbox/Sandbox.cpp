@@ -21,23 +21,17 @@ class SandboxApplication :
     public Nt::Application
 {
 public:
-    SandboxApplication(void)
-    {
-        Nt::Logger::Trace("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
-        Nt::Logger::Debug("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
-        Nt::Logger::Info("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
-        Nt::Logger::Warn("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
-        Nt::Logger::Error("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
-        Nt::Logger::Critical("Welcome to Nautilus Engine %s (Build %d)!", NT_VERSION_PRETTY, NT_VERSION_INT);
-    }
+    SandboxApplication(Nt::int32 argc, char** argv) :
+        Nt::Application(argc, argv)
+    {}
 
     ~SandboxApplication(void)
     {}
 };
 
-Nt::Application* Nt::CreateApplication(void)
+Nt::Application* Nt::CreateApplication(Nt::int32 argc, char** argv)
 {
-    return new SandboxApplication();
+    return new SandboxApplication(argc, argv);
 }
 
 #endif // _SANDBOX_CPP_

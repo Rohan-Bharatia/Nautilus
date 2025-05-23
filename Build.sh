@@ -1,6 +1,8 @@
 #!/bin/bash
 
-python3 genPCH.py
+echo "Generate preprocessor files with Python..."
+python3 Scripts/genPCH.py
+python3 Scripts/genDefs.py
 
 echo "Creating build directory..."
 mkdir -p Build

@@ -1,5 +1,3 @@
-#pragma region LICENSE
-
 //                    GNU GENERAL PUBLIC LICENSE
 //                       Version 3, 29 June 2007
 //
@@ -10,25 +8,14 @@
 //
 //                  Copyright (c) Rohan Bharatia 2025
 
-#pragma endregion LICENSE
-
-#pragma once
-
-#ifndef _CORE_APPLICATION_H_
-    #define _CORE_APPLICATION_H_
-
-#include "PCH.h"
+#import "../DeviceInfo.h"
 
 namespace Nt
 {
-    class NT_API Application
+    float32 GetBatteryLevel(void)
     {
-    public:
-        NT_CLASS_DEFAULTS(Application)
-        Application(int32 argc, char** argv);
-        
-        void Run(void);
-    };
+        [UIDevice currentDevice].batteryMonitoringEnabled = YES;
+        float32 level                                     = [UIDevice currentDevice].batteryLevel;
+        return (level < 0.0f) ? -1.0f : level;
+    }
 } // namespace Nt
-
-#endif // _CORE_APPLICATION_H_

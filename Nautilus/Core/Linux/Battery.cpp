@@ -12,23 +12,26 @@
 
 #pragma endregion LICENSE
 
-#pragma once
+#ifndef _CORE_LINUX_BATTERY_CPP_
+    #define _CORE_LINUX_BATTERY_CPP_
 
-#ifndef _CORE_APPLICATION_H_
-    #define _CORE_APPLICATION_H_
-
-#include "PCH.h"
+#include "../DeviceInfo.h"
 
 namespace Nt
 {
-    class NT_API Application
+    float32 GetBatteryLevel(void)
     {
-    public:
-        NT_CLASS_DEFAULTS(Application)
-        Application(int32 argc, char** argv);
-        
-        void Run(void);
-    };
+        std::ifstream file("/sys/class/power_supply/BAT0/capacity");
+        int level = -1;
+
+        if (file.is_open())
+        {
+            file >> level;
+            file.close();
+        }
+
+        return NT_STATIC_CAST(float32, level) / 100.0f;
+    }
 } // namespace Nt
 
-#endif // _CORE_APPLICATION_H_
+#endif // _CORE_LINUX_BATTERY_CPP_

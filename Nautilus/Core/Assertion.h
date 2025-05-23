@@ -14,21 +14,15 @@
 
 #pragma once
 
-#ifndef _CORE_APPLICATION_H_
-    #define _CORE_APPLICATION_H_
+#ifndef _CORE_ASSERTION_H_
+    #define _CORE_ASSERTION_H_
 
-#include "PCH.h"
+#include "Logger.h"
 
-namespace Nt
-{
-    class NT_API Application
-    {
-    public:
-        NT_CLASS_DEFAULTS(Application)
-        Application(int32 argc, char** argv);
-        
-        void Run(void);
-    };
-} // namespace Nt
+#if defined(NT_PLATFORM_MICROSOFT)
+    #define NT_ASSERT(condition, message) { if(!(condition)) { Nt::Logger::Critical(message); __debugbreak(); } }
+#else // (NOT) defined(NT_PLATFORM_MICROSOFT)
+    #define NT_ASSERT(condition, message) { if(!(condition)) { Nt::Logger::Critical(message); __builtin_trap(); } }
+#endif // defined(NT_PLATFORM_MICROSOFT)
 
-#endif // _CORE_APPLICATION_H_
+#endif // _CORE_ASSERTION_H_

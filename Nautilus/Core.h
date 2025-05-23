@@ -19,6 +19,13 @@
 
 #include "Core/Preprocessor.h"
 #include "Core/Application.h"
+#include "Core/Bits.h"
 #include "Core/Logger.h"
+#include "Core/Assertion.h"
+#include "Core/Endian.h"
+#include "Core/Atom.h"
+#include "Core/DeviceInfo.h"
+#include "Core/Filesystem.h"
+#include "Core/Timer.h"
 
 #endif // _CORE_H_

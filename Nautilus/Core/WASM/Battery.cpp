@@ -12,23 +12,27 @@
 
 #pragma endregion LICENSE
 
-#pragma once
+#ifndef _CORE_WASM_BATTERY_CPP_
+    #define _CORE_WASM_BATTERY_CPP_
 
-#ifndef _CORE_APPLICATION_H_
-    #define _CORE_APPLICATION_H_
-
-#include "PCH.h"
+#include "../DeviceInfo.h"
 
 namespace Nt
 {
-    class NT_API Application
+    float32 GetBatteryLevel(void)
     {
-    public:
-        NT_CLASS_DEFAULTS(Application)
-        Application(int32 argc, char** argv);
-        
-        void Run(void);
-    };
+        float32 batteryLevel = -1.0f;
+
+        EM_JS(void, getBatteryLevel, (),
+        {
+            navigator.getBattery().then(function(battery)
+            {
+                batteryLevel = NT_STATIC_CAST(float32, battery.level) / 100.0f;
+            });
+        });
+
+        return batteryLevel;
+    }
 } // namespace Nt
 
-#endif // _CORE_APPLICATION_H_
+#endif // _CORE_WASM_BATTERY_CPP_

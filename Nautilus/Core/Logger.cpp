@@ -17,6 +17,8 @@
 
 #include "Logger.h"
 
+#include "Timer.h"
+
 namespace Nt
 {
     void Logger::Log(LogLevel level, const std::string& message, ...)
@@ -56,11 +58,7 @@ namespace Nt
         }
 
         // Get the current time
-        std::time_t now    = std::time(nullptr);
-        std::tm* localTime = std::localtime(&now);
-        char timeBuffer[20];
-        std::strftime(timeBuffer, sizeof(timeBuffer), "%Y-%m-%d %H:%M:%S", localTime);
-        timeStr            = std::string(timeBuffer);
+        timeStr = Timer::GetDateTime();
 
         // Format the message
         va_list args;

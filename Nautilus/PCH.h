@@ -338,4 +338,51 @@
     #include <vector>
 #endif // __has_include(<vector>)
 
+#if defined(NT_PLATFORM_WINDOWS)
+    #include <Windows.h>
+    #include <intrin.h>
+#elif defined(NT_PLATFORM_LINUX)
+    #include <unistd.h>
+    #include <fstream>
+    #include <cstring>
+    #include <cpuid.h>
+    #include <X11/Xlib.h>
+    #include <X11/Xutil.h>
+    #include <X11/Xatom.h>
+#elif defined(NT_PLATFORM_MACOS)
+    #ifdef __OBJC__
+        #import <Cocoa/Cocoa.h>
+        #import <QuartzCore/QuartzCore.h>
+        #include <IOKit/ps/IOPowerSources.h>
+        #include <IOKit/ps/IOPSKeys.h>
+    #endif // __OBJC__
+    #include <sys/sysctl.h>
+    #include <sys/types.h>
+    #include <sys/sysctl.h>
+    #include <unistd.h>
+    #include <cpuid.h>
+#elif defined(NT_PLATFORM_IOS)
+    #ifdef __OBJC__
+        #import <UIKit/UIKit.h>
+        #import <QuartzCore/QuartzCore.h>
+    #endif // __OBJC__
+    #include <sys/sysctl.h>
+    #include <sys/types.h>
+    #include <sys/sysctl.h>
+    #include <unistd.h>
+    #include <cpuid.h>
+#elif defined(NT_PLATFORM_ANDROID)
+    #include <android/log.h>
+    #include <android/native_activity.h>
+    #include <android/native_window.h>
+    #include <android/asset_manager.h>
+    #include <android/api-level.h>
+    #include <unistd.h>
+    #include <sys/sysinfo.h>
+    #include <cpu-features.h>
+#elif defined(NT_PLATFORM_WASM)
+    #include <emscripten/emscripten.h>
+    #include <emscripten/html5.h>
+#endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID), defined(NT_PLATFORM_WASM)
+
 #endif // _PCH_H_

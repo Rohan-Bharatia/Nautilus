@@ -12,7 +12,8 @@
 
 #pragma endregion LICENSE
 
-#pragma once
+// Disable '#pragma once' for the python CMake platform generator
+// #pragma once
 
 #ifndef _CORE_PREPROCESSOR_H_
     #define _CORE_PREPROCESSOR_H_
@@ -30,9 +31,9 @@
 #define NT_CPP20 202002L
 #define NT_CPP23 202302L
 #define NT_CHECK_CPP_VERSION(version) (NT_CPP_VERSION >= version)
-#if !NT_CHECK_CPP_VERSION(NT_CPP17)
-    #error Nautilus Engine requires C++17 or higher!
-#endif // !NT_CHECK_CPP_VERSION(NT_CPP17)
+// #if !NT_CHECK_CPP_VERSION(NT_CPP17)
+//     #error Nautilus Engine requires C++17 or higher!
+// #endif // !NT_CHECK_CPP_VERSION(NT_CPP17)
 
 // Compiler detection
 #if defined(__clang__)
@@ -210,90 +211,57 @@
         #define NT_DEVICE_DESKTOP
         #define NT_EXPORT __declspec(dllexport)
         #define NT_IMPORT __declspec(dllimport)
-    #elif WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-        #define NT_PLATFORM_XBOX
-        #define NT_DEVICE_CONSOLE
-        #define NT_EXPORT __declspec(dllexport)
-        #define NT_IMPORT __declspec(dllimport)
-    #else // (NOT) WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP), WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+    #else // (NOT) WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
         #define NT_PLATFORM_UNKNOWN
         #define NT_DEVICE_UNKNOWN
         #define NT_EXPORT
         #define NT_IMPORT
         #error Nautilus Engine does not support this Microsoft platform!
-    #endif // WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP), WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-#elif defined(__unix__)
-    #if defined(__linux__)
-        #define NT_PLATFORM_LINUX
+    #endif // WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#elif defined(__APPLE__)
+    #include <TargetConditionals.h>
+    #if TARGET_OS_MAC
+        #define NT_PLATFORM_MACOS
         #define NT_DEVICE_DESKTOP
         #define NT_EXPORT __attribute__((__visibility__("default")))
         #define NT_IMPORT __attribute__((__visibility__("default")))
-    #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-        #define NT_PLATFORM_FREEBSD
-        #define NT_DEVICE_DESKTOP
-        #define NT_EXPORT __attribute__((__visibility__("default")))
-        #define NT_IMPORT __attribute__((__visibility__("default")))
-    #elif defined(__OpenBSD__)
-        #define NT_PLATFORM_OPENBSD
-        #define NT_DEVICE_DESKTOP
-        #define NT_EXPORT __attribute__((__visibility__("default")))
-        #define NT_IMPORT __attribute__((__visibility__("default")))
-    #elif defined(__NetBSD__)
-        #define NT_PLATFORM_NETBSD
-        #define NT_DEVICE_DESKTOP
-        #define NT_EXPORT __attribute__((__visibility__("default")))
-        #define NT_IMPORT __attribute__((__visibility__("default")))
-    #elif defined(__APPLE__)
-        #include <TargetConditionals.h>
-        #if TARGET_OS_MAC
-            #define NT_PLATFORM_MACOS
-            #define NT_DEVICE_DESKTOP
-            #define NT_EXPORT __attribute__((__visibility__("default")))
-            #define NT_IMPORT __attribute__((__visibility__("default")))
-        #elif TARGET_OS_IPHONE
-            #define NT_PLATFORM_IOS
-            #define NT_DEVICE_MOBILE
-            #define NT_EXPORT __attribute__((__visibility__("default")))
-            #define NT_IMPORT __attribute__((__visibility__("default")))
-        #elif TARGET_OS_TV
-            #define NT_PLATFORM_TVOS
-            #define NT_DEVICE_TV
-            #define NT_EXPORT __attribute__((__visibility__("default")))
-            #define NT_IMPORT __attribute__((__visibility__("default")))
-        #else // (NOT) TARGET_OS_MAC, TARGET_OS_IPHONE, TARGET_OS_TV
-            #define NT_PLATFORM_UNKNOWN
-            #define NT_DEVICE_UNKNOWN
-            #define NT_EXPORT
-            #define NT_IMPORT
-            #error Nautilus Engine does not support this Apple platform!
-        #endif // TARGET_OS_MAC, TARGET_OS_IPHONE, TARGET_OS_TV
-    #elif defined(__ANDROID__)
-        #if !__has_include(<android/ndk-version.h>)
-            #error Nautilus Engine requires a more recent Android NDK version, please update!
-        #endif
-        #define NT_PLATFORM_ANDROID
+    #elif TARGET_OS_IPHONE
+        #define NT_PLATFORM_IOS
         #define NT_DEVICE_MOBILE
         #define NT_EXPORT __attribute__((__visibility__("default")))
         #define NT_IMPORT __attribute__((__visibility__("default")))
-    #elif defined(__EMSCRIPTEN__)
-        #define NT_PLATFORM_EMSCRIPTEN
-        #define NT_DEVICE_BROWSER
-        #define NT_EXPORT __attribute__((__visibility__("default")))
-        #define NT_IMPORT __attribute__((__visibility__("default")))
-    #else // (NOT) defined(__linux__), defined(__FreeBSD__) || defined(__FreeBSD_kernel__), defined(__OpenBSD__), defined(__NetBSD__), defined(__APPLE__), defined(__ANDROID__), defined(__EMSCRIPTEN__)
+    #else // (NOT) TARGET_OS_MAC, TARGET_OS_IPHONE
         #define NT_PLATFORM_UNKNOWN
         #define NT_DEVICE_UNKNOWN
         #define NT_EXPORT
         #define NT_IMPORT
-        #error Nautilus Engine does not support this Unix platform!
-    #endif // defined(__linux__), defined(__FreeBSD__) || defined(__FreeBSD_kernel__), defined(__OpenBSD__), defined(__NetBSD__), defined(__APPLE__), defined(__ANDROID__), defined(__EMSCRIPTEN__)
-#else // (NOT) defined(_WIN32) || defined(_WIN64), defined(__unix__)
+        #error Nautilus Engine does not support this Apple platform!
+    #endif // TARGET_OS_MAC, TARGET_OS_IPHONE
+#elif defined(__ANDROID__)
+    #if !__has_include(<android/ndk-version.h>)
+        #error Nautilus Engine requires a more recent Android NDK version, please update!
+    #endif
+    #define NT_PLATFORM_ANDROID
+    #define NT_DEVICE_MOBILE
+    #define NT_EXPORT __attribute__((__visibility__("default")))
+    #define NT_IMPORT __attribute__((__visibility__("default")))
+#elif defined(__EMSCRIPTEN__)
+    #define NT_PLATFORM_WASM
+    #define NT_DEVICE_BROWSER
+    #define NT_EXPORT __attribute__((__visibility__("default")))
+    #define NT_IMPORT __attribute__((__visibility__("default")))
+#elif defined(__unix__) // Do linux last so that it doesn't catch other platforms
+    #define NT_PLATFORM_LINUX
+    #define NT_DEVICE_DESKTOP
+    #define NT_EXPORT __attribute__((__visibility__("default")))
+    #define NT_IMPORT __attribute__((__visibility__("default")))
+#else // (NOT) defined(_WIN32) || defined(_WIN64), defined(__APPLE__), defined(__ANDROID__), defined(__EMSCRIPTEN__), defined(__unix__)
     #define NT_PLATFORM_UNKNOWN
     #define NT_DEVICE_UNKNOWN
     #define NT_EXPORT
     #define NT_IMPORT
     #error Nautilus Engine does not support this platform!
-#endif // defined(_WIN32) || defined(_WIN64), defined(__unix__)
+#endif // defined(_WIN32) || defined(_WIN64), defined(__APPLE__), defined(__ANDROID__), defined(__EMSCRIPTEN__), defined(__unix__)
 
 // Nautilus API macro
 #ifdef NT_STATIC
@@ -326,8 +294,13 @@
 #define NT_DISCARD(x) (void)x
 #define NT_CLEAR(x) memset(&x, 0, sizeof(x))
 #define NT_ARRAY_COUNT(x) (sizeof(x) / sizeof(x[0]))
-#define NT_SAFE_DELTE(ptr) delete ptr; ptr = nullptr
-#define NT_SAFE_DELETE_ARRAY(ptr) delete[] ptr; ptr = nullptr
+#define NT_SAFE_DELETE(ptr) free(ptr); delete ptr; ptr = nullptr
+#define NT_SAFE_DELETE_ARRAY(ptr) free(ptr); delete[] ptr; ptr = nullptr
+#define NT_CLASS_DEFAULTS(classname)                  \
+    classname(const classname&)            = default; \
+    classname(classname&&)                 = default; \
+    classname& operator=(const classname&) = default; \
+    classname& operator=(classname&&)      = default; \
 
 // C++ primitive types
 namespace Nt

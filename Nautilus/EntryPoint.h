@@ -21,15 +21,29 @@
 
 namespace Nt
 {
-    extern Application* CreateApplication(void);
+    extern Application* CreateApplication(int32 argc, char** argv);
 } // namespace Nt
 
 int main(int argc, char* argv[])
 {
-    auto app = Nt::CreateApplication();
-    app->Run();
-    NT_SAFE_DELTE(app);
-    return 0;
+    try
+    {
+        auto app = Nt::CreateApplication(NT_STATIC_CAST(Nt::int32, argc), argv);
+        app->Run();
+        NT_SAFE_DELETE(app);
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception& e)
+    {
+        Nt::Logger::Critical("Exception: {%s}!", e.what());
+        return EXIT_FAILURE;
+    }
+    catch (...)
+    {
+        Nt::Logger::Critical("Unknown exception occurred!");
+        return EXIT_FAILURE;
+    }
+    return EXIT_FAILURE;
 }
 
 #endif // _ENTRY_POINT_H_

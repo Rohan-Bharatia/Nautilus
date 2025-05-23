@@ -25,6 +25,9 @@
 # CMake
 Build/
 
+# Nautilus
+Nautilus/PlatformDefs.cmake
+
 # CLion IDE
 .idea
 cmake-build-*

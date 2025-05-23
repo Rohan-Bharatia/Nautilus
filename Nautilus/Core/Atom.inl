@@ -12,23 +12,25 @@
 
 #pragma endregion LICENSE
 
-#pragma once
+#ifndef _CORE_ATOM_INL_
+    #define _CORE_ATOM_INL_
 
-#ifndef _CORE_APPLICATION_H_
-    #define _CORE_APPLICATION_H_
-
-#include "PCH.h"
+#include "Atom.h"
 
 namespace Nt
 {
-    class NT_API Application
+    template<typename T>
+    T Atomic<T>::operator=(const T& value)
     {
-    public:
-        NT_CLASS_DEFAULTS(Application)
-        Application(int32 argc, char** argv);
-        
-        void Run(void);
-    };
+        m_value.store(value, std::memory_order_seq_cst);
+        return value;
+    }
+
+    template<typename T>
+    Atomic<T>::operator T() const
+    {
+        return m_value.load(std::memory_order_seq_cst);
+    }
 } // namespace Nt
 
-#endif // _CORE_APPLICATION_H_
+#endif // _CORE_ATOM_INL_
