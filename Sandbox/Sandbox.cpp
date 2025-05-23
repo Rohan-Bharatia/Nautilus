@@ -23,7 +23,9 @@ class SandboxApplication :
 public:
     SandboxApplication(Nt::int32 argc, char** argv) :
         Nt::Application(argc, argv)
-    {}
+    {
+        Nt::Logger::Info("%f", Nt::GetBatteryLevel());
+    }
 
     ~SandboxApplication(void)
     {}

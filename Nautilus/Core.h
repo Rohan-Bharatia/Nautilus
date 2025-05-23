@@ -17,6 +17,7 @@
 #ifndef _CORE_H_
     #define _CORE_H_
 
+// Core
 #include "Core/Preprocessor.h"
 #include "Core/Application.h"
 #include "Core/Bits.h"
@@ -27,5 +28,18 @@
 #include "Core/DeviceInfo.h"
 #include "Core/Filesystem.h"
 #include "Core/Timer.h"
+
+// Math
+#include "Core/Angle.h"
+#include "Core/Vec2.h"
+#include "Core/Vec3.h"
+#include "Core/Vec4.h"
+#include "Core/Mat3x3.h"
+#include "Core/Mat4x4.h"
+#include "Core/Ray2.h"
+#include "Core/Ray3.h"
+#include "Core/Rect.h"
+#include "Core/Color.h"
+#include "Core/Vertex.h"
 
 #endif // _CORE_H_

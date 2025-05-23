@@ -296,6 +296,8 @@
 #define NT_ARRAY_COUNT(x) (sizeof(x) / sizeof(x[0]))
 #define NT_SAFE_DELETE(ptr) free(ptr); delete ptr; ptr = nullptr
 #define NT_SAFE_DELETE_ARRAY(ptr) free(ptr); delete[] ptr; ptr = nullptr
+#define NT_MODULUS(T, a, b) (a - NT_STATIC_CAST(T, NT_STATIC_CAST(Nt::int32, a / b)) * b) >= NT_STATIC_CAST(T, 0) ? (a - static_cast<T>(static_cast<Nt::int32>(a / b)) * b) : (a - static_cast<T>(static_cast<Nt::int32>(a / b) - 1) * b) + b
+#define NT_CLAMP(x, min, max) ((x < min) ? min : ((x > max) ? max : x))
 #define NT_CLASS_DEFAULTS(classname)                  \
     classname(const classname&)            = default; \
     classname(classname&&)                 = default; \
@@ -332,7 +334,12 @@ namespace Nt
     #define NT_DYNAMIC_CAST(type, value) (type)(value)
 #endif // NT_CPP_VERSION
 
-// Min/max macros
+// Math constants
+#define NT_PI    3.1415926535897932384626433832795f
+#define NT_TAU   6.283185307179586476925286766559f
+#define NT_EULER 2.7182818284590452353602874713527f
+#define NT_SQRT2 1.4142135623730950488016887242097f
+#define NT_LOG2E 1.4426950408889634073599246810019f
 #define NT_INT8_MIN NT_STATIC_CAST(signed char, ~0x7F)
 #define NT_INT8_MAX NT_STATIC_CAST(signed char, 0x7F)
 #define NT_INT8_EPSILON NT_STATIC_CAST(signed char, 1)

@@ -14,6 +14,8 @@ add_executable(Sandbox Sandbox.cpp)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../Nautilus ${CMAKE_CURRENT_BINARY_DIR}/Nautilus)
 target_link_libraries(Sandbox Nautilus)
 
+target_compile_options(Sandbox PRIVATE "--template-depth=4096")
+
 target_include_directories(Nautilus PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
