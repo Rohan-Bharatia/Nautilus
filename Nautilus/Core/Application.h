@@ -18,6 +18,7 @@
     #define _CORE_APPLICATION_H_
 
 #include "PCH.h"
+#include "LayerStack.h"
 
 namespace Nt
 {
@@ -26,8 +27,17 @@ namespace Nt
     public:
         NT_CLASS_DEFAULTS(Application)
         Application(int32 argc, char** argv);
-        
+
+        void PushLayer(Layer* layer);
+        void PushOverlay(Layer* layer);
+
         void Run(void);
+
+        void OnEvent(Event& event);
+
+    private:
+        LayerStack m_layerStack;
+        bool m_running;
     };
 } // namespace Nt
 

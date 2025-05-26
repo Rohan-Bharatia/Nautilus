@@ -18,10 +18,6 @@ Nautilus Engine is released under the [GNU General Public License v3.0](https://
 > [!NOTE]
 > More platforms are in the works!
 
-## Dependencies
-
-Nautilus Engine uses [CMake](https://cmake.org/) for project management and builds and [Python](https://www.python.org/) for code generation.
-
 ## Build Instructions
 
-To build the engine, follow the instructions in the [build instructions](./docs/Build.md) document.
+To build the engine, follow the instructions in the [build instructions](https://github.com/Rohan-Bharatia/Nautilus/blob/main/docs/Build.md) document.

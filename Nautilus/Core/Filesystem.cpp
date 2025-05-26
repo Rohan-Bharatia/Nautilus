@@ -13,7 +13,7 @@
 #pragma endregion LICENSE
 
 #ifndef _CORE_FILESYSTEM_CPP_
-#define _CORE_FILESYSTEM_CPP_
+    #define _CORE_FILESYSTEM_CPP_
 
 #include "Filesystem.h"
 #include "Logger.h"

@@ -298,6 +298,7 @@
 #define NT_SAFE_DELETE_ARRAY(ptr) free(ptr); delete[] ptr; ptr = nullptr
 #define NT_MODULUS(T, a, b) (a - NT_STATIC_CAST(T, NT_STATIC_CAST(Nt::int32, a / b)) * b) >= NT_STATIC_CAST(T, 0) ? (a - static_cast<T>(static_cast<Nt::int32>(a / b)) * b) : (a - static_cast<T>(static_cast<Nt::int32>(a / b) - 1) * b) + b
 #define NT_CLAMP(x, min, max) ((x < min) ? min : ((x > max) ? max : x))
+#define NT_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 #define NT_CLASS_DEFAULTS(classname)                  \
     classname(const classname&)            = default; \
     classname(classname&&)                 = default; \

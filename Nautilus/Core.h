@@ -42,4 +42,14 @@
 #include "Core/Color.h"
 #include "Core/Vertex.h"
 
+// Events
+#include "Core/Event.h"
+#include "Core/KeyEvent.h"
+#include "Core/MouseEvent.h"
+#include "Core/ApplicationEvent.h"
+
+// Layers
+#include "Core/Layer.h"
+#include "Core/LayerStack.h"
+
 #endif // _CORE_H_

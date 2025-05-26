@@ -17,14 +17,45 @@
 
 #include <Nautilus/Nautilus.h>
 
+class SandboxLayer :
+    public Nt::Layer
+{
+public:
+    NT_CLASS_DEFAULTS(SandboxLayer)
+
+    SandboxLayer(void) :
+        Nt::Layer("Sandbox")
+    {}
+
+    ~SandboxLayer(void)
+    {}
+
+    void OnAttach(void) override
+    {}
+
+    void OnDetach(void) override
+    {}
+
+    void OnUpdate(void) override
+    {}
+
+    void OnEvent(Nt::Event& event) override
+    {}
+
+    void OnRender(void) override
+    {}
+};
+
 class SandboxApplication :
     public Nt::Application
 {
 public:
+    NT_CLASS_DEFAULTS(SandboxApplication)
+
     SandboxApplication(Nt::int32 argc, char** argv) :
         Nt::Application(argc, argv)
     {
-        Nt::Logger::Info("%f", Nt::GetBatteryLevel());
+        PushLayer(new SandboxLayer());
     }
 
     ~SandboxApplication(void)

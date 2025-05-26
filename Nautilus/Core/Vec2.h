@@ -17,7 +17,7 @@
 #ifndef _NT_CORE_MATH_VEC2_H_
     #define _NT_CORE_MATH_VEC2_H_
 
-#include "Preprocessor.h"
+#include "PCH.h"
 #include "Angle.h"
 
 namespace Nt
