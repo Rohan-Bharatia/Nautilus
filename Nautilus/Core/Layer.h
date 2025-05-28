@@ -29,7 +29,7 @@ namespace Nt
 
         virtual void OnAttach(void)        = 0;
         virtual void OnDetach(void)        = 0;
-        virtual void OnUpdate(void)        = 0;
+        virtual void OnUpdate(float32 dt)  = 0;
         virtual void OnEvent(Event& event) = 0;
         virtual void OnRender(void)        = 0;
 

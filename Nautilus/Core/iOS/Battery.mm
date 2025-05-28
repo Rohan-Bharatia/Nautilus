@@ -16,6 +16,6 @@ namespace Nt
     {
         [UIDevice currentDevice].batteryMonitoringEnabled = YES;
         float32 level                                     = [UIDevice currentDevice].batteryLevel;
-        return (level < 0.0f) ? -1.0f : level;
+        return (level < 0.0f) ? -1.0f : level * 100.0f;
     }
 } // namespace Nt

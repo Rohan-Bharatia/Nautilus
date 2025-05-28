@@ -19,6 +19,7 @@
 
 #include "PCH.h"
 #include "LayerStack.h"
+#include "ApplicationEvent.h"
 
 namespace Nt
 {
@@ -38,6 +39,8 @@ namespace Nt
     private:
         LayerStack m_layerStack;
         bool m_running;
+
+        bool OnWindowClose(WindowCloseEvent& event);
     };
 } // namespace Nt
 

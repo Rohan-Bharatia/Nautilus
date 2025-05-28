@@ -30,7 +30,7 @@ namespace Nt
             file.close();
         }
 
-        return NT_STATIC_CAST(float32, level) / 100.0f;
+        return NT_STATIC_CAST(float32, level);
     }
 } // namespace Nt
 

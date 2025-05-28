@@ -18,6 +18,9 @@
 #include "Application.h"
 
 #include "Logger.h"
+#include "Assertion.h"
+#include "DeviceInfo.h"
+#include "Timer.h"
 
 namespace Nt
 {
@@ -34,6 +37,8 @@ of this license document, but changing it is not allowed.
                                 ...
 
                  Copyright (c) Rohan Bharatia 2025)");
+
+        NT_ASSERT(GetBatteryLevel() > 20.0f, "Battery level too low! Please charge your device.");
     }
 
     void Application::PushLayer(Layer* layer)
@@ -48,11 +53,17 @@ of this license document, but changing it is not allowed.
 
     void Application::Run(void)
     {
+        Timer timer;
+        float32 prev = 0.0f;
         while (m_running)
         {
+            float32 current   = timer.GetElapsedTime();
+            float32 deltaTime = current - prev;
+            prev              = current;
+
             for (Layer* layer : m_layerStack)
             {
-                layer->OnUpdate();
+                layer->OnUpdate(deltaTime);
                 layer->OnRender();
             }
         }
@@ -61,6 +72,7 @@ of this license document, but changing it is not allowed.
     void Application::OnEvent(Event& event)
     {
         EventDispatcher dispatcher(event);
+        dispatcher.Dispatch<WindowCloseEvent>(NT_BIND_EVENT_FN(Application::OnWindowClose));
 
         if (m_layerStack.Size() == 0)
             Logger::Warn("Layer stack is empty!");
@@ -72,7 +84,12 @@ of this license document, but changing it is not allowed.
             (*it)->OnEvent(event);
         }
     }
-} // namespace Nt
 
+    bool Application::OnWindowClose(WindowCloseEvent& event)
+    {
+        m_running = false;
+        return true;
+    }
+} // namespace Nt
 
 #endif // _CORE_APPLICATION_CPP_

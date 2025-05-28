@@ -36,6 +36,6 @@ namespace Nt
         [CFRelease:list];
         [CFRelease:info];
 
-        return (maxcap > 0) ? cur / maxcap : -1.0f;
+        return (maxcap > 0) ? (cur / maxcap) * 100 : -1.0f;
     }
 } // namespace Nt

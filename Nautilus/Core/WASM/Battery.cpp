@@ -27,7 +27,7 @@ namespace Nt
         {
             navigator.getBattery().then(function(battery)
             {
-                batteryLevel = NT_STATIC_CAST(float32, battery.level) / 100.0f;
+                batteryLevel = NT_STATIC_CAST(float32, battery.level);
             });
         });
 

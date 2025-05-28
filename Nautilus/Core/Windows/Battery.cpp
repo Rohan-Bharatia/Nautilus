@@ -28,7 +28,7 @@ namespace Nt
             float32 batteryLevel = NT_STATIC_CAST(float32, sps.BatteryLifePercent);
 
             if (batteryLevel != 255.0f) // 255 indicates battery unavailable
-                return batteryLevel / 100.0f;
+                return batteryLevel;
             else
                 return -1.0f;
         }

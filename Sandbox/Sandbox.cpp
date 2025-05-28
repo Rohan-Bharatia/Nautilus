@@ -36,7 +36,7 @@ public:
     void OnDetach(void) override
     {}
 
-    void OnUpdate(void) override
+    void OnUpdate(Nt::float32 dt) override
     {}
 
     void OnEvent(Nt::Event& event) override

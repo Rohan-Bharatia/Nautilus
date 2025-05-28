@@ -28,7 +28,7 @@ namespace Nt
 
         int32 level = bm->GetIntProperty(BatteryManager::BATTERY_PROPERTY_CAPACITY);
 
-        return level < 0 ? -1.0f : NT_STATIC_CAST(float32, level) / 100.0f;
+        return level < 0 ? -1.0f : NT_STATIC_CAST(float32, level);
     }
 } // namespace Nt
 
