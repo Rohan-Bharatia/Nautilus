@@ -1,18 +1,15 @@
-name: CMake on multiple platforms
+name: CMake Build
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-
     strategy:
       fail-fast: false
-
       matrix:
         os: [ubuntu-latest, windows-latest]
         build_type: [Release]
@@ -35,25 +32,26 @@ jobs:
           - os: ubuntu-latest
             c_compiler: cl
 
+    runs-on: ${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v4
 
     - name: Set reusable strings
       id: strings
       shell: bash
-      run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+      run: echo "build-output-dir=${{ github.workspace }}/Build" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
       run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        cmake -B "${{ steps.strings.outputs.build-output-dir }}"
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}/Nautilus
+        -S "${{ github.workspace }}/Nautilus"
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build "${{ steps.strings.outputs.build-output-dir }}" --config ${{ matrix.build_type }}
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
