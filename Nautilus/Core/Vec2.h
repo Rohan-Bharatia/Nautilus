@@ -71,6 +71,9 @@ namespace Nt
         bool operator!=(const Vec2<T>& other) const;
         bool operator!=(const T& other) const;
 
+        // Conversion operators
+        operator T*(void) const;
+
         // Methods
         float32 Length(void) const;
         float32 LengthSquared(void) const;

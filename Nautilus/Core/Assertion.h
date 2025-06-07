@@ -19,10 +19,14 @@
 
 #include "Logger.h"
 
-#if defined(NT_PLATFORM_WINDOWS)
-    #define NT_ASSERT(condition, message) { if(!(condition)) { Nt::Logger::Critical(message); __debugbreak(); } }
-#else // (NOT) defined(NT_PLATFORM_WINDOWS)
-    #define NT_ASSERT(condition, message) { if(!(condition)) { Nt::Logger::Critical(message); __builtin_trap(); } }
-#endif // defined(NT_PLATFORM_WINDOWS)
+#ifdef NT_DEBUG
+    #ifdef NT_PLATFORM_WINDOWS
+        #define NT_ASSERT(condition, message) { if(!(condition)) { Nt::Logger::Critical(message); __debugbreak(); } }
+    #else // (NOT) NT_PLATFORM_WINDOWS
+        #define NT_ASSERT(condition, message) { if(!(condition)) { Nt::Logger::Critical(message); __builtin_trap(); } }
+    #endif // NT_PLATFORM_WINDOWS
+#else // (NOT) NT_DEBUG
+    #define NT_ASSERT(condition, message)
+#endif // NT_DEBUG
 
 #endif // _CORE_ASSERTION_H_

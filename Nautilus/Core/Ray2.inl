@@ -20,6 +20,20 @@
 namespace Nt
 {
     template<typename T>
+    Ray2<T>::Ray2(const Vec2<T>& origin, const Vec2<T>& direction) :
+        origin(origin), direction(direction)
+    {
+        NT_ASSERT(std::is_arithmetic<T>::value, "T must be numeric!");
+    }
+
+    template<typename T>
+    Ray2<T>::Ray2(T originX, T originY, T directionX, T directionY) :
+        origin(originX, originY), direction(directionX, directionY)
+    {
+        NT_ASSERT(std::is_arithmetic<T>::value, "T must be numeric!");
+    }
+
+    template<typename T>
     Ray2<T> Ray2<T>::operator+(const Ray2<T>& other) const
     {
         return Ray2<T>(origin + other, direction + other);
@@ -249,6 +263,66 @@ namespace Nt
     bool Ray2<T>::operator!=(const T& other) const
     {
         return origin != other || direction != other;
+    }
+
+    template<typename T>
+    Ray2<T>::operator float32*(void) const
+    {
+        return new T[4]{ origin.x, origin.y, direction.x, direction.y };
+    }
+
+    template<typename T>
+    bool Ray2<T>::Intersects(const Ray2<T>& other) const
+    {
+        return IntersectionPoint(other) != 0;
+    }
+
+    template<typename T>
+    Vec2<T> Ray2<T>::IntersectionPoint(const Ray2<T>& other) const
+    {
+        return origin + direction * (other.origin - origin) / (other.direction - direction);
+    }
+
+    template<typename T>
+    float32 Ray2<T>::Distance(const Vec2<T>& point) const
+    {
+        return (point - origin).Length();
+    }
+
+    template<typename T>
+    float32 Ray2<T>::Distance(const Ray2<T>& other) const
+    {
+        return (IntersectionPoint(other) - origin).Length();
+    }
+
+    template<typename T>
+    Ray2<T> Ray2<T>::Normalize(void) const
+    {
+        return Ray2<T>(origin, direction.Normalized());
+    }
+
+    template<typename T>
+    Vec2<T> Ray2<T>::Project(const Vec2<T>& other) const
+    {
+        return origin + direction * (other - origin).Dot(direction) / direction.Dot(direction);
+    }
+
+    template<typename T>
+    Vec2<T> Ray2<T>::Project(const Ray2<T>& other) const
+    {
+        return origin + direction * (other.origin - origin).Dot(direction) / direction.Dot(direction);
+    }
+
+    template<typename T>
+    Vec2<T> Ray2<T>::Reflect(const Vec2<T>& other) const
+    {
+        return (Project(other) * 2) - other;
+    }
+
+    template<typename T>
+    Vec2<T> Ray2<T>::Reflect(const Ray2<T>& other) const
+    {
+        return (Project(other) * 2) - other;
     }
 } // namespace Nt
 

@@ -21,6 +21,18 @@
 
 namespace Nt
 {
+    enum class ColorSpace
+    {
+        None = 0,
+        RGB,
+        HSV,
+        HSL,
+        CMYK,
+        LCH,
+        PQ,
+        HLG,
+    };
+
     class NT_API Color
     {
     public:
@@ -28,6 +40,8 @@ namespace Nt
         Color(float32 r, float32 g, float32 b, float32 a=1.0f);
         Color(const Vec3f& other, float32 a=1.0f);
         Color(const Vec4f& other);
+        template<typename... Args>
+        Color(ColorSpace c, Args&&... args);
 
         // Arithmetic operators
         Color operator+(const Color& other) const;
@@ -70,6 +84,17 @@ namespace Nt
         bool operator==(float32 other) const;
         bool operator!=(const Color& other) const;
         bool operator!=(float32 other) const;
+
+        // Conversion operators
+        operator float32*(void) const;
+
+        // Methods
+        Color hsv2rgb(float32 h, float32 s, float32 v, float32 a=1.0f);
+        Color hslrgb(float32 h, float32 s, float32 l, float32 a=1.0f);
+        Color cmyk2rgb(float32 c, float32 m, float32 y, float32 k, float32 a=1.0f);
+        Color lch2rgb(float32 l, float32 c, float32 h, float32 a=1.0f);
+        Color pq2rgb(float32 r, float32 g, float32 b, float32 n, float32 a=1.0f);
+        Color hlg2rgb(float32 r, float32 g, float32 b, float32 n, float32 a=1.0f);
 
         float32 r, g, b, a;
     };

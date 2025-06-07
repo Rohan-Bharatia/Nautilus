@@ -78,6 +78,9 @@ namespace Nt
         bool operator!=(const Mat4x4<T>& other) const;
         bool operator!=(const T& other) const;
 
+        // Conversion operators
+        operator T**(void) const;
+
         // Methods
         static Mat4x4<T> Identity(void);
         static Mat4x4<T> Perspective(T fovy, T aspect, T zNear, T zFar);
@@ -92,7 +95,7 @@ namespace Nt
         static Mat4x4<T> Translation(const Vec3<T>& other);
         Vec3<T> Rotate(const Vec3<T>& other) const;
         static Mat4x4<T> Rotation(Angle angle);
-        static Mat4x4<T> Rotation(const Vec3<T>& quaternion);
+        static Mat4x4<T> Rotation(const Quaternion<T>& quaternion);
         static Mat4x4<T> Rotation(Angle angle, const Vec3<T>& axis);
         static Mat4x4<T> Orthographic(T left, T right, T bottom, T top, T _near, T _far);
 

@@ -70,6 +70,9 @@ namespace Nt
         bool operator==(const T& other) const;
         bool operator!=(const Ray2<T>& other) const;
         bool operator!=(const T& other) const;
+        
+        // Conversion operators
+        operator T*(void) const;
 
         // Methods
         bool Intersects(const Ray2<T>& other) const;

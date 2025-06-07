@@ -25,6 +25,7 @@ namespace Nt
     struct NT_API ReadableVertex
     {
         float32 position[3];
+        float32 texCoord[2];
         float32 color[4];
     };
 
@@ -32,7 +33,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Vertex)
-        Vertex(const Vec3f& position, const Color& color);
+        Vertex(const Vec3f& position, const Vec2f& texCoord const Color& color);
 
         // Arithmetic operators
         Vertex operator+(const Vertex& other) const;
@@ -77,12 +78,13 @@ namespace Nt
         bool operator!=(float32 other) const;
 
         // Conversion operators
-        operator ReadableVertex(void) const;
+        operator float32*(void) const;
 
         // Methods
         ReadableVertex ToReadableVertex(void) const;
 
         Vec3f position;
+        Vec2f texCoord;
         Color color;
     };
 } // namespace Nt

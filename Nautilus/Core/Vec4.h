@@ -72,6 +72,9 @@ namespace Nt
         bool operator!=(const Vec4<T>& other) const;
         bool operator!=(const T& other) const;
 
+        // Conversion operators
+        operator T*(void) const;
+
         // Methods
         float32 Length(void) const;
         float32 LengthSquared(void) const;
@@ -95,6 +98,13 @@ namespace Nt
     using Vec4i = Vec4<int32>;
     using Vec4u = Vec4<uint32>;
     using Vec4d = Vec4<float64>;
+
+    template<typename T>
+    using Quaternion  = Vec4<T>;
+    using Quaternionf = Vec4f;
+    using Quaternioni = Vec4i;
+    using Quaternionu = Vec4u;
+    using Quaterniond = Vec4d;
 }
 
 #include "Vec4.inl"

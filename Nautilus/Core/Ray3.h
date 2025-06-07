@@ -73,6 +73,9 @@ namespace Nt
         bool operator!=(const Ray3<T>& other) const;
         bool operator!=(const T& other) const;
 
+        // Conversion operators
+        Ray3<T>::operator float32*(void) const;
+
         // Methods
         bool Intersects(const Ray3<T>& other) const;
         Vec3<T> IntersectionPoint(const Ray3<T>& other) const;

@@ -21,67 +21,68 @@
 
 namespace Nt
 {
-    Vertex::Vertex(const Vec3f& position, const Color& color) :
-        position(position), color(color)
+    Vertex::Vertex(const Vec3f& position, const Vec2f& texCoord const Color& color) :
+        position(position), texCoord(texCoord), color(color)
     {}
 
     Vertex Vertex::operator+(const Vertex& other) const
     {
-        return Vertex(position + other.position, color + other.color);
+        return Vertex(position + other.position, texCoord + other.texCoord, color + other.color);
     }
 
     Vertex Vertex::operator+(float32 other) const
     {
-        return Vertex(position + other, color);
+        return Vertex(position + other, texCoord, color);
     }
 
     Vertex Vertex::operator-(const Vertex& other) const
     {
-        return Vertex(position - other.position, color - other.color);
+        return Vertex(position - other.position, texCoord - other.texCoord, color - other.color);
     }
 
     Vertex Vertex::operator-(float32 other) const
     {
-        return Vertex(position - other, color);
+        return Vertex(position - other, texCoord, color);
     }
 
     Vertex Vertex::operator*(const Vertex& other) const
     {
-        return Vertex(position * other.position, color * other.color);
+        return Vertex(position * other.position, texCoord * other.texCoord, color * other.color);
     }
 
     Vertex Vertex::operator*(float32 other) const
     {
-        return Vertex(position * other, color);
+        return Vertex(position * other, texCoord, color);
     }
 
     Vertex Vertex::operator/(const Vertex& other) const
     {
-        NT_ASSERT(other.position == 0.0f && other.color == 0.0f, "Cannot divide by zero!");
-        return Vertex(position / other.position, color / other.color);
+        NT_ASSERT(other.position == 0.0f && other.texCoord == 0.0f && other.color == 0.0f, "Cannot divide by zero!");
+        return Vertex(position / other.position, texCoord / other.texCoord, color / other.color);
     }
 
     Vertex Vertex::operator/(float32 other) const
     {
         NT_ASSERT(other == 0.0f, "Cannot divide by zero!");
-        return Vertex(position / other, color);
+        return Vertex(position / other, texCoord, color);
     }
 
     Vertex Vertex::operator%(const Vertex& other) const
     {
-        NT_ASSERT(other.position == 0.0f && other.color == 0.0f, "Cannot modulus by zero!");
-        return Vertex(position % other.position, color % other.color);
+        NT_ASSERT(other.position == 0.0f && other.texCoor == 0.0f && dother.color == 0.0f, "Cannot modulus by zero!");
+        return Vertex(position % other.position, texCoord % other.texCoord, color % other.color);
     }
 
     Vertex Vertex::operator%(float32 other) const
     {
         NT_ASSERT(other == 0.0f, "Cannot modulus by zero!");
-        return Vertex(position % other, color);
+        return Vertex(position % other, texCoord, color);
     }
 
     Vertex Vertex::operator++(void)
     {
         ++position;
+        ++texCoord;
         ++color;
         return *this;
     }
@@ -96,6 +97,7 @@ namespace Nt
     Vertex Vertex::operator--(void)
     {
         --position;
+        --texCoord;
         --color;
         return *this;
     }
@@ -139,7 +141,7 @@ namespace Nt
 
     Vertex& Vertex::operator/=(const Vertex& other)
     {
-        NT_ASSERT(other.position == 0.0f && other.color == 0.0f, "Cannot divide by zero!");
+        NT_ASSERT(other.position == 0.0f && && other.texCoord == 0.0f && other.color == 0.0f, "Cannot divide by zero!");
         return *this = *this / other;
     }
 
@@ -151,7 +153,7 @@ namespace Nt
 
     Vertex& Vertex::operator%=(const Vertex& other)
     {
-        NT_ASSERT(other.position == 0.0f && other.color == 0.0f, "Cannot modulus by zero!");
+        NT_ASSERT(other.position == 0.0f && other.texCoord == 0.0f && other.color == 0.0f, "Cannot modulus by zero!");
         return *this = *this % other;
     }
 
@@ -163,72 +165,72 @@ namespace Nt
 
     bool Vertex::operator>(const Vertex& other) const
     {
-        return (position > other.position && color > other.color);
+        return (position > other.position && texCoord > other.texCoord && color > other.color);
     }
 
     bool Vertex::operator>(float32 other) const
     {
-        return (position > other && color > other);
+        return (position > other && texCoord > other && color > other);
     }
 
     bool Vertex::operator>=(const Vertex& other) const
     {
-        return (position >= other.position && color >= other.color);
+        return (position >= other.position && texCoord >= other.texCoord && color >= other.color);
     }
 
     bool Vertex::operator>=(float32 other) const
     {
-        return (position >= other && color >= other);
+        return (position >= other && texCoord >= other && color >= other);
     }
 
     bool Vertex::operator<(const Vertex& other) const
     {
-        return (position < other.position && color < other.color);
+        return (position < other.position && texCoord < other.texCoord && color < other.color);
     }
 
     bool Vertex::operator<(float32 other) const
     {
-        return (position < other && color < other);
+        return (position < other && texCoord < other && color < other);
     }
 
     bool Vertex::operator<=(const Vertex& other) const
     {
-        return (position <= other.position && color <= other.color);
+        return (position <= other.position && texCoord <= other.texCoord && color <= other.color);
     }
 
     bool Vertex::operator<=(float32 other) const
     {
-        return (position <= other && color <= other);
+        return (position <= other && texCoord <= other && color <= other);
     }
 
     bool Vertex::operator==(const Vertex& other) const
     {
-        return (position == other.position && color == other.color);
+        return (position == other.position && texCoord == other.texCoord && color == other.color);
     }
 
     bool Vertex::operator==(float32 other) const
     {
-        return (position == other && color == other);
+        return (position == other && texCoord == other && color == other);
     }
 
     bool Vertex::operator!=(const Vertex& other) const
     {
-        return (position != other.position || color != other.color);
+        return (position != other.position || texCoord != other.texCoord || color != other.color);
     }
 
     bool Vertex::operator!=(float32 other) const
     {
-        return (position != other || color != other);
+        return (position != other || texCoord != other.texCoord || color != other);
     }
 
-    Vertex::operator ReadableVertex(void) const
+    Vertex::operator float32*(void) const
     {
-        return ReadableVertex{ { position.x, position.y, position.z }, { color.r, color.g, color.b, color.a } };
+        return new float32[9]{ position.x, position.y, position.z, texCoord.x, texCoord.y, color.r, color.g, color.b, color.a };
     }
 
     ReadableVertex Vertex::ToReadableVertex(void) const
     {
-        return (ReadableVertex)(*this);
+        return ReadableVertex{ { position.x, position.y, position.z }, { texCoord.x, texCoord.y }, { color.r, color.g, color.b, color.a } };
     }
 } // namespace Nt
 

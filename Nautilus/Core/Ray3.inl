@@ -20,6 +20,27 @@
 namespace Nt
 {
     template<typename T>
+    Ray3<T>::Ray3(const Vec3<T>& origin, const Vec3<T>& direction) :
+        origin(origin), direction(direction)
+    {
+        NT_ASSERT(std::is_arithmetic<T>::value, "T must be numeric!");
+    }
+
+    template<typename T>
+    Ray3<T>::Ray3(T originX, T originY, T originZ, T directionX, T directionY , T directionZ) :
+        origin(originX, originY, originZ), direction(directionX, directionY, directionZ)
+    {
+        NT_ASSERT(std::is_arithmetic<T>::value, "T must be numeric!");
+    }
+
+    template<typename T>
+    Ray3<T>::Ray3(const Ray3<T>& other, T originZ, T directionZ) :
+        origin(other.origin.x, other.origin.y, originZ), direction(other.direction.x, other.direction.y, directionZ)
+    {
+        NT_ASSERT(std::is_arithmetic<T>::value, "T must be numeric!");
+    }
+
+    template<typename T>
     Ray3<T> Ray3<T>::operator+(const Ray3<T>& other) const
     {
         return Ray3<T>(origin + other, direction + other);
@@ -249,6 +270,66 @@ namespace Nt
     bool Ray3<T>::operator!=(const T& other) const
     {
         return origin != other || direction != other;
+    }
+
+    template<typename T>
+    Ray3<T>::operator float32*(void) const
+    {
+        return new T[6]{ origin.x, origin.y, origin.z, direction.x, direction.y, direction.z };
+    }
+
+    template<typename T>
+    bool Ray3<T>::Intersects(const Ray3<T>& other) const
+    {
+        return IntersectionPoint(other) != 0;
+    }
+
+    template<typename T>
+    Vec3<T> Ray3<T>::IntersectionPoint(const Ray3<T>& other) const
+    {
+        return origin + direction * (other.origin - origin) / (other.direction - direction);
+    }
+
+    template<typename T>
+    float32 Ray3<T>::Distance(const Vec3<T>& point) const
+    {
+        return (point - origin).Length();
+    }
+
+    template<typename T>
+    float32 Ray3<T>::Distance(const Ray3<T>& other) const
+    {
+        return (IntersectionPoint(other) - origin).Length();
+    }
+
+    template<typename T>
+    Ray3<T> Ray3<T>::Normalize(void) const
+    {
+        return Ray3<T>(origin, direction.Normalized());
+    }
+
+    template<typename T>
+    Vec3<T> Ray3<T>::Project(const Vec3<T>& other) const
+    {
+        return origin + direction * (other - origin).Dot(direction) / direction.Dot(direction);
+    }
+
+    template<typename T>
+    Vec3<T> Ray3<T>::Project(const Ray3<T>& other) const
+    {
+        return origin + direction * (other.origin - origin).Dot(direction) / direction.Dot(direction);
+    }
+
+    template<typename T>
+    Vec3<T> Ray3<T>::Reflect(const Vec3<T>& other) const
+    {
+        return (Project(other) * 2) - other;
+    }
+
+    template<typename T>
+    Vec3<T> Ray3<T>::Reflect(const Ray3<T>& other) const
+    {
+        return (Project(other) * 2) - other;
     }
 } // namespace Nt
 
