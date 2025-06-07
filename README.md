@@ -1,10 +1,10 @@
 # ⚓ Nautilus Engine ⚓
 
-![Windows Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/windows-build.yml)
+![Windows Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/windows-build.yml/badge.svg)
 
-![Linux Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/linux-build.yml)
+![Linux Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/linux-build.yml/badge.svg)
 
-![MacOS Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/macos-build.yml)
+![MacOS Build](https://github.com/Rohan-Bharatia/Nautilus/actions/workflows/macos-build.yml/badge.svg)
 
 ---
 
