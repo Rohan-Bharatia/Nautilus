@@ -12,27 +12,28 @@
 
 #pragma endregion LICENSE
 
-#ifndef _CORE_WASM_BATTERY_CPP_
-    #define _CORE_WASM_BATTERY_CPP_
+#pragma once
 
-#include "../DeviceInfo.h"
+#ifndef _NT_CORE_POINTER_H_
+    #define _NT_CORE_POINTER_H_
+
+#include "PCH.h"
 
 namespace Nt
 {
-    float32 GetBatteryLevel(void)
-    {
-        float32 batteryLevel = -1.0f;
+    template<typename T>
+    using Scope = std::unique_ptr<T>;
 
-        EM_JS(void, getBatteryLevel, (),
-        {
-            navigator.getBattery().then(function(battery)
-            {
-                batteryLevel = NT_STATIC_CAST(float32, battery.level);
-            });
-        });
+    template<typename T, typename... Args>
+    const Scope<T> CreateScope(Args&&... args);
 
-        return batteryLevel;
-    }
+    template<typename T>
+    using Ref = std::shared_ptr<T>;
+
+    template<typename T, typename... Args>
+    const Ref<T> CreateRef(Args&&... args);
 } // namespace Nt
 
-#endif // _CORE_WASM_BATTERY_CPP_
+#include "Pointer.inl"
+
+#endif // _NT_CORE_POINTER_H_

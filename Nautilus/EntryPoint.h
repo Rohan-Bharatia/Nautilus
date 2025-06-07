@@ -24,6 +24,29 @@ namespace Nt
     extern Application* CreateApplication(int32 argc, char** argv);
 } // namespace Nt
 
+#ifdef NT_PLATFORM_WINDOWS
+int APIENTRY WinMain(HINSTANCE hinstance, HINSTANCE hinstancePrev, PSTR cmdline, int cmdshow)
+{
+    try
+    {
+        auto app = Nt::CreateApplication(NT_STATIC_CAST(Nt::int32, __argc), __argv);
+        app->Run();
+        NT_SAFE_DELETE(app);
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception& e)
+    {
+        Nt::Logger::Critical("Exception: {%s}!", e.what());
+        return EXIT_FAILURE;
+    }
+    catch (...)
+    {
+        Nt::Logger::Critical("Unknown exception occurred!");
+        return EXIT_FAILURE;
+    }
+    return EXIT_FAILURE;
+}
+#else // (NOT) NT_PLATFORM_WINDOWS
 int main(int argc, char* argv[])
 {
     try
@@ -45,5 +68,6 @@ int main(int argc, char* argv[])
     }
     return EXIT_FAILURE;
 }
+#endif // NT_PLATFORM_WINDOWS
 
 #endif // _ENTRY_POINT_H_

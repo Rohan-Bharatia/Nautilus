@@ -12,26 +12,24 @@
 
 #pragma endregion LICENSE
 
-#ifndef _CORE_LINUX_BATTERY_CPP_
-    #define _CORE_LINUX_BATTERY_CPP_
+#ifndef _NT_CORE_POINTER_INL_
+    #define _NT_CORE_POINTER_INL_
 
-#include "../DeviceInfo.h"
+#include "Pointer.h"
 
 namespace Nt
 {
-    float32 GetBatteryLevel(void)
+    template<typename T, typename... Args>
+    const Scope<T> CreateScope(Args&&... args)
     {
-        std::ifstream file("/sys/class/power_supply/BAT0/capacity");
-        int level = -1;
+        return std::make_unique<T>(std::forward<Args>(args)...);
+    }
 
-        if (file.is_open())
-        {
-            file >> level;
-            file.close();
-        }
-
-        return NT_STATIC_CAST(float32, level);
+    template<typename T, typename... Args>
+    const Ref<T> CreateRef(Args&&... args)
+    {
+        return std::make_shared<T>(std::forward<Args>(args)...);
     }
 } // namespace Nt
 
-#endif // _CORE_LINUX_BATTERY_CPP_
+#endif // _NT_CORE_POINTER_INL_

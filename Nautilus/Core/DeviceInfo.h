@@ -21,14 +21,8 @@
 
 namespace Nt
 {
-    class NT_API CPUInfo
+    struct NT_API DeviceInfo
     {
-    public:
-        NT_CLASS_DEFAULTS(CPUInfo)
-
-        static uint32 GetLogicalCoreCount(void);
-        static uint32 GetCacheLineSize(void);
-        static uint32 GetSystemRAM(void);
         static uint32 GetSIMDAlignment(void);
         static bool HasAltiVec(void);
         static bool HasMMX(void);
@@ -45,12 +39,15 @@ namespace Nt
         static bool HasLSX(void);
         static bool HasLASX(void);
 
-    private:
+        static uint32 GetLogicalCoreCount(void);
+        static uint32 GetCacheLineSize(void);
+        static uint32 GetSystemRAM(void);
+        static float32 GetAvailableDiskSpace(void);
+        static float32 GetBatteryLevel(void);
+
         static void CPUID(int32 info[4], uint32 id);
         static bool CheckX86Feature(uint32 reg, uint32 bit);
     };
-
-    NT_API float32 GetBatteryLevel(void);
 } // namespace Nt
 
 #endif // _CORE_DEVICE_INFO_H_

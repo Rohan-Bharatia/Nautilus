@@ -28,6 +28,7 @@
 #include "Core/DeviceInfo.h"
 #include "Core/Filesystem.h"
 #include "Core/Timer.h"
+#include "Core/Pointer.h"
 
 // Math
 #include "Core/Angle.h"

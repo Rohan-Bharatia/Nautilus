@@ -6,10 +6,7 @@ def check_first_run() -> bool:
         return True
     return False
 
-if not check_first_run():
-    with open('PCH.txt', 'w') as f:
-        f.write('PCH has been generated!')
-else:
+if check_first_run():
     # A list of standard library headers to include in the precompiled header
     includes = [
         'algorithm',

@@ -19,7 +19,30 @@
 
 namespace Nt
 {
-    float32 GetBatteryLevel(void)
+    uint32 DeviceInfo::GetLogicalCoreCount(void)
+    {
+        return NT_STATIC_CAST(uint32, sysconf(_SC_NPROCESSORS_ONLN));
+    }
+
+    uint32 DeviceInfo::GetCacheLineSize(void)
+    {
+        return 64; // Default cache line size for Android
+    }
+
+    uint32 DeviceInfo::GetSystemRAM(void)
+    {
+        struct sysinfo info;
+        sysinfo(&info);
+        return NT_STATIC_CAST(uint32, (info.totalram * info.mem_unit) / (1024 * 1024));
+    }
+
+    float32 DeviceInfo::GetAvailableDiskSpace(void)
+    {
+        StatFs statFs = new StatFs(Environment.getDataDirectory().getPath());
+        return NT_STATIC_CAST(float32, statFs.getBlockCount() * statFs.getBlockSize());
+    }
+
+    float32 DeviceInfo::GetBatteryLevel(void)
     {
         BatteryManager bm = (BatteryManager)Context::Get().GetSystemService(Context::BATTERY_SERVICE);
 

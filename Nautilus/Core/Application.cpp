@@ -38,7 +38,7 @@ of this license document, but changing it is not allowed.
 
                  Copyright (c) Rohan Bharatia 2025)");
 
-        NT_ASSERT(GetBatteryLevel() > 20.0f, "Battery level too low! Please charge your device.");
+        NT_ASSERT(DeviceInfo::GetBatteryLevel() > 20.0f, "Battery level too low! Please charge your device.");
     }
 
     void Application::PushLayer(Layer* layer)

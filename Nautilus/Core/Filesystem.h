@@ -19,6 +19,8 @@
 
 #include "PCH.h"
 
+#include "Pointer.h"
+
 namespace Nt
 {
     struct NT_API Node
@@ -28,7 +30,7 @@ namespace Nt
         Node* parent;
     };
 
-    using NodeMap = std::unordered_map<std::string, std::unique_ptr<Node>>;
+    using NodeMap = std::unordered_map<std::string, Scope<Node>>;
 
     struct NT_API File :
         public Node
@@ -60,7 +62,7 @@ namespace Nt
         void Remove(const std::string& path);
 
     private:
-        std::unique_ptr<Directory> m_root;
+        Scope<Directory> m_root;
         Directory* m_current;
 
         Node* ResolvePath(const std::string& path);

@@ -12,7 +12,35 @@
 
 namespace Nt
 {
-    float32 GetBatteryLevel(void)
+    uint32 DeviceInfo::GetLogicalCoreCount(void)
+    {
+        return NT_STATIC_CAST(uint32, [sysconf:_SC_NPROCESSORS_ONLN]);
+    }
+
+    uint32 DeviceInfo::GetCacheLineSize(void)
+    {
+        uint32 lineSize;
+        opsize size = sizeof(lineSize);
+        [sysctlbyname:["hw.cachelinesize", &lineSize, &size, 0, 0]];
+        return lineSize;
+    }
+
+    uint32 DeviceInfo::GetSystemRAM(void)
+    {
+        int64 memSize;
+        opsize size = sizeof(memSize);
+        [sysctlbyname:["hw.memsize", &memSize, &size, 0, 0]];
+        return NT_STATIC_CAST(uint32, memSize / (1024 * 1024));
+    }
+
+    float32 DeviceInfo::GetAvailableDiskSpace(void)
+    {
+        struct statfs stats;
+        [statvfs:["/", &stats]];
+        return NT_STATIC_CAST(float32, stats.f_blocks * stats.f_bsize);
+    }
+
+    float32 DeviceInfo::GetBatteryLevel(void)
     {
         CFTypeRef info  = [IOPSCopyPowerSourceInfo];
         CFArrayRef list = [IOPSCopyPowerSourcesList:info];

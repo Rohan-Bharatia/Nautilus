@@ -21,7 +21,7 @@
 namespace Nt
 {
     Filesystem::Filesystem(void)
-        : m_root(std::make_unique<Directory>())
+        : m_root(CreateScope<Directory>())
     {
         m_root->name        = ".";
         m_root->isDirectory = true;
@@ -35,7 +35,7 @@ namespace Nt
     }
 
     Filesystem::Filesystem(std::string root)
-        : m_root(std::make_unique<Directory>())
+        : m_root(CreateScope<Directory>())
     {
         m_root->name        = root;
         m_root->isDirectory = true;
