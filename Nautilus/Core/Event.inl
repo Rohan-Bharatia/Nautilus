@@ -24,7 +24,7 @@ namespace Nt
     {
         if (m_event.GetEventType() == T::GetStaticType())
         {
-            m_event.SetHandled(func(static_cast<T&>(m_event)));
+            m_event.SetHandled(func(NT_STATIC_CAST(T&, m_event)));
             return true;
         }
         return false;

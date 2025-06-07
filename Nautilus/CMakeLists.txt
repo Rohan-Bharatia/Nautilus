@@ -43,6 +43,44 @@ target_include_directories(Nautilus PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/Core
 )
 
+if(NT_PLATFORM_WINDOWS)
+    # Windows does not currently have any external dependencies
+elseif(NT_PLATFORM_LINUX)
+    target_link_libraries(Nautilus PRIVATE
+        X11
+        pthread
+        dl
+    )
+elseif(NT_PLATFORM_MACOS)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(QUARTZ_LIBRARY QuartzCore)
+    find_library(IOKIT_LIBRARY IOKit)
+
+    target_link_libraries(Nautilus PRIVATE
+        ${COCOA_LIBRARY}
+        ${QUARTZ_LIBRARY}
+        ${IOKIT_LIBRARY}
+    )
+elseif(NT_PLATFORM_IOS)
+    find_library(UIKIT_LIBRARY UIKit)
+    find_library(QUARTZ_LIBRARY QuartzCore)
+
+    target_link_libraries(Nautilus PRIVATE
+        ${UIKIT_LIBRARY}
+        ${QUARTZ_LIBRARY}
+    )
+elseif(NT_PLATFORM_ANDROID)
+    target_link_libraries(Nautilus PRIVATE
+        android
+        log
+    )
+elseif(NT_PLATFORM_WASM)
+    target_link_libraries(Nautilus PRIVATE
+        "-sUSE_WEBGPU=1"
+        "-sASYNCIFY"
+    )
+endif()
+
 set_target_properties(Nautilus PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin

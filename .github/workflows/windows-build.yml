@@ -1,0 +1,34 @@
+name: Windows Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install CMake
+        uses: lukka/get-cmake@v3.27.0
+        with:
+          cmakeVersion: '3.27.0'
+          
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Verify dependencies
+        run: |
+          cmake --version
+          python --version
+          cl
+
+      - name: Run
+        run: ./Build.bat

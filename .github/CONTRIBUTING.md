@@ -52,7 +52,8 @@ Notify any collaborators to get editor access or to push requests.
 - [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [Intall CMake](https://cmake.org/install/)
 
-> [!NOTE] Read the main [README](https://github.com/Rohan-Bharatia/Nautilus/blob/main/README.md) for more information on platform specific requirements
+> [!NOTE]
+> Read the main [README](https://github.com/Rohan-Bharatia/Nautilus/blob/main/README.md) for more information on platform specific requirements
 
 ### Installation
 
@@ -79,7 +80,7 @@ Notify any collaborators to get editor access or to push requests.
 Nautilus Engine is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0).
 By contributing to Nautilus, all of your contributions will be licensed under and you agree to all the terms of a [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0)
 
-- **\*I suggest that you read the license and code of conduct thouroghly before contributing anything\***.
+- **\*I highly suggest that you read the license and code of conduct thouroghly before contributing anything\***.
 
 ## Security
 
