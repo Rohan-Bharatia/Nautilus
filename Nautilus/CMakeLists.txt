@@ -38,12 +38,9 @@ list(APPEND Nautilus_SOURCES ${Nautilus_PLATFORM_SOURCES})
 add_library(Nautilus SHARED ${Nautilus_SOURCES})
 target_precompile_headers(Nautilus PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/PCH.h)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../GLAD)
-
 target_include_directories(Nautilus PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Core
-    ${CMAKE_CURRENT_SOURCE_DIR}/../GLAD/include
 )
 
 if(NT_PLATFORM_WINDOWS)

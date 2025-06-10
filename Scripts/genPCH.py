@@ -150,11 +150,18 @@ if check_first_run():
             f.write(f'    #include <{include}>\n')
             f.write(f'#endif // __has_include(<{include}>)\n')
         f.write('''
-    #include <glad/gl.h>
     #if defined(NT_PLATFORM_WINDOWS)
+        #ifndef UNICODE
+            #define UNICODE
+        #endif // UNICODE
+        #ifndef NOMINMAX
+            #define NOMINMAX
+        #endif // NOMINMAX
+        #ifndef WIN32_LEAN_AND_MEAN
+            #define WIN32_LEAN_AND_MEAN
+        #endif // WIN32_LEAN_AND_MEAN
         #include <Windows.h>
         #include <intrin.h>
-        #include <glad/wgl.h>
         #include <d3d12.h>
         #include <dxgi1_6.h>
         #include <d3dcompiler.h>
@@ -162,6 +169,9 @@ if check_first_run():
         #include <DirectXMath.h>
         using namespace Microsoft::WRL;
     #elif defined(NT_PLATFORM_LINUX)
+        #ifndef VK_USE_PLATFORM_X11_KHR
+            #define VK_USE_PLATFORM_X11_KHR
+        #endif // VK_USE_PLATFORM_X11_KHR
         #include <unistd.h>
         #include <fstream>
         #include <cstring>
@@ -169,9 +179,7 @@ if check_first_run():
         #include <X11/Xlib.h>
         #include <X11/Xutil.h>
         #include <X11/Xatom.h>
-        #include <glad/glx.h>
         #include <vulkan/vulkan.h>
-        #include <vulkan/vulkan_xlib.h>
     #elif defined(NT_PLATFORM_MACOS)
         #ifdef __OBJC__
             #import <Cocoa/Cocoa.h>
@@ -184,7 +192,6 @@ if check_first_run():
         #include <sys/types.h>
         #include <unistd.h>
         #include <cpuid.h>
-        #include <glad/egl.h>
     #elif defined(NT_PLATFORM_IOS)
         #ifdef __OBJC__
             #import <UIKit/UIKit.h>
@@ -197,8 +204,10 @@ if check_first_run():
         #include <sys/types.h>
         #include <unistd.h>
         #include <cpuid.h>
-        #include <glad/gles2.h>
     #elif defined(NT_PLATFORM_ANDROID)
+        #ifndef VK_USE_PLATFORM_ANDROID_KHR
+            #define VK_USE_PLATFORM_ANDROID_KHR
+        #endif // VK_USE_PLATFORM_ANDROID_KHR
         #include <android/log.h>
         #include <android/native_activity.h>
         #include <android/native_window.h>
@@ -207,14 +216,10 @@ if check_first_run():
         #include <unistd.h>
         #include <sys/sysinfo.h>
         #include <cpu-features.h>
-        #include <glad/gles2.h>
         #include <vulkan/vulkan.h>
-        #include <vulkan/vulkan_android.h>
     #elif defined(NT_PLATFORM_WASM)
         #include <emscripten/emscripten.h>
         #include <emscripten/html5.h>
-        #include <glad/gles2.h>
-        #include <emscripten/html5_webgl.h>
         #include <emscripten/html5_webgpu.h>
     #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID), defined(NT_PLATFORM_WASM)
     ''')
