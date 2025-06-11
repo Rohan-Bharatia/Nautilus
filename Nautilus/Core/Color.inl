@@ -21,7 +21,7 @@
 
 namespace Nt
 {
-    template<float Default=1.0f, typename... Args>
+    template<float32 Default=1.0f, typename... Args>
     std::tuple<float32, float32, float32, float32> assignWithDefault(Args&&... args)
     {
         NT_ASSERT(sizeof...(Args) <= 5, "Too many arguments for color components");

@@ -30,7 +30,10 @@ namespace Nt
 
         void Start(void);
         void Stop(void);
-        float64 GetElapsedTime(void);
+        void Reset(void);
+
+        float64 GetElapsedMillis(void);
+        float64 GetElapsedSeconds(void);
 
         static std::string GetDate(void);
         static std::string GetTime(void);

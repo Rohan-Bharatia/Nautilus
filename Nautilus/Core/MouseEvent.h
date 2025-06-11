@@ -21,50 +21,50 @@
 
 namespace Nt
 {
-    class MouseButtonEvent :
+    class NT_API MouseButtonEvent :
         public Event
     {
     public:
         NT_CLASS_DEFAULTS(MouseButtonEvent)
         MouseButtonEvent(void) = default;
 
-        int GetMouseButton() const;
+        uint32 GetMouseButton() const;
 
         NT_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
     protected:
-        int m_button;
+        uint32 m_button;
 
-        MouseButtonEvent(int button);
+        MouseButtonEvent(uint32 button);
     };
 
-    class MouseButtonPressedEvent :
+    class NT_API MouseButtonPressedEvent :
         public MouseButtonEvent
     {
     public:
         NT_CLASS_DEFAULTS(MouseButtonPressedEvent)
         MouseButtonPressedEvent(void) = default;
-        MouseButtonPressedEvent(int button);
+        MouseButtonPressedEvent(uint32 button);
 
         std::string ToString(void) const override;
 
         NT_EVENT_CLASS_TYPE(MouseButtonPressed)
     };
 
-    class MouseButtonReleasedEvent :
+    class NT_API MouseButtonReleasedEvent :
         public MouseButtonEvent
     {
     public:
         NT_CLASS_DEFAULTS(MouseButtonReleasedEvent)
         MouseButtonReleasedEvent(void) = default;
-        MouseButtonReleasedEvent(int button);
+        MouseButtonReleasedEvent(uint32 button);
 
         std::string ToString(void) const override;
 
         NT_EVENT_CLASS_TYPE(MouseButtonReleased)
     };
 
-    class MouseMovedEvent :
+    class NT_API MouseMovedEvent :
         public Event
     {
     public:
@@ -84,7 +84,7 @@ namespace Nt
         float32 m_x, m_y;
     };
 
-    class MouseScrolledEvent :
+    class NT_API MouseScrolledEvent :
         public Event
     {
     public:

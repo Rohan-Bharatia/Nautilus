@@ -30,6 +30,18 @@ namespace Nt
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
+
+    template<typename T>
+    T* Buffer::As(void)
+    {
+        return NT_STATIC_CAST(T*, m_data);
+    }
+
+    template<typename T>
+    T* ScopedBuffer::As(void)
+    {
+        return m_buffer.As<T>();
+    }
 } // namespace Nt
 
 #endif // _NT_CORE_POINTER_INL_

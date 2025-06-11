@@ -51,7 +51,23 @@ namespace Nt
         }
     }
 
-    float64 Timer::GetElapsedTime(void)
+    void Timer::Reset(void)
+    {
+        m_startTime = std::chrono::high_resolution_clock::time_point();
+        m_endTime   = std::chrono::high_resolution_clock::time_point();
+        m_isRunning = false;
+    }
+
+    float64 Timer::GetElapsedMillis(void)
+    {
+        if (m_isRunning)
+            m_endTime = std::chrono::high_resolution_clock::now();
+
+        std::chrono::duration<float64, std::milli> elapsedTime = m_endTime - m_startTime;
+        return elapsedTime.count();
+    }
+
+    float64 Timer::GetElapsedSeconds(void)
     {
         if (m_isRunning)
             m_endTime = std::chrono::high_resolution_clock::now();

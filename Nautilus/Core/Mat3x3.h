@@ -31,10 +31,10 @@ namespace Nt
         Mat3x3(T** data);
 
         // Access operators
-        T& operator()(int row, int col);
-        const T& operator()(int row, int col) const;
-        T* operator[](int index);
-        const T* operator[](int index) const;
+        T& operator()(uint32 row, uint32 col);
+        const T& operator()(uint32 row, uint32 col) const;
+        T* operator[](uint32 index);
+        const T* operator[](uint32 index) const;
 
         // Arithmetic operators
         Mat3x3<T> operator+(const Mat3x3<T>& other) const;
@@ -87,8 +87,8 @@ namespace Nt
         T Determinant(void) const;
         T MinorDeterminant(T minor[2][2]) const;
         Mat3x3<T> Inverse(void);
-        static void SwapRows(T mat[3][3], int row1, int row2);
-        static void SwapColumns(T mat[3][3], int col1, int col2);
+        static void SwapRows(T mat[3][3], uint32 row1, uint32 row2);
+        static void SwapColumns(T mat[3][3], uint32 col1, uint32 col2);
         Mat3x3<T> Transpose(void) const;
         void Orthogonalize(void);
         Vec2<T> Translate(const Vec2<T>& other) const;

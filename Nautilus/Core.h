@@ -29,6 +29,7 @@
 #include "Core/Filesystem.h"
 #include "Core/Timer.h"
 #include "Core/Pointer.h"
+#include "Core/UID.h"
 
 // Math
 #include "Core/Angle.h"

@@ -342,14 +342,14 @@ namespace Nt
 
     Color Color::lch2rgb(float32 l, float32 c, float32 h, float32 a)
     {
-        float32 hr = h * NT_PI / 180.0f;
-        float32 a  = cos(hr) * c;
-        float32 b  = sin(hr) * c;
+        float32 hr   = h * NT_PI / 180.0f;
+        float32 labA = cos(hr) * c;
+        float32 labB = sin(hr) * c;
 
         // Convert Lab to XYZ
         float32 Y = (l + 16.0f) / 116.0f;
-        float32 X = a / 500.0f + Y;
-        float32 Z = Y - b / 200.0f;
+        float32 X = labA / 500.0f + Y;
+        float32 Z = Y - labB / 200.0f;
 
         X = 0.95047f * powf(X, 3);
         Y = 1.00000f * powf(Y, 3);
@@ -361,9 +361,9 @@ namespace Nt
         float32 b =  0.0557f * X - 0.2040f * Y + 1.0570f * Z;
 
         // Apply gamma correction
-        r = r <= 0.0031308f ? 12.92f * r : 1.055f * powf(r, 1/2.4f) - 0.055f;
-        g = g <= 0.0031308f ? 12.92f * g : 1.055f * powf(g, 1/2.4f) - 0.055f;
-        b = b <= 0.0031308f ? 12.92f * b : 1.055f * powf(b, 1/2.4f) - 0.055f;
+        r = r <= 0.0031308f ? 12.92f * r : 1.055f * powf(r, 1.0f / 2.4f) - 0.055f;
+        g = g <= 0.0031308f ? 12.92f * g : 1.055f * powf(g, 1.0f / 2.4f) - 0.055f;
+        b = b <= 0.0031308f ? 12.92f * b : 1.055f * powf(b, 1.0f / 2.4f) - 0.055f;
 
         return Color(r, g, b, a);
     }

@@ -19,16 +19,16 @@
 
 namespace Nt
 {
-    int MouseButtonEvent::GetMouseButton() const
+    uint32 MouseButtonEvent::GetMouseButton() const
     {
         return m_button;
     }
 
-    MouseButtonEvent::MouseButtonEvent(int button) :
+    MouseButtonEvent::MouseButtonEvent(uint32 button) :
         m_button(button)
     {}
 
-    MouseButtonPressedEvent::MouseButtonPressedEvent(int button) :
+    MouseButtonPressedEvent::MouseButtonPressedEvent(uint32 button) :
         MouseButtonEvent(button)
     {}
 
@@ -39,7 +39,7 @@ namespace Nt
         return ss.str();
     }
 
-    MouseButtonReleasedEvent::MouseButtonReleasedEvent(int button) :
+    MouseButtonReleasedEvent::MouseButtonReleasedEvent(uint32 button) :
         MouseButtonEvent(button)
     {}
 

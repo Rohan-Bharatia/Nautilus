@@ -57,7 +57,7 @@ of this license document, but changing it is not allowed.
         float32 prev = 0.0f;
         while (m_running)
         {
-            float32 current   = timer.GetElapsedTime();
+            float32 current   = timer.GetElapsedSeconds();
             float32 deltaTime = current - prev;
             prev              = current;
 

@@ -28,11 +28,11 @@ namespace Nt
         m_keyCode(keyCode)
     {}
 
-    KeyPressedEvent::KeyPressedEvent(int keyCode, int repeatCount) : 
+    KeyPressedEvent::KeyPressedEvent(uint32 keyCode, uint32 repeatCount) : 
         KeyEvent(keyCode), m_repeatCount(repeatCount)
     {}
 
-    int KeyPressedEvent::GetRepeatCount(void) const
+    uint32 KeyPressedEvent::GetRepeatCount(void) const
     {
         return m_repeatCount;
     }
@@ -44,7 +44,7 @@ namespace Nt
         return ss.str();
     }
 
-    KeyReleasedEvent::KeyReleasedEvent(int keyCode) :
+    KeyReleasedEvent::KeyReleasedEvent(uint32 keyCode) :
         KeyEvent(keyCode)
     {}
 
@@ -55,7 +55,7 @@ namespace Nt
         return ss.str();
     }
 
-    KeyTypedEvent::KeyTypedEvent(int keyCode) :
+    KeyTypedEvent::KeyTypedEvent(uint32 keyCode) :
         KeyEvent(keyCode)
     {}
 

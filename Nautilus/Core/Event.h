@@ -22,7 +22,7 @@
 #define NT_EVENT_CLASS_TYPE(type) static EventType GetStaticType(void) { return EventType::type; }                \
 								  virtual EventType GetEventType(void) const override { return GetStaticType(); } \
 								  virtual std::string GetName(void) const override { return NT_STRINGIFY(type); }
-#define NT_EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags(void) const override { return category; }
+#define NT_EVENT_CLASS_CATEGORY(category) virtual uint32 GetCategoryFlags(void) const override { return category; }
 
 namespace Nt
 {
@@ -64,7 +64,7 @@ namespace Nt
 
         virtual EventType GetEventType(void) const = 0;
 		virtual std::string GetName(void) const    = 0;
-		virtual int GetCategoryFlags(void) const   = 0;
+		virtual int32 GetCategoryFlags(void) const = 0;
 		virtual std::string ToString(void) const;
 
         bool IsInCategory(EventCategory category) const;

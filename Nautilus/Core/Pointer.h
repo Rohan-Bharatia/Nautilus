@@ -32,6 +32,51 @@ namespace Nt
 
     template<typename T, typename... Args>
     const Ref<T> CreateRef(Args&&... args);
+
+    class NT_API Buffer
+    {
+    public:
+        NT_CLASS_DEFAULTS(Buffer)
+        Buffer(void);
+        Buffer(uint64 size);
+
+        static Buffer Copy(Buffer other);
+        
+        void Allocate(uint64 size);
+        void Release(void);
+
+        template<typename T>
+        T* As(void);
+
+        operator bool(void) const;
+
+        uint8* GetData(void) const;
+        uint64 GetSize(void) const;
+
+    private:
+        uint8* m_data;
+        uint64 m_size;
+    };
+
+    class NT_API ScopedBuffer
+    {
+    public:
+        NT_CLASS_DEFAULTS(ScopedBuffer)
+        ScopedBuffer(Buffer buffer);
+        ScopedBuffer(uint64 size);
+        ~ScopedBuffer(void);
+
+        template<typename T>
+        T* As(void);
+
+        operator bool(void) const;
+
+        uint8* GetData(void) const;
+        uint64 GetSize(void) const;
+
+    private:
+        Buffer m_buffer;
+    };
 } // namespace Nt
 
 #include "Pointer.inl"

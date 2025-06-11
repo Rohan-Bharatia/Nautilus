@@ -26,8 +26,8 @@ namespace Nt
     {
         NT_ASSERT(std::is_arithmetic<T>::value, "T must be numeric!");
 
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 mat[row][col] = val;
     }
 
@@ -37,31 +37,31 @@ namespace Nt
         NT_ASSERT(sizeof(mat) == sizeof(data), "Mat4x4 size mismatch!");
         NT_ASSERT(std::is_arithmetic<T>::value, "T must be numeric!");
 
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 mat[row][col] = data[row][col];
     }
 
     template<typename T>
-    T& Mat4x4<T>::operator()(int row, int col)
+    T& Mat4x4<T>::operator()(uint32 row, uint32 col)
     {
         return mat[row][col];
     }
 
     template<typename T>
-    const T& Mat4x4<T>::operator()(int row, int col) const
+    const T& Mat4x4<T>::operator()(uint32 row, uint32 col) const
     {
         return mat[row][col];
     }
 
     template<typename T>
-    T* Mat4x4<T>::operator[](int index)
+    T* Mat4x4<T>::operator[](uint32 index)
     {
         return mat[index];
     }
 
     template<typename T>
-    const T* Mat4x4<T>::operator[](int index) const
+    const T* Mat4x4<T>::operator[](uint32 index) const
     {
         return mat[index];
     }
@@ -70,8 +70,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator+(const Mat4x4<T>& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 output.mat[row][col] = mat[row][col] + other.mat[row][col];
         return *this;
     }
@@ -80,8 +80,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator+(const T& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 output.mat[row][col] = mat[row][col] + other;
         return *this;
     }
@@ -90,8 +90,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator-(const Mat4x4<T>& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 output.mat[row][col] = mat[row][col] - other.mat[row][col];
         return *this;
     }
@@ -100,8 +100,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator-(const T& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 output.mat[row][col] = mat[row][col] - other;
         return *this;
     }
@@ -110,8 +110,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator*(const Mat4x4<T>& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 output.mat[row][col] = mat[row][col] * other.mat[row][col];
         return *this;
     }
@@ -120,8 +120,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator*(const T& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 output.mat[row][col] = mat[row][col] * other;
         return *this;
     }
@@ -130,8 +130,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator/(const Mat4x4<T>& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (other.mat[row][col] != 0)
                     output.mat[row][col] = mat[row][col] / other.mat[row][col];
         return *this;
@@ -141,8 +141,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator/(const T& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (other != 0)
                     output.mat[row][col] = mat[row][col] / other;
                 else
@@ -154,8 +154,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator%(const Mat4x4<T>& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (other.mat[row][col] != 0)
                     output.mat[row][col] = NT_MODULUS(T, mat[row][col], other.mat[row][col]);
         return *this;
@@ -165,8 +165,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::operator%(const T& other) const
     {
         Mat4x4<T> output = *this;
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (other != 0)
                     output.mat[row][col] = mat[row][col] + other;
                 else
@@ -177,8 +177,8 @@ namespace Nt
     template<typename T>
     Mat4x4<T> Mat4x4<T>::operator++(void)
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 ++mat[row][col];
         return *this;
     }
@@ -194,8 +194,8 @@ namespace Nt
     template<typename T>
     Mat4x4<T> Mat4x4<T>::operator--(void)
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 --mat[row][col];
         return *this;
     }
@@ -271,8 +271,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator>(const Mat4x4<T>& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] <= other.mat[row][col])
                     return false;
         return true;
@@ -281,8 +281,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator>(const T& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] <= other)
                     return false;
         return true;
@@ -291,8 +291,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator>=(const Mat4x4<T>& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] < other.mat[row][col])
                     return false;
         return true;
@@ -301,8 +301,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator>=(const T& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] < other)
                     return false;
         return true;
@@ -311,8 +311,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator<(const Mat4x4<T>& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] >= other.mat[row][col])
                     return false;
         return true;
@@ -321,8 +321,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator<(const T& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] >= other)
                     return false;
         return true;
@@ -331,8 +331,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator<=(const Mat4x4<T>& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] > other.mat[row][col])
                     return false;
         return true;
@@ -341,8 +341,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator<=(const T& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] > other)
                     return false;
         return true;
@@ -351,8 +351,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator==(const Mat4x4<T>& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] != other.mat[row][col])
                     return false;
         return true;
@@ -361,8 +361,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator==(const T& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] != other)
                     return false;
         return true;
@@ -371,8 +371,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator!=(const Mat4x4<T>& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] == other.mat[row][col])
                     return false;
         return true;
@@ -381,8 +381,8 @@ namespace Nt
     template<typename T>
     bool Mat4x4<T>::operator!=(const T& other) const
     {
-        for (int col = 0; col < 4; ++col)
-            for (int row = 0; row < 4; ++row)
+        for (uint32 col = 0; col < 4; ++col)
+            for (uint32 row = 0; row < 4; ++row)
                 if (mat[row][col] == other)
                     return false;
         return true;
@@ -423,13 +423,13 @@ namespace Nt
     {
         T det = 0;
 
-        for (int col = 0; col < 4; ++col)
+        for (uint32 col = 0; col < 4; ++col)
         {
             T minor[3][3];
-            for (int row = 1; row < 4; ++row)
+            for (uint32 row = 1; row < 4; ++row)
             {
-                int minorRow = 0;
-                for (int minorCol = 0; minorCol < 4; ++minorCol)
+                uint32 minorRow = 0;
+                for (uint32 minorCol = 0; minorCol < 4; ++minorCol)
                 {
                     if (minorCol == col)
                         continue;
@@ -458,10 +458,10 @@ namespace Nt
     {
         Mat4x4<T> output = Identity();
 
-        for (int col = 0; col < 4; ++col)
+        for (uint32 col = 0; col < 4; ++col)
         {
-            int maxRow = col;
-            for (int row = col + 1; row < 4; ++row)
+            uint32 maxRow = col;
+            for (uint32 row = col + 1; row < 4; ++row)
                 if (abs((int)mat[row][col]) > abs((int)mat[maxRow][col]))
                     maxRow = row;
 
@@ -473,19 +473,19 @@ namespace Nt
 
             T pivot = mat[col][col];
 
-            for (int row = col; row < 4; ++row)
+            for (uint32 row = col; row < 4; ++row)
                 mat[row][col] /= pivot;
-            for (int row = 0; row < 4; ++row)
+            for (uint32 row = 0; row < 4; ++row)
                 output.mat[row][col] /= pivot;
 
-            for (int row = 0; row < 4; ++row)
+            for (uint32 row = 0; row < 4; ++row)
             {
                 if (row != col)
                 {
                     T factor = mat[row][col];
-                    for (int col2 = col; col2 < 4; ++col2)
+                    for (uint32 col2 = col; col2 < 4; ++col2)
                         mat[row][col2] -= mat[col][col2] * factor;
-                    for (int col2 = 0; col2 < 4; ++col2)
+                    for (uint32 col2 = 0; col2 < 4; ++col2)
                         output.mat[row][col2] -= output.mat[col][col2] * factor;
                 }
             }
@@ -495,10 +495,10 @@ namespace Nt
     }
 
     template<typename T>
-    void Mat4x4<T>::SwapRows(T mat[4][4], int row1, int row2)
+    void Mat4x4<T>::SwapRows(T mat[4][4], uint32 row1, uint32 row2)
     {
         T temp[4];
-        for (int col = 0; col < 4; col++)
+        for (uint32 col = 0; col < 4; col++)
         {
             temp[col]      = mat[row1][col];
             mat[row1][col] = mat[row2][col];
@@ -507,10 +507,10 @@ namespace Nt
     }
 
     template<typename T>
-    void Mat4x4<T>::SwapColumns(T mat[4][4], int col1, int col2)
+    void Mat4x4<T>::SwapColumns(T mat[4][4], uint32 col1, uint32 col2)
     {
         T temp[4];
-        for (int col = 0; col < 4; col++)
+        for (uint32 col = 0; col < 4; col++)
         {
             temp[col]      = mat[col][col1];
             mat[col][col1] = mat[col][col2];
@@ -522,8 +522,8 @@ namespace Nt
     Mat4x4<T> Mat4x4<T>::Transpose(void) const
     {
         Mat4x4<T> output = Identity();
-        for (int col = 0; col < 4; col++)
-            for (int row = 0; row < 4; row++)
+        for (uint32 col = 0; col < 4; col++)
+            for (uint32 row = 0; row < 4; row++)
                 output.mat[row][col] = mat[col][row];
         return output;
     }
@@ -532,25 +532,25 @@ namespace Nt
     void Mat4x4<T>::Orthogonalize(void)
     {
         // Gram-Schmidt process
-        for (int col = 0; col < 4; ++col)
+        for (uint32 col = 0; col < 4; ++col)
         {
             T norm = 0;
 
-            for (int row = 0; row < 4; ++row)
+            for (uint32 row = 0; row < 4; ++row)
                 norm += mat[row][col] * mat[row][col];
 
             norm = sqrt(norm);
 
-            for (int row = 0; row < 4; ++row)
+            for (uint32 row = 0; row < 4; ++row)
                 mat[row][col] /= norm;
 
-            for (int col2 = col + 1; col2 < 4; ++col2)
+            for (uint32 col2 = col + 1; col2 < 4; ++col2)
             {
                 T dot = 0;
 
-                for (int row = 0; row < 4; ++row)
+                for (uint32 row = 0; row < 4; ++row)
                     dot += mat[row][col] * mat[row][col2];
-                for (int row = 0; row < 4; ++row)
+                for (uint32 row = 0; row < 4; ++row)
                     mat[row][col2] -= dot * mat[row][col];
             }
         }

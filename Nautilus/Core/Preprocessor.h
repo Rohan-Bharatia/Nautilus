@@ -298,6 +298,7 @@
 #define NT_SAFE_DELETE_ARRAY(ptr) free(ptr); delete[] ptr; ptr = nullptr
 #define NT_MODULUS(T, a, b) (a - NT_STATIC_CAST(T, NT_STATIC_CAST(Nt::int32, a / b)) * b) >= NT_STATIC_CAST(T, 0) ? (a - static_cast<T>(static_cast<Nt::int32>(a / b)) * b) : (a - static_cast<T>(static_cast<Nt::int32>(a / b) - 1) * b) + b
 #define NT_CLAMP(x, min, max) ((x < min) ? min : ((x > max) ? max : x))
+#define NT_LERP(a, b, t) (a + ((b - a) * t))
 #define NT_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 #define NT_CLASS_DEFAULTS(classname)                  \
     classname(const classname&)            = default; \
@@ -308,13 +309,15 @@
 // C++ primitive types
 namespace Nt
 {
-    using int8    = signed char;
-    using int16   = signed short;
-    using int32   = signed long;
-    using int64   = signed long long;
+    using int8    = char;
+    using int16   = short;
+    using int24   = int;
+    using int32   = long;
+    using int64   = long long;
     using uint8   = unsigned char;
     using byte    = unsigned char;
     using uint16  = unsigned short;
+    using uint24  = unsigned int;
     using uint32  = unsigned long;
     using opsize  = unsigned long;
     using uint64  = unsigned long long;
@@ -341,35 +344,41 @@ namespace Nt
 #define NT_EULER 2.7182818284590452353602874713527f
 #define NT_SQRT2 1.4142135623730950488016887242097f
 #define NT_LOG2E 1.4426950408889634073599246810019f
-#define NT_INT8_MIN NT_STATIC_CAST(signed char, ~0x7F)
-#define NT_INT8_MAX NT_STATIC_CAST(signed char, 0x7F)
-#define NT_INT8_EPSILON NT_STATIC_CAST(signed char, 1)
-#define NT_INT16_MIN NT_STATIC_CAST(signed short, ~0x7FFF)
-#define NT_INT16_MAX NT_STATIC_CAST(signed short, 0x7FFF)
-#define NT_INT16_EPSILON NT_STATIC_CAST(signed short, 1)
-#define NT_INT32_MIN NT_STATIC_CAST(signed long, ~0x7FFFFFFF)
-#define NT_INT32_MAX NT_STATIC_CAST(signed long, 0x7FFFFFFF)
-#define NT_INT32_EPSILON NT_STATIC_CAST(signed long, 1)
-#define NT_INT64_MIN NT_STATIC_CAST(signed long long, ~0x7FFFFFFFFFFFFFFF)
-#define NT_INT64_MAX NT_STATIC_CAST(signed long long, 0x7FFFFFFFFFFFFFFF)
-#define NT_INT64_EPSILON NT_STATIC_CAST(signed long long, 1)
-#define NT_UINT8_MIN NT_STATIC_CAST(unsigned char, 0)
-#define NT_UINT8_MAX NT_STATIC_CAST(unsigned char, 0xFF)
-#define NT_UINT8_EPSILON NT_STATIC_CAST(unsigned char, 1)
-#define NT_UINT16_MIN NT_STATIC_CAST(unsigned short, 0)
-#define NT_UINT16_MAX NT_STATIC_CAST(unsigned short, 0xFFFF)
-#define NT_UINT16_EPSILON NT_STATIC_CAST(unsigned short, 1)
-#define NT_UINT32_MIN NT_STATIC_CAST(unsigned long, 0)
-#define NT_UINT32_MAX NT_STATIC_CAST(unsigned long, 0xFFFFFFFF)
-#define NT_UINT32_EPSILON NT_STATIC_CAST(unsigned long, 1)
-#define NT_UINT64_MIN NT_STATIC_CAST(unsigned long long, 0)
-#define NT_UINT64_MAX NT_STATIC_CAST(unsigned long long, 0xFFFFFFFFFFFFFFFF)
-#define NT_UINT64_EPSILON NT_STATIC_CAST(unsigned long long, 1)
-#define NT_FLOAT32_MIN NT_STATIC_CAST(float, 1.175494351e-38F)
-#define NT_FLOAT32_MAX NT_STATIC_CAST(float, 3.402823466e+38F)
-#define NT_FLOAT32_EPSILON NT_STATIC_CAST(float, 1.192092896e-07F)
-#define NT_FLOAT64_MIN NT_STATIC_CAST(double, 2.2250738585072014e-308)
-#define NT_FLOAT64_MAX NT_STATIC_CAST(double, 1.7976931348623158e+308)
-#define NT_FLOAT64_EPSILON NT_STATIC_CAST(double, 2.2204460492503131e-16)
+#define NT_INT8_MIN NT_STATIC_CAST(int8, ~0x7F)
+#define NT_INT8_MAX NT_STATIC_CAST(int8, 0x7F)
+#define NT_INT8_EPSILON NT_STATIC_CAST(int8, 1)
+#define NT_INT16_MIN NT_STATIC_CAST(int8, ~0x7FFF)
+#define NT_INT16_MAX NT_STATIC_CAST(int8, 0x7FFF)
+#define NT_INT16_EPSILON NT_STATIC_CAST(int8, 1)
+#define NT_INT24_MIN NT_STATIC_CAST(int24, ~0x7FFFFFFF)
+#define NT_INT24_MAX NT_STATIC_CAST(int24, 0x7FFFFFFF)
+#define NT_INT24_EPSILON NT_STATIC_CAST(int24, 1)
+#define NT_INT32_MIN NT_STATIC_CAST(int32, ~0x7FFFFFFF)
+#define NT_INT32_MAX NT_STATIC_CAST(int32, 0x7FFFFFFF)
+#define NT_INT32_EPSILON NT_STATIC_CAST(int32, 1)
+#define NT_INT64_MIN NT_STATIC_CAST(int64, ~0x7FFFFFFFFFFFFFFF)
+#define NT_INT64_MAX NT_STATIC_CAST(int64, 0x7FFFFFFFFFFFFFFF)
+#define NT_INT64_EPSILON NT_STATIC_CAST(int64, 1)
+#define NT_UINT8_MIN NT_STATIC_CAST(uint8, 0)
+#define NT_UINT8_MAX NT_STATIC_CAST(uint8, 0xFF)
+#define NT_UINT8_EPSILON NT_STATIC_CAST(uint8, 1)
+#define NT_UINT16_MIN NT_STATIC_CAST(uint16, 0)
+#define NT_UINT16_MAX NT_STATIC_CAST(uint16, 0xFFFF)
+#define NT_UINT16_EPSILON NT_STATIC_CAST(uint16, 1)
+#define NT_UINT24_MIN NT_STATIC_CAST(uint24, 0)
+#define NT_UINT24_MAX NT_STATIC_CAST(uint24, 0xFFFFFFFF)
+#define NT_UINT24_EPSILON NT_STATIC_CAST(uint24, 1)
+#define NT_UINT32_MIN NT_STATIC_CAST(uint32, 0)
+#define NT_UINT32_MAX NT_STATIC_CAST(uint32, 0xFFFFFFFF)
+#define NT_UINT32_EPSILON NT_STATIC_CAST(uint32, 1)
+#define NT_UINT64_MIN NT_STATIC_CAST(uint64, 0)
+#define NT_UINT64_MAX NT_STATIC_CAST(uint64, 0xFFFFFFFFFFFFFFFF)
+#define NT_UINT64_EPSILON NT_STATIC_CAST(uint64, 1)
+#define NT_FLOAT32_MIN NT_STATIC_CAST(float32, 1.175494351e-38F)
+#define NT_FLOAT32_MAX NT_STATIC_CAST(float32, 3.402823466e+38F)
+#define NT_FLOAT32_EPSILON NT_STATIC_CAST(float32, 1.192092896e-07F)
+#define NT_FLOAT64_MIN NT_STATIC_CAST(float64, 2.2250738585072014e-308)
+#define NT_FLOAT64_MAX NT_STATIC_CAST(float64, 1.7976931348623158e+308)
+#define NT_FLOAT64_EPSILON NT_STATIC_CAST(float64, 2.2204460492503131e-16)
 
 #endif // _CORE_PREPROCESSOR_H_

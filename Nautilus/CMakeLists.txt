@@ -45,6 +45,7 @@ target_include_directories(Nautilus PUBLIC
 
 if(NT_PLATFORM_WINDOWS)
     target_link_libraries(Nautilus PRIVATE
+        rpcrt4
         d3d12
         dxgi
         d3dcompiler
@@ -103,7 +104,6 @@ elseif(NT_PLATFORM_WASM)
         "-sASYNCIFY"
     )
 endif()
-
 
 set_target_properties(Nautilus PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin

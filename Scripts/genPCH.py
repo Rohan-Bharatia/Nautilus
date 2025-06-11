@@ -162,6 +162,7 @@ if check_first_run():
         #endif // WIN32_LEAN_AND_MEAN
         #include <Windows.h>
         #include <intrin.h>
+        #include <rpc.h>
         #include <d3d12.h>
         #include <dxgi1_6.h>
         #include <d3dcompiler.h>
@@ -176,6 +177,7 @@ if check_first_run():
         #include <fstream>
         #include <cstring>
         #include <cpuid.h>
+        #include <uuid/uuid.h>
         #include <X11/Xlib.h>
         #include <X11/Xutil.h>
         #include <X11/Xatom.h>
@@ -192,6 +194,7 @@ if check_first_run():
         #include <sys/types.h>
         #include <unistd.h>
         #include <cpuid.h>
+        #include <uuid/uuid.h>
     #elif defined(NT_PLATFORM_IOS)
         #ifdef __OBJC__
             #import <UIKit/UIKit.h>
@@ -204,6 +207,7 @@ if check_first_run():
         #include <sys/types.h>
         #include <unistd.h>
         #include <cpuid.h>
+        #include <uuid/uuid.h>
     #elif defined(NT_PLATFORM_ANDROID)
         #ifndef VK_USE_PLATFORM_ANDROID_KHR
             #define VK_USE_PLATFORM_ANDROID_KHR
@@ -216,6 +220,7 @@ if check_first_run():
         #include <unistd.h>
         #include <sys/sysinfo.h>
         #include <cpu-features.h>
+        #include <uuid/uuid.h>
         #include <vulkan/vulkan.h>
     #elif defined(NT_PLATFORM_WASM)
         #include <emscripten/emscripten.h>

@@ -56,7 +56,7 @@ namespace Nt
 
         CFNumberRef level = NT_STATIC_CAST(CFNumberRef, [CFDictionaryGetValue:battery, CFSTR(kIOPSCurrentCapacityKey)]);
         CFNumberRef max   = NT_STATIC_CAST(CFNumberRef, [CFDictionaryGetValue:battery, CFSTR(kIOPSMaxCapacityKey)]);
-        int cur, maxcap;
+        uint32 cur, maxcap;
 
         [CFNumberGetValue:level, kCFNumberIntType, &cur];
         [CFNumberGetValue:max, kCFNumberIntType, &maxcap];

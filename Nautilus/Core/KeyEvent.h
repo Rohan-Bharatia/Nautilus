@@ -44,16 +44,16 @@ namespace Nt
     public:
         NT_CLASS_DEFAULTS(KeyPressedEvent)
         KeyPressedEvent(void) = default;
-        KeyPressedEvent(int keyCode, int repeatCount);
+        KeyPressedEvent(uint32 keyCode, uint32 repeatCount);
 
-        int GetRepeatCount(void) const;
+        uint32 GetRepeatCount(void) const;
 
         std::string ToString(void) const override;
 
         NT_EVENT_CLASS_TYPE(KeyPressed)
 
     private:
-        int m_repeatCount;
+        uint32 m_repeatCount;
     };
 
     class NT_API KeyReleasedEvent :
@@ -62,7 +62,7 @@ namespace Nt
     public:
         NT_CLASS_DEFAULTS(KeyReleasedEvent)
         KeyReleasedEvent(void) = default;
-        KeyReleasedEvent(int keyCode);
+        KeyReleasedEvent(uint32 keyCode);
 
         std::string ToString(void) const override;
 
@@ -75,7 +75,7 @@ namespace Nt
     public:
         NT_CLASS_DEFAULTS(KeyTypedEvent)
         KeyTypedEvent(void) = default;
-        KeyTypedEvent(int keyCode);
+        KeyTypedEvent(uint32 keyCode);
 
         std::string ToString(void) const override;
 
