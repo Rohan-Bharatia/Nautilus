@@ -62,9 +62,9 @@ namespace Nt
     {
         ULARGE_INTEGER total, free;
         GetDiskFreeSpaceEx(NULL, NULL, &total, &free);
-        return NT_STATIC_CAST(float32, free);
+        return NT_STATIC_CAST(float32, free.QuadPart);
     }
-    
+
     float32 DeviceInfo::GetBatteryLevel(void)
     {
         SYSTEM_POWER_STATUS sps;

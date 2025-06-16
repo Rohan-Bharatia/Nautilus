@@ -266,7 +266,7 @@ namespace Nt
     }
 
     template<typename T>
-    Ray2<T>::operator float32*(void) const
+    Ray2<T>::operator T*(void) const
     {
         return new T[4]{ origin.x, origin.y, direction.x, direction.y };
     }

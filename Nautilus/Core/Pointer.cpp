@@ -12,8 +12,6 @@
 
 #pragma endregion LICENSE
 
-#pragma once
-
 #ifndef _NT_CORE_POINTER_CPP_
     #define _NT_CORE_POINTER_CPP_
 
@@ -30,13 +28,13 @@ namespace Nt
         Allocate(size);
     }
 
-    static Buffer Buffer::Copy(Buffer other)
+    Buffer Buffer::Copy(Buffer other)
     {
         Buffer result(other.GetSize());
         memcpy(result.m_data, other.m_data, other.m_size);
         return result;
     }
-        
+
     void Buffer::Allocate(uint64 size)
     {
         Release();

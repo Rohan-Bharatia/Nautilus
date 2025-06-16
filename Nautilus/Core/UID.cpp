@@ -15,7 +15,7 @@
 #ifndef _NT_CORE_UID_CPP_
     #define _NT_CORE_UID_CPP_
 
-#include "PCH.h"
+#include "UID.h"
 
 namespace Nt
 {

@@ -33,7 +33,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Vertex)
-        Vertex(const Vec3f& position, const Vec2f& texCoord const Color& color);
+        Vertex(const Vec3f& position, const Vec2f& texCoord, const Color& color);
 
         // Arithmetic operators
         Vertex operator+(const Vertex& other) const;

@@ -74,7 +74,7 @@ namespace Nt
         bool operator!=(const T& other) const;
 
         // Conversion operators
-        Ray3<T>::operator float32*(void) const;
+        operator T*(void) const;
 
         // Methods
         bool Intersects(const Ray3<T>& other) const;

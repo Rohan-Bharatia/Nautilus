@@ -21,7 +21,7 @@
 
 namespace Nt
 {
-    Vertex::Vertex(const Vec3f& position, const Vec2f& texCoord const Color& color) :
+    Vertex::Vertex(const Vec3f& position, const Vec2f& texCoord, const Color& color) :
         position(position), texCoord(texCoord), color(color)
     {}
 
@@ -69,7 +69,7 @@ namespace Nt
 
     Vertex Vertex::operator%(const Vertex& other) const
     {
-        NT_ASSERT(other.position == 0.0f && other.texCoor == 0.0f && dother.color == 0.0f, "Cannot modulus by zero!");
+        NT_ASSERT(other.position == 0.0f && other.texCoord == 0.0f && other.color == 0.0f, "Cannot modulus by zero!");
         return Vertex(position % other.position, texCoord % other.texCoord, color % other.color);
     }
 
@@ -141,7 +141,7 @@ namespace Nt
 
     Vertex& Vertex::operator/=(const Vertex& other)
     {
-        NT_ASSERT(other.position == 0.0f && && other.texCoord == 0.0f && other.color == 0.0f, "Cannot divide by zero!");
+        NT_ASSERT(other.position == 0.0f && other.texCoord == 0.0f && other.color == 0.0f, "Cannot divide by zero!");
         return *this = *this / other;
     }
 
@@ -220,7 +220,7 @@ namespace Nt
 
     bool Vertex::operator!=(float32 other) const
     {
-        return (position != other || texCoord != other.texCoord || color != other);
+        return (position != other || texCoord != other || color != other);
     }
 
     Vertex::operator float32*(void) const
