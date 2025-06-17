@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_MATH_RECT_CPP_
-    #define _NT_CORE_MATH_RECT_CPP_
+#ifndef _NT_CORE_RECT_CPP_
+    #define _NT_CORE_RECT_CPP_
 
 #include "Rect.h"
 
@@ -262,4 +262,4 @@ namespace Nt
     }
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_RECT_CPP_
+#endif // _NT_CORE_RECT_CPP_

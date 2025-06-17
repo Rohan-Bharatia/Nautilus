@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_MAT3X3_H_
-    #define _NT_CORE_MATH_MAT3X3_H_
+#ifndef _NT_CORE_MAT3X3_H_
+    #define _NT_CORE_MAT3X3_H_
 
 #include "PCH.h"
 #include "Vec2.h"
@@ -27,6 +27,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Mat3x3)
+        Mat3x3(void) = default;
         Mat3x3(T val);
         Mat3x3(T** data);
 
@@ -110,4 +111,4 @@ namespace Nt
 
 #include "Mat3x3.inl"
 
-#endif // _NT_CORE_MATH_MAT3X3_H_
+#endif // _NT_CORE_MAT3X3_H_

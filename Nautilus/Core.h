@@ -29,7 +29,6 @@
 #include "Core/Filesystem.h"
 #include "Core/Timer.h"
 #include "Core/Pointer.h"
-#include "Core/UID.h"
 
 // Math
 #include "Core/Angle.h"
@@ -53,5 +52,8 @@
 // Layers
 #include "Core/Layer.h"
 #include "Core/LayerStack.h"
+
+// Platform
+#include "Core/UID.h"
 
 #endif // _CORE_H_

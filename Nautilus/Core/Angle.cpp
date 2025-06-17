@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_MATH_ANGLE_CPP_
-    #define _NT_CORE_MATH_ANGLE_CPP_
+#ifndef _NT_CORE_ANGLE_CPP_
+    #define _NT_CORE_ANGLE_CPP_
 
 #include "Angle.h"
 
@@ -255,4 +255,4 @@ namespace Nt
     }
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_ANGLE_CPP_
+#endif // _NT_CORE_ANGLE_CPP_

@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_MATH_MAT3X3_INL_
-    #define _NT_CORE_MATH_MAT3X3_INL_
+#ifndef _NT_CORE_MAT3X3_INL_
+    #define _NT_CORE_MAT3X3_INL_
 
 #include "Mat3x3.h"
 
@@ -599,7 +599,7 @@ namespace Nt
         T w = sqrt(1.0f - x * x - y * y - z * z);
 
         Mat3x3<T> rotationMatrix = Identity();
-        
+
         rotationMatrix(0, 0) = 1.0f - 2.0f * y * y - 2.0f * z * z;
         rotationMatrix(0, 1) = 2.0f * x * y + 2.0f * w * z;
         rotationMatrix(0, 2) = 2.0f * x * z - 2.0f * w * y;
@@ -637,4 +637,4 @@ namespace Nt
     }
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_MAT3X3_INL_
+#endif // _NT_CORE_MAT3X3_INL_

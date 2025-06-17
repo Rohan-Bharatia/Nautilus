@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_MATH_COLOR_CPP_
-    #define _NT_CORE_MATH_COLOR_CPP_
+#ifndef _NT_CORE_COLOR_CPP_
+    #define _NT_CORE_COLOR_CPP_
 
 #include "Color.h"
 
@@ -403,4 +403,4 @@ namespace Nt
     }
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_COLOR_CPP_
+#endif // _NT_CORE_COLOR_CPP_

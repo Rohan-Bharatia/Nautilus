@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_MATH_VERTEX_CPP_
-    #define _NT_CORE_MATH_VERTEX_CPP_
+#ifndef _NT_CORE_VERTEX_CPP_
+    #define _NT_CORE_VERTEX_CPP_
 
 #include "Vertex.h"
 
@@ -234,4 +234,4 @@ namespace Nt
     }
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_VERTEX_CPP_
+#endif // _NT_CORE_VERTEX_CPP_

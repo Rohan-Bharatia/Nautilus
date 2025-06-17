@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_MATH_RAY3_INL_
-    #define _NT_CORE_MATH_RAY3_INL_
+#ifndef _NT_CORE_RAY3_INL_
+    #define _NT_CORE_RAY3_INL_
 
 #include "Ray3.h"
 
@@ -333,4 +333,4 @@ namespace Nt
     }
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_RAY3_INL_
+#endif // _NT_CORE_RAY3_INL_

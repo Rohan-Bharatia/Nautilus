@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_RAY2_H_
-    #define _NT_CORE_MATH_RAY2_H_
+#ifndef _NT_CORE_RAY2_H_
+    #define _NT_CORE_RAY2_H_
 
 #include "Vec2.h"
 
@@ -26,6 +26,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Ray2)
+        Ray2(void) = default;
         Ray2(const Vec2<T>& origin, const Vec2<T>& direction);
         Ray2(T originX, T originY, T directionX, T directionY);
 
@@ -70,7 +71,7 @@ namespace Nt
         bool operator==(const T& other) const;
         bool operator!=(const Ray2<T>& other) const;
         bool operator!=(const T& other) const;
-        
+
         // Conversion operators
         operator T*(void) const;
 
@@ -92,4 +93,4 @@ namespace Nt
 
 #include "Ray2.inl"
 
-#endif // _NT_CORE_MATH_RAY2_H_
+#endif // _NT_CORE_RAY2_H_

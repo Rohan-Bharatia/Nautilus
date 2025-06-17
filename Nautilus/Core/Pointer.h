@@ -25,13 +25,13 @@ namespace Nt
     using Scope = std::unique_ptr<T>;
 
     template<typename T, typename... Args>
-    const Scope<T> CreateScope(Args&&... args);
+    Scope<T> CreateScope(Args&&... args);
 
     template<typename T>
     using Ref = std::shared_ptr<T>;
 
     template<typename T, typename... Args>
-    const Ref<T> CreateRef(Args&&... args);
+    Ref<T> CreateRef(Args&&... args);
 
     class NT_API Buffer
     {
@@ -41,7 +41,7 @@ namespace Nt
         Buffer(uint64 size);
 
         static Buffer Copy(Buffer other);
-        
+
         void Allocate(uint64 size);
         void Release(void);
 

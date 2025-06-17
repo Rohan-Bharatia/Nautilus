@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_ANGLE_H_
-    #define _NT_CORE_MATH_ANGLE_H_
+#ifndef _NT_CORE_ANGLE_H_
+    #define _NT_CORE_ANGLE_H_
 
 #include "PCH.h"
 
@@ -25,6 +25,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Angle)
+        Angle(void) = default;
         Angle(float32 radians);
 
         // Arithmetic operators
@@ -83,4 +84,4 @@ namespace Nt
     };
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_ANGLE_H_
+#endif // _NT_CORE_ANGLE_H_

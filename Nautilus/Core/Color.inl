@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_COLOR_INL_
-    #define _NT_CORE_MATH_COLOR_INL_
+#ifndef _NT_CORE_COLOR_INL_
+    #define _NT_CORE_COLOR_INL_
 
 #include "Color.h"
 
@@ -25,7 +25,7 @@ namespace Nt
     std::tuple<float32, float32, float32, float32> assignWithDefault(Args&&... args)
     {
         NT_ASSERT(sizeof...(Args) <= 5, "Too many arguments for color components");
-        
+
         float32 comps[4] = { 0.0f, 0.0f, 0.0f, Default };
         float32 tmp[]    = { NT_STATIC_CAST(float32, args)... };
         for (opsize i = 0; i < sizeof...(Args); ++i)
@@ -97,4 +97,4 @@ namespace Nt
     }
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_COLOR_INL_
+#endif // _NT_CORE_COLOR_INL_

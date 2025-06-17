@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_RAY3_H_
-    #define _NT_CORE_MATH_RAY3_H_
+#ifndef _NT_CORE_RAY3_H_
+    #define _NT_CORE_RAY3_H_
 
 #include "Vec3.h"
 #include "Ray2.h"
@@ -27,6 +27,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Ray3)
+        Ray3(void) = default;
         Ray3(const Vec3<T>& origin, const Vec3<T>& direction);
         Ray3(T originX, T originY, T originZ, T directionX, T directionY , T directionZ);
         Ray3(const Ray3<T>& other, T originZ, T directionZ);
@@ -94,4 +95,4 @@ namespace Nt
 
 #include "Ray3.inl"
 
-#endif // _NT_CORE_MATH_RAY3_H_
+#endif // _NT_CORE_RAY3_H_

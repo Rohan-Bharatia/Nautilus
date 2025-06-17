@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_RECT_H_
-    #define _NT_CORE_MATH_RECT_H_
+#ifndef _NT_CORE_RECT_H_
+    #define _NT_CORE_RECT_H_
 
 #include "Vec2.h"
 
@@ -25,6 +25,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Rect)
+        Rect(void) = default;
         Rect(const Vec2f& position, const Vec2f& size);
         Rect(const Vec2f& position, float32 width, float32 height);
         Rect(float32 x, float32 y, float32 width, float32 height);
@@ -84,4 +85,4 @@ namespace Nt
     };
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_RECT_H_
+#endif // _NT_CORE_RECT_H_

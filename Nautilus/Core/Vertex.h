@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_VERTEX_H_
-    #define _NT_CORE_MATH_VERTEX_H_
+#ifndef _NT_CORE_VERTEX_H_
+    #define _NT_CORE_VERTEX_H_
 
 #include "Vec3.h"
 #include "Color.h"
@@ -33,6 +33,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Vertex)
+        Vertex(void) = default;
         Vertex(const Vec3f& position, const Vec2f& texCoord, const Color& color);
 
         // Arithmetic operators
@@ -89,4 +90,4 @@ namespace Nt
     };
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_VERTEX_H_
+#endif // _NT_CORE_VERTEX_H_

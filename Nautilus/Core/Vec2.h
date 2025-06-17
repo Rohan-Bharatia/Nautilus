@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_VEC2_H_
-    #define _NT_CORE_MATH_VEC2_H_
+#ifndef _NT_CORE_VEC2_H_
+    #define _NT_CORE_VEC2_H_
 
 #include "PCH.h"
 #include "Angle.h"
@@ -27,6 +27,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Vec2)
+        Vec2(void) = default;
         Vec2(T x, T y);
 
         // Arithmetic operators
@@ -101,4 +102,4 @@ namespace Nt
 
 #include "Vec2.inl"
 
-#endif // _NT_CORE_MATH_VEC2_H_
+#endif // _NT_CORE_VEC2_H_

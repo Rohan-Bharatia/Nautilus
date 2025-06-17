@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_VEC4_H_
-    #define _NT_CORE_MATH_VEC4_H_
+#ifndef _NT_CORE_VEC4_H_
+    #define _NT_CORE_VEC4_H_
 
 #include "Vec3.h"
 
@@ -26,6 +26,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Vec4)
+        Vec4(void) = default;
         Vec4(T x, T y, T z, T w);
         Vec4(const Vec2<T>& xy, T z, T w);
         Vec4(const Vec3<T>& xyz, T w);
@@ -109,4 +110,4 @@ namespace Nt
 
 #include "Vec4.inl"
 
-#endif // _NT_CORE_MATH_VEC4_H_
+#endif // _NT_CORE_VEC4_H_

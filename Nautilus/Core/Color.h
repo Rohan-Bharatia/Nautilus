@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_COLOR_H_
-    #define _NT_CORE_MATH_COLOR_H_
+#ifndef _NT_CORE_COLOR_H_
+    #define _NT_CORE_COLOR_H_
 
 #include "Vec4.h"
 
@@ -37,6 +37,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Color)
+        Color(void) = default;
         Color(float32 r, float32 g, float32 b, float32 a=1.0f);
         Color(const Vec3f& other, float32 a=1.0f);
         Color(const Vec4f& other);
@@ -100,4 +101,4 @@ namespace Nt
     };
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_COLOR_H_
+#endif // _NT_CORE_COLOR_H_

@@ -20,13 +20,13 @@
 namespace Nt
 {
     template<typename T, typename... Args>
-    const Scope<T> CreateScope(Args&&... args)
+    Scope<T> CreateScope(Args&&... args)
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
 
     template<typename T, typename... Args>
-    const Ref<T> CreateRef(Args&&... args)
+    Ref<T> CreateRef(Args&&... args)
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }

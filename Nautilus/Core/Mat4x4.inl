@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_MATH_MAT4X4_INL_
-    #define _NT_CORE_MATH_MAT4X4_INL_
+#ifndef _NT_CORE_MAT4X4_INL_
+    #define _NT_CORE_MAT4X4_INL_
 
 #include "Mat4x4.h"
 
@@ -650,4 +650,4 @@ namespace Nt
     }
 } // namespace Nt
 
-#endif // _NT_CORE_MATH_MAT4X4_INL_
+#endif // _NT_CORE_MAT4X4_INL_

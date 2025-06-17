@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef _NT_CORE_MATH_MAT4X4_H_
-    #define _NT_CORE_MATH_MAT4X4_H_
+#ifndef _NT_CORE_MAT4X4_H_
+    #define _NT_CORE_MAT4X4_H_
 
 #include "PCH.h"
 #include "Vec3.h"
@@ -27,6 +27,7 @@ namespace Nt
     {
     public:
         NT_CLASS_DEFAULTS(Mat4x4)
+        Mat4x4(void) = default;
         Mat4x4(T val);
         Mat4x4(T** data);
 
@@ -110,4 +111,4 @@ namespace Nt
 
 #include "Mat4x4.inl"
 
-#endif // _NT_CORE_MATH_MAT4X4_H_
+#endif // _NT_CORE_MAT4X4_H_

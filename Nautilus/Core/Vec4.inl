@@ -12,8 +12,8 @@
 
 #pragma endregion LICENSE
 
-#ifndef _NT_CORE_MATH_VEC4_INL_
-    #define _NT_CORE_MATH_VEC4_INL_
+#ifndef _NT_CORE_VEC4_INL_
+    #define _NT_CORE_VEC4_INL_
 
 #include "Vec4.h"
 
@@ -377,4 +377,4 @@ namespace Nt
     }
 }
 
-#endif // _NT_CORE_MATH_VEC4_INL_
+#endif // _NT_CORE_VEC4_INL_
