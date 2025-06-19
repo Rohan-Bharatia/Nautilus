@@ -9,13 +9,11 @@ includes = [
     'barrier',
     'bitset',
     'cassert',
-    # 'complex',
     'cctype',
     'cerrno',
     'cfenv',
     'cfloat',
     'cinttypes',
-    # 'ciso646',
     'climits',
     'clocale',
     'cmath',
@@ -36,20 +34,13 @@ includes = [
     'complex',
     'concepts',
     'condition_variable',
-    # 'cstdbool',
     'cstdint',
-    'cstdio',
-    'cstdlib',
-    'cstring',
-    'ctime',
-    # 'ctgmath',
     'cuchar',
     'deque',
     'exception',
     'execution',
     'expected',
     'filesystem',
-    'cfloat'
     'format',
     'forward_list',
     'fstream',
@@ -68,7 +59,6 @@ includes = [
     'list',
     'locale',
     'map',
-    'cmath'
     'memory',
     'memory_resource',
     'mutex',
@@ -115,9 +105,7 @@ includes = [
 
 input_file = os.path.join(os.path.dirname(__file__), '..', 'Nautilus', 'PCH.h')
 
-# Generate the precompiled header file (C++ standard library headers and platform-specific library headers)
 with open(input_file, 'w') as f:
-    f.flush()
     f.write('''#pragma region LICENSE
 
 //                    GNU GENERAL PUBLIC LICENSE
@@ -126,7 +114,6 @@ with open(input_file, 'w') as f:
 // Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
 // Everyone is permitted to copy and distribute verbatim copies
 // of this license document, but changing it is not allowed.
-//                                 ...
 //
 //                  Copyright (c) Rohan Bharatia 2025
 
@@ -138,19 +125,22 @@ with open(input_file, 'w') as f:
     #define _PCH_H_
 
 #include "Core/Preprocessor.h"
-\n''')
+
+''')
+
     for include in includes:
         f.write(f'#if __has_include(<{include}>)\n')
-        f.write(f'    #include <{include}>\n')
+        f.write(f'#   include <{include}>\n')
         f.write(f'#endif // __has_include(<{include}>)\n')
-        f.write('''
+
+    f.write('''
 #if defined(NT_PLATFORM_WINDOWS)
     #ifndef UNICODE
         #define UNICODE
     #endif // UNICODE
     #ifndef NOMINMAX
         #define NOMINMAX
-    #endif // NOMINMAX
+    #endif // NOMINMAX 
     #ifndef WIN32_LEAN_AND_MEAN
         #define WIN32_LEAN_AND_MEAN
     #endif // WIN32_LEAN_AND_MEAN
@@ -222,5 +212,6 @@ with open(input_file, 'w') as f:
     #include <emscripten/html5.h>
     #include <emscripten/html5_webgpu.h>
 #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID), defined(NT_PLATFORM_WASM)
-    ''')
-    f.write('\n#endif // _PCH_H_')
+
+#endif // _PCH_H_
+''')
