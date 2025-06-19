@@ -23,7 +23,7 @@ namespace Nt
 {
     enum class ColorSpace
     {
-        None = 0,
+        ColorSpaceNone = 0,
         RGB,
         HSV,
         HSL,

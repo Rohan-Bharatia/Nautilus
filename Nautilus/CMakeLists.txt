@@ -58,7 +58,8 @@ elseif(NT_PLATFORM_LINUX)
         ${X11_LIBRARY}
         pthread
         dl
-        vulkan::Vulkan
+	uuid
+        ${Vulkan_LIBRARIES}
     )
 elseif(NT_PLATFORM_MACOS)
     find_library(COCOA_LIBRARY Cocoa REQUIRED)
@@ -68,6 +69,7 @@ elseif(NT_PLATFORM_MACOS)
     find_library(METALKIT_LIBRARY MetalKit REQUIRED)
 
     target_link_libraries(Nautilus PRIVATE
+	uuid
         ${COCOA_LIBRARY}
         ${QUARTZ_LIBRARY}
         ${IOKIT_LIBRARY}
@@ -82,6 +84,7 @@ elseif(NT_PLATFORM_IOS)
     find_library(METALKIT_LIBRARY MetalKit REQUIRED)
 
     target_link_libraries(Nautilus PRIVATE
+	uuid
         ${UIKIT_LIBRARY}
         ${QUARTZ_LIBRARY}
         ${IOKIT_LIBRARY}
@@ -94,9 +97,10 @@ elseif(NT_PLATFORM_ANDROID)
     find_package(Vulkan REQUIRED)
 
     target_link_libraries(Nautilus PRIVATE
+	uuid
         ${android-lib}
         ${log-lib}
-        vulkan::Vulkan
+        ${Vulkan_LIBRARIES}
     )
 elseif(NT_PLATFORM_WASM)
     target_link_options(Nautilus PRIVATE

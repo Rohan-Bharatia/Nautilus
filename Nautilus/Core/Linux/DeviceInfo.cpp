@@ -33,7 +33,7 @@ namespace Nt
         std::string cacheInfo = fs.Read("/sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size");
         uint32 lineSize       = 64;
 
-        level = std::stoi(cacheInfo);
+        int32 level	      = std::stoi(cacheInfo);
 
         return lineSize;
     }
@@ -48,7 +48,7 @@ namespace Nt
     float32 DeviceInfo::GetAvailableDiskSpace(void)
     {
         struct statfs stats;
-        statvfs("/", &stats);
+        statfs("/", &stats);
         return NT_STATIC_CAST(float32, stats.f_blocks * stats.f_bsize);
     }
 
@@ -57,9 +57,7 @@ namespace Nt
         Filesystem fs("");
 
         std::string contents = fs.Read("/sys/class/power_supply/BAT0/capacity");
-        int32 level          = -1;
-
-        level = std::stoi(contents);
+        int32 level          = level = contents.empty() ? -1.0f : std::stoi(contents);
 
         return NT_STATIC_CAST(float32, level);
     }

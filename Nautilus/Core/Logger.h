@@ -23,7 +23,7 @@ namespace Nt
 {
     enum class LogLevel
     {
-        None = 0,
+        LogLevelNone = 0,
         Trace,
         Debug,
         Info,
@@ -47,6 +47,5 @@ namespace Nt
         static void Critical(const std::string& message, ...);
     };
 } // namespace Nt
-
 
 #endif // _CORE_LOGGER_H_

@@ -28,7 +28,7 @@ namespace Nt
 {
     enum class EventType
     {
-        None = 0,
+        EventTypeNone = 0,
         KeyPressed,
         KeyReleased,
         KeyTyped,
@@ -45,7 +45,7 @@ namespace Nt
 
     enum EventCategory
     {
-        None                     = 0,
+        EventCatagoryNone        = 0,
         EventCategoryApplication = 0x00001,
         EventCategoryInput       = 0x00010,
         EventCategoryKeyboard    = 0x00100,

@@ -36,7 +36,7 @@ namespace Nt
     float32 DeviceInfo::GetAvailableDiskSpace(void)
     {
         struct statfs stats;
-        [statvfs:["/", &stats]];
+        [statfs:["/", &stats]];
         return NT_STATIC_CAST(float32, stats.f_blocks * stats.f_bsize);
     }
 
