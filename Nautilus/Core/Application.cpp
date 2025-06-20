@@ -39,6 +39,19 @@ of this license document, but changing it is not allowed.
                  Copyright (c) Rohan Bharatia 2025)");
 
         NT_ASSERT(DeviceInfo::GetBatteryLevel() > 20.0f, "Battery level too low! Please charge your device.");
+    	
+	WindowDesc desc{};
+	desc.title    = "Nautilus Application";
+	desc.position = Vec2u(100, 100);
+	desc.width    = 1200;
+	desc.height   = 900;
+	desc.bgColor  = Color(23, 18, 96, 1.0f);
+
+	m_window = CreateScope<Window>(desc);
+
+	NT_ASSERT(m_window, "Failed to create window object!");
+    	
+	m_window->SetEventCallback(NT_BIND_EVENT_FN(Application::OnEvent));
     }
 
     void Application::PushLayer(Layer* layer)
@@ -53,6 +66,12 @@ of this license document, but changing it is not allowed.
 
     void Application::Run(void)
     {
+	if (!m_window->Initialize())
+	{
+	    Logger::Error("Failed to initialize window!");
+	    return;
+	}
+
         Timer timer;
         float32 prev = 0.0f;
         while (m_running)
@@ -66,6 +85,8 @@ of this license document, but changing it is not allowed.
                 layer->OnUpdate(deltaTime);
                 layer->OnRender();
             }
+
+	    m_window->OnUpdate();
         }
     }
 
@@ -87,6 +108,7 @@ of this license document, but changing it is not allowed.
 
     bool Application::OnWindowClose(WindowCloseEvent& event)
     {
+	m_window->Shutdown();
         m_running = false;
         return true;
     }

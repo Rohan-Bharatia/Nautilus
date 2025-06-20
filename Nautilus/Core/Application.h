@@ -19,6 +19,10 @@
 
 #include "PCH.h"
 #include "LayerStack.h"
+#include "Pointer.h"
+#include "Window.h"
+#include "KeyEvent.h"
+#include "MouseEvent.h"
 #include "ApplicationEvent.h"
 
 namespace Nt
@@ -38,6 +42,7 @@ namespace Nt
 
     private:
         LayerStack m_layerStack;
+	Scope<Window> m_window;
         bool m_running;
 
         bool OnWindowClose(WindowCloseEvent& event);

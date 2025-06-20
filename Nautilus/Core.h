@@ -55,5 +55,6 @@
 
 // Platform
 #include "Core/UID.h"
+#include "Core/Window.h"
 
 #endif // _CORE_H_

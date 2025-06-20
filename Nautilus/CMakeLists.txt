@@ -51,7 +51,7 @@ if(NT_PLATFORM_WINDOWS)
         d3dcompiler
     )
 elseif(NT_PLATFORM_LINUX)
-    find_library(XLIB_LIBRARY X11 REQUIRED)
+    find_library(X11_LIBRARY X11 REQUIRED)
     find_package(Vulkan REQUIRED)
 
     target_link_libraries(Nautilus PRIVATE
