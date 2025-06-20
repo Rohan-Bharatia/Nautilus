@@ -154,6 +154,15 @@ namespace Nt
 
 	NT_SAFE_DELETE(m_handle.display);
     }
+
+    Rect Window::GetSize(void)
+    {
+	::Window root;
+	int24 x, y;
+	uint24 width, height, border, depth;
+	XGetGeometry(m_handle.display, m_handle.window, &root, &x, &y, &width, &height, &border, &depth);
+	return Rect(x, y, width, height);
+    }
 } // namespace Nt
 
 #endif // _NT_CORE_LINUX_WINDOW_CPP_

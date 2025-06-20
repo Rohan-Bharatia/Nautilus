@@ -49,6 +49,11 @@ namespace Nt
 	NT_SAFE_DELETE(m_handle.window);
     }
 
+    Rect Window::GetSize(void)
+    {
+	return Rect(0, 0, ANativeWindow_getWidth(m_handle.window), ANativeWindow_getHeight(m_handle.window));
+    }
+
     int32 Window::HandleInput(struct android_app* app, AInputEvent* event)
     {
 	Window* window = NT_STATIC_CAST(Window*, app->userData);

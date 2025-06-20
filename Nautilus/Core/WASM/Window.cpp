@@ -162,6 +162,13 @@ namespace Nt
     {
 	// Nothing to destroy
     }
+
+    Rect Window::GetSize(void)
+    {
+	float32 width, height;
+	emscripten_get_element_css_size("#canvas", &width, &height);
+	return Rect(0, 0, width, height);
+    }
 } // namespace Nt
 
 #endif // _NT_CORE_WASM_WINDOW_CPP_

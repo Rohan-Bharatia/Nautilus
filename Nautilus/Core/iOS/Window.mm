@@ -226,6 +226,12 @@ namespace Nt
 	NT_SAFE_DELETE(m_handle.window);
 	NT_SAFE_DELETE(m_handle.delegate);
     }
+
+    Rect Window::GetSize(void)
+    {
+	CGRect frame = m_handle.window.frame;
+	return Rect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+    }
 } // namespace Nt
 
 #endif // _NT_CORE_IOS_WINDOW_MM_

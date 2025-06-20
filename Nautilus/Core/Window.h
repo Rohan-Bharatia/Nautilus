@@ -17,6 +17,7 @@
     #define _NT_CORE_WINDOW_H_
 
 #include "Vertex.h"
+#include "Rect.h"
 #include "KeyEvent.h"
 #include "MouseEvent.h"
 #include "ApplicationEvent.h"
@@ -83,6 +84,7 @@ namespace Nt
 
 	WindowDesc GetDescription(void);
 	WindowHandle GetHandle(void);
+	Rect GetSize(void);
 
     private:
     #if defined(NT_PLATFORM_WINDOWS)

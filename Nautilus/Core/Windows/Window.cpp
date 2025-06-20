@@ -33,7 +33,7 @@ namespace Nt
 	wc.hInstance	 = m_handle.hinstance;
 	wc.hIcon	 = LoadIcon(nullptr, IDI_APPLICATION);
 	wc.hCursor	 = LoadCursor(nullptr, IDC_ARROW);
-	wc.hbrBackground = NT_STATIC_CAST(HBRUSH, COLOR_WINDOW + 1);
+	wc.hbrBackground = NT_REINTERPRET_CAST(HBRUSH, COLOR_WINDOW + 1);
 	wc.lpszMenuName  = nullptr;
 	wc.lpszClassName = L"Nt::Window";
 	wc.hIconSm	 = LoadIcon(nullptr, IDI_APPLICATION);
@@ -61,7 +61,7 @@ namespace Nt
     void Window::OnUpdate(void)
     {
 	MSG msg{};
-	while (PeekMessage(&msg, nullptr, 0, 0))
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 	{
 	    if (msg.message == WM_QUIT)
 		return;
@@ -79,13 +79,20 @@ namespace Nt
 	UnregisterClass(L"Nt::Window", m_handle.hinstance);
     }
 
+    Rect Window::GetSize(void)
+    {
+	RECT rc;
+	GetClientRect(m_handle.hwnd, &rc);
+	return Rect(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+    }
+
     LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wprm, LPARAM lprm)
     {
 	Window* wnd = nullptr;
 	if (msg == WM_CREATE)
 	{
 	    LPCREATESTRUCT cs = NT_REINTERPRET_CAST(LPCREATESTRUCT, lprm);
-	    SetWindowLongPtr(hwnd, GWLP_USERDATA, cs->lpCreateParams);
+	    SetWindowLongPtr(hwnd, GWLP_USERDATA, NT_REINTERPRET_CAST(LONG_PTR, cs->lpCreateParams));
 	    wnd = NT_REINTERPRET_CAST(Window*, cs);
 	}
 	else
