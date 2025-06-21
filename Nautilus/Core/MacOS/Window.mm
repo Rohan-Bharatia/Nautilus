@@ -48,125 +48,125 @@ namespace Nt
 {
     bool Window::Initialize(void)
     {
-	NSApplication* app = [NSApplication sharedApplication];
-	[app setActivityPolicy:NSApplicationActivityPolicyRegular];
+        NSApplication* app = [NSApplication sharedApplication];
+        [app setActivityPolicy:NSApplicationActivityPolicyRegular];
 
-	NSRect frame 	 = NSMakeRect(m_desc.position.x, m_desc.position.y, m_desc.width, m_desc.height);
-	NSUInteger style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable;
+        NSRect frame 	 = NSMakeRect(m_desc.position.x, m_desc.position.y, m_desc.width, m_desc.height);
+        NSUInteger style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable;
 
-	m_handle.window = [[NSWindow alloc] initWithContentRect: frame
-							styleMask:style
-							  backing:NSBackingStoreBuffered
-							     defer:NO];
-	
-	if (!m_handle.window)
-	{
-	    [Logger Error:@"Failed to create window!"];
-	    return false;
-	}
+        m_handle.window = [[NSWindow alloc] initWithContentRect: frame
+                                                    styleMask:style
+                                                        backing:NSBackingStoreBuffered
+                                                            defer:NO];
+        
+        if (!m_handle.window)
+        {
+            [Logger Error:@"Failed to create window!"];
+            return false;
+        }
 
-	[m_handle.window setTitle:[NSString stringWithUTF8String:m_desc.title.c_str()]];
-	[[m_handle contentView] setBackgroundColor:[NSColor colorWithRed:m_desc.bgColor.r / 255.0f
-       green:m_desc.bgColor.g / 255.0f
-         blue:m_desc.bgColor.b / 255.0f
-       alpha:m_desc.bgColor.a]];
-	[m_handle.window makeKeyAndOrderFront:nil];
+        [m_handle.window setTitle:[NSString stringWithUTF8String:m_desc.title.c_str()]];
+        [[m_handle contentView] setBackgroundColor:[NSColor colorWithRed:m_desc.bgColor.r / 255.0f
+                                                                    green:m_desc.bgColor.g / 255.0f
+                                                                     blue:m_desc.bgColor.b / 255.0f
+                                                                    alpha:m_desc.bgColor.a]];
+        [m_handle.window makeKeyAndOrderFront:nil];
 
-	m_handle.delegate = [[MacOSWindowDelegate alloc] init];
-	
-	if (!m_handle.delegate)
-	{
-	    [Logger Error:@"Failed to create window delegate!"];
-	    return false;
-	}
+        m_handle.delegate = [[MacOSWindowDelegate alloc] init];
+        
+        if (!m_handle.delegate)
+        {
+            [Logger Error:@"Failed to create window delegate!"];
+            return false;
+        }
 
-	m_delegate.window = this;
+        m_delegate.window = this;
 
-	[app finishLaunching];
+        [app finishLaunching];
 
-	[m_handle.window setAcceptsMouseMovedEvents:YES];
-	[m_handle.window makeFirstResponder:m_handle.window.contentView];
+        [m_handle.window setAcceptsMouseMovedEvents:YES];
+        [m_handle.window makeFirstResponder:m_handle.window.contentView];
 
-	return true;
+        return true;
     }
 
     void Window::OnUpdate(void)
     {
-	NSEvent* event;
+	    NSEvent* event;
         while ((event = [NSApp nextEventMatchingMask:NSEventMaskAny
                                             untilDate:nil
                                                inMode:NSDefaultRunLoopMode
                                               dequeue:YES]))
 	
-	{
-	    switch (event.type)
-	    {
-		case NSEventTypeKeyDown:
-		{
-		    KeyPressedEvent event1(event.keyCode, event.isARepeat));
-		    KeyTypedEvent event2(event.keyCode);
-		    m_eventCallback(event1);
-		    m_eventCallback(event2);
-		    break;
-		}
-		case NSEventTypeKeyUp:
-		{
-		    KeyReleasedEvent event(event.keyCode);
-		    m_eventCallback(event);
-		    break;
-		{
-		case NSEventTypeLeftMouseDown:
-		case NSEventTypeRightMouseDown:
-		case NSEventTypeOtherMouseDown:
-		{
-		    MouseButtonPressedEvent event(event.buttonNumber);
-		    m_eventCallback(event);
-		    break;
-		}
-		case NSEventTypeLeftMouseUp:
-		case NSEventTypeRightMouseDown:
-		case NSEventTypeOtherMouseDown:
-		{
-		    MouseButtonReleasedEvent event(event.buttonNumber);
-		    m_eventCallback(event);
-		    break;
-		}
-		case NSEventTypeMouseMoved:
-		case NSEventTypeLeftMouseMoved:
-		case NSEventTypeRightMouseMoved:
-		case NSEventTypeOtherMouseMoved:
-		{
-		    MouseMovedEvent event(event.locationInWindow.x, event.locationInWindow.y);
-		    m_eventCallback(event);
-		    break;
-		}
-		case NSEventTypeScrollWheel:
-		{
-		    MouseScrolledEvent event(event.scrollingDeltaX, event.scrollingDeltaY);
-		    m_eventCallback(event);
-		    break;
-		}
-		default:
-		    break;
-	    }
+        {
+            switch (event.type)
+            {
+            case NSEventTypeKeyDown:
+            {
+                KeyPressedEvent event1(event.keyCode, event.isARepeat));
+                KeyTypedEvent event2(event.keyCode);
+                m_eventCallback(event1);
+                m_eventCallback(event2);
+                break;
+            }
+            case NSEventTypeKeyUp:
+            {
+                KeyReleasedEvent event(event.keyCode);
+                m_eventCallback(event);
+                break;
+            {
+            case NSEventTypeLeftMouseDown:
+            case NSEventTypeRightMouseDown:
+            case NSEventTypeOtherMouseDown:
+            {
+                MouseButtonPressedEvent event(event.buttonNumber);
+                m_eventCallback(event);
+                break;
+            }
+            case NSEventTypeLeftMouseUp:
+            case NSEventTypeRightMouseDown:
+            case NSEventTypeOtherMouseDown:
+            {
+                MouseButtonReleasedEvent event(event.buttonNumber);
+                m_eventCallback(event);
+                break;
+            }
+            case NSEventTypeMouseMoved:
+            case NSEventTypeLeftMouseMoved:
+            case NSEventTypeRightMouseMoved:
+            case NSEventTypeOtherMouseMoved:
+            {
+                MouseMovedEvent event(event.locationInWindow.x, event.locationInWindow.y);
+                m_eventCallback(event);
+                break;
+            }
+            case NSEventTypeScrollWheel:
+            {
+                MouseScrolledEvent event(event.scrollingDeltaX, event.scrollingDeltaY);
+                m_eventCallback(event);
+                break;
+            }
+            default:
+                break;
+            }
 
-	    [NSApp sendEvent:event];
-	}
+            [NSApp sendEvent:event];
+        }
     }
 
     void Window::Shutdown(void)
     {
-	[m_handle.window close];
-	[m_handle.delegate release];
+        [m_handle.window close];
+        [m_handle.delegate release];
 
-	NT_SAFE_DELETE(m_handle.window);
-	NT_SAFE_DELETE(m_handle.delegate);
+        NT_SAFE_DELETE(m_handle.window);
+        NT_SAFE_DELETE(m_handle.delegate);
     }
 
     Rect Window::GetSize(void)
     {
-	NSRect frame = [m_handle.window frame];
-	return Rect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+        NSRect frame = [m_handle.window frame];
+        return Rect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
     }
 } // namespace Nt
 

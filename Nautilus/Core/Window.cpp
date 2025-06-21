@@ -22,7 +22,7 @@ namespace Nt
     Window::Window(WindowDesc desc) : 
 	m_desc(desc)
     {
-	NT_ASSERT(desc.title.empty(), "Window title must not be empty!");
+        NT_ASSERT(desc.title.empty(), "Window title must not be empty!");
     	NT_ASSERT(desc.position.x >= 0, "Window y position must be in valid bounds!");
     	NT_ASSERT(desc.position.y >= 0, "Window y position must be in valid bounds!");
     	NT_ASSERT((desc.width - desc.position.x) > 0, "Window width must be in valid bounds!");
@@ -31,17 +31,17 @@ namespace Nt
 
     void Window::SetEventCallback(EventCallbackFn callback)
     {
-	m_eventCallback = callback;
+        m_eventCallback = callback;
     }
 
     WindowDesc Window::GetDescription(void)
     {
-	return m_desc;
+        return m_desc;
     }
 
     WindowHandle Window::GetHandle(void)
     {
-	return m_handle;
+        return m_handle;
     }
 } // namespace Nt
 

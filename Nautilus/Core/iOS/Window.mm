@@ -173,64 +173,64 @@ namespace Nt
 {
     bool Window::Initialize(void)
     {
-	UIWindowScene* scene = NT_REINTERPRET_CAST(UIWindowScene*, [UIApplication sharedApplication].connectedScenes.anyObject);
-	CGRect frame	     = CGMakeRect(m_desc.position.x, m_desc.position.y, m_desc.width, m_desc.height);
+        UIWindowScene* scene = NT_REINTERPRET_CAST(UIWindowScene*, [UIApplication sharedApplication].connectedScenes.anyObject);
+        CGRect frame	     = CGMakeRect(m_desc.position.x, m_desc.position.y, m_desc.width, m_desc.height);
 
-	m_handle.window = [[UIWindow alloc] initWithFrame:frame];
-	
-	if (!m_handle.window)
-	{
-	    [Logger Error:@"Failed to create window"];
-	    return false;
-	}
+        m_handle.window = [[UIWindow alloc] initWithFrame:frame];
+        
+        if (!m_handle.window)
+        {
+            [Logger Error:@"Failed to create window"];
+            return false;
+        }
 
-	iOSView* cview = [[iOSView alloc] initWithFrame:frame];
-	cview.window   = this;
-	cview.backgroundColor = [UIColor colorWithRed:m_desc.bgColor.r / 255.0f
-						 green:m_desc.bgColor.g / 255.0f
-						  blue:m_desc.bgColor.b / 255.0f
-						 alpha:m_desc.bgColor.a];
+        iOSView* cview = [[iOSView alloc] initWithFrame:frame];
+        cview.window   = this;
+        cview.backgroundColor = [UIColor colorWithRed:m_desc.bgColor.r / 255.0f
+                             green:m_desc.bgColor.g / 255.0f
+                              blue:m_desc.bgColor.b / 255.0f
+                             alpha:m_desc.bgColor.a];
 
-	UIViewController* viewc = [[UIViewController alloc] init];
-	viewc.view		= cview;
+        UIViewController* viewc = [[UIViewController alloc] init];
+        viewc.view		= cview;
 
-	window.rootViewController = viewc;
-	window.windowScene	  = scene;
+        window.rootViewController = viewc;
+        window.windowScene	  = scene;
 
-	m_handle.delegate = [[iOSWindowDelegate alloc] init];
-	
-	if (!m_handle.delegate)
-	{
-	    [Logger Error:@"Failed to create window delegate!"];
-	    return false;
-	}
-	
-	m_handle.delegate.window = this;
-	scene.delegate           = m_handle.delegate;
+        m_handle.delegate = [[iOSWindowDelegate alloc] init];
+        
+        if (!m_handle.delegate)
+        {
+            [Logger Error:@"Failed to create window delegate!"];
+            return false;
+        }
+        
+        m_handle.delegate.window = this;
+        scene.delegate           = m_handle.delegate;
 
-	[m_handle.window makeKeyAndVisible];
+        [m_handle.window makeKeyAndVisible];
 
-	return true;
+        return true;
     }
 
     void Window::OnUpdate(void)
     {
-	// UIKit handles events in event callbacks
+        // UIKit handles events in event callbacks
     }
 
     void Window::Shutdown(void)
     {
-	[m_handle.window release];
-	[m_handle.delegate release];
+        [m_handle.window release];
+        [m_handle.delegate release];
 
-	NT_SAFE_DELETE(m_handle.window);
-	NT_SAFE_DELETE(m_handle.delegate);
+        NT_SAFE_DELETE(m_handle.window);
+        NT_SAFE_DELETE(m_handle.delegate);
     }
 
     Rect Window::GetSize(void)
     {
-	CGRect frame = m_handle.window.frame;
-	return Rect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+        CGRect frame = m_handle.window.frame;
+        return Rect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
     }
 } // namespace Nt
 

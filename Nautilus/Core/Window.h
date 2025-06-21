@@ -29,29 +29,29 @@ namespace Nt
         std::string title;
         Vec2u position;
         uint32 width;
-	uint32 height;
-	Color bgColor;
+        uint32 height;
+        Color bgColor;
     };
 
     struct NT_API WindowHandle
     {
     #if defined(NT_PLATFORM_WINDOWS)
-	HINSTANCE hinstance;
-	HWND hwnd;
+        HINSTANCE hinstance;
+        HWND hwnd;
     #elif defined(NT_PLATFORM_LINUX)
-	Display* display;
-	::Window window;
-	Colormap colormap;
+        Display* display;
+        ::Window window;
+        Colormap colormap;
     #elif defined(NT_PLATFORM_MACOS)
-	#ifdef __OBJC__
-	    NSWindow* window;
-	    id<NSWindowDelegate> delegate;
-	#else // (NOT) __OBJC__
-	    void* window;
-	    void* delegate;
-	#endif // __OBJC__
+        #ifdef __OBJC__
+            NSWindow* window;
+            id<NSWindowDelegate> delegate;
+        #else // (NOT) __OBJC__
+            void* window;
+            void* delegate;
+        #endif // __OBJC__
     #elif defined(NT_PLATFORM_IOS)
-	#ifdef __OBJC__
+        #ifdef __OBJC__
             UIWindow* window;
             id<UIWindowSceneDelegate> delegate;
         #else // (NOT) __OBJC__
@@ -60,11 +60,11 @@ namespace Nt
         #endif // __OBJC__
     #elif defined(NT_PLATFORM_ANDROID)
     	android_app* app;
-	ANativeActivity* activity;
-	ANativeWindow* window;
+        ANativeActivity* activity;
+        ANativeWindow* window;
     #elif defined(NT_PLATFORM_WASM)
-	emscripten::val document;
-	emscripten::val canvas;
+        emscripten::val document;
+        emscripten::val canvas;
     #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_LINUX), defined(NT_PLATFORM_MACOS), defined(NT_PLATFORM_IOS), defined(NT_PLATFORM_ANDROID), defined(NT_PLATFORM_WASM)
     };
 
@@ -73,30 +73,30 @@ namespace Nt
     public:
         using EventCallbackFn = std::function<void(Event&)>;
 
-	NT_CLASS_DEFAULTS(Window)
-	Window(WindowDesc desc);
+        NT_CLASS_DEFAULTS(Window)
+        Window(WindowDesc desc);
 
-	void SetEventCallback(EventCallbackFn callback);
+        void SetEventCallback(EventCallbackFn callback);
 
-	bool Initialize(void);
-	void OnUpdate(void);
-	void Shutdown(void);
+        bool Initialize(void);
+        void OnUpdate(void);
+        void Shutdown(void);
 
-	WindowDesc GetDescription(void);
-	WindowHandle GetHandle(void);
-	Rect GetSize(void);
+        WindowDesc GetDescription(void);
+        WindowHandle GetHandle(void);
+        Rect GetSize(void);
 
     private:
     #if defined(NT_PLATFORM_WINDOWS)
     	static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wprm, LPARAM lprm);
     #elif defined(NT_PLATFORM_ANDROID)
-	static int32 HandleInput(struct android_app* app, AInputEvent* event);
-	static void HandleCommand(struct android_app* app, int32 cmd);
+        static int32 HandleInput(struct android_app* app, AInputEvent* event);
+        static void HandleCommand(struct android_app* app, int32 cmd);
     #endif // defined(NT_PLATFORM_WINDOWS), defined(NT_PLATFORM_ANDROID)
 
-	WindowDesc m_desc;
-	WindowHandle m_handle;
-	EventCallbackFn m_eventCallback;
+        WindowDesc m_desc;
+        WindowHandle m_handle;
+        EventCallbackFn m_eventCallback;
     };
 } // namespace Nt
 
