@@ -18,11 +18,11 @@ elseif(NT_PLATFORM_LINUX)
     )
 elseif(NT_PLATFORM_MACOS)
     file(GLOB Nautilus_PLATFORM_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/Core/MacOS/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Core/MacOS/*.mm
     )
 elseif(NT_PLATFORM_IOS)
     file(GLOB Nautilus_PLATFORM_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/Core/iOS/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Core/iOS/*.mm
     )
 elseif(NT_PLATFORM_ANDROID)
     file(GLOB Nautilus_PLATFORM_SOURCES
@@ -58,7 +58,7 @@ elseif(NT_PLATFORM_LINUX)
         ${X11_LIBRARY}
         pthread
         dl
-	uuid
+	    uuid
         ${Vulkan_LIBRARIES}
     )
 elseif(NT_PLATFORM_MACOS)
@@ -69,7 +69,7 @@ elseif(NT_PLATFORM_MACOS)
     find_library(METALKIT_LIBRARY MetalKit REQUIRED)
 
     target_link_libraries(Nautilus PRIVATE
-	uuid
+	    uuid
         ${COCOA_LIBRARY}
         ${QUARTZ_LIBRARY}
         ${IOKIT_LIBRARY}
@@ -84,7 +84,7 @@ elseif(NT_PLATFORM_IOS)
     find_library(METALKIT_LIBRARY MetalKit REQUIRED)
 
     target_link_libraries(Nautilus PRIVATE
-	uuid
+	    uuid
         ${UIKIT_LIBRARY}
         ${QUARTZ_LIBRARY}
         ${IOKIT_LIBRARY}
@@ -97,7 +97,7 @@ elseif(NT_PLATFORM_ANDROID)
     find_package(Vulkan REQUIRED)
 
     target_link_libraries(Nautilus PRIVATE
-	uuid
+	    uuid
         ${android-lib}
         ${log-lib}
         ${Vulkan_LIBRARIES}

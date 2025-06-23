@@ -208,11 +208,13 @@
     #include <winapifamily.h>
     #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
         #define NT_PLATFORM_WINDOWS
+        #define NT_PLATFORM_NAME "Windows"
         #define NT_DEVICE_DESKTOP
         #define NT_EXPORT __declspec(dllexport)
         #define NT_IMPORT __declspec(dllimport)
     #else // (NOT) WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
         #define NT_PLATFORM_UNKNOWN
+        #define NT_PLATFORM_NAME "Unknown"
         #define NT_DEVICE_UNKNOWN
         #define NT_EXPORT
         #define NT_IMPORT
@@ -222,16 +224,19 @@
     #include <TargetConditionals.h>
     #if TARGET_OS_MAC
         #define NT_PLATFORM_MACOS
+        #define NT_PLATFORM_NAME "MacOS"
         #define NT_DEVICE_DESKTOP
         #define NT_EXPORT __attribute__((__visibility__("default")))
         #define NT_IMPORT __attribute__((__visibility__("default")))
     #elif TARGET_OS_IPHONE
         #define NT_PLATFORM_IOS
+        #define NT_PLATFORM_NAME "iOS"
         #define NT_DEVICE_MOBILE
         #define NT_EXPORT __attribute__((__visibility__("default")))
         #define NT_IMPORT __attribute__((__visibility__("default")))
     #else // (NOT) TARGET_OS_MAC, TARGET_OS_IPHONE
         #define NT_PLATFORM_UNKNOWN
+        #define NT_PLATFORM_NAME "Unknown"
         #define NT_DEVICE_UNKNOWN
         #define NT_EXPORT
         #define NT_IMPORT
@@ -242,21 +247,25 @@
         #error Nautilus Engine requires a more recent Android NDK version, please update!
     #endif
     #define NT_PLATFORM_ANDROID
+    #define NT_PLATFORM_NAME "Android"
     #define NT_DEVICE_MOBILE
     #define NT_EXPORT __attribute__((__visibility__("default")))
     #define NT_IMPORT __attribute__((__visibility__("default")))
 #elif defined(__EMSCRIPTEN__)
     #define NT_PLATFORM_WASM
+    #define NT_PLATFORM_NAME "WebAssembly"
     #define NT_DEVICE_BROWSER
     #define NT_EXPORT __attribute__((__visibility__("default")))
     #define NT_IMPORT __attribute__((__visibility__("default")))
 #elif defined(__unix__) // Do linux last so that it doesn't catch other platforms
     #define NT_PLATFORM_LINUX
+    #define NT_PLATFORM_NAME "Linux"
     #define NT_DEVICE_DESKTOP
     #define NT_EXPORT __attribute__((__visibility__("default")))
     #define NT_IMPORT __attribute__((__visibility__("default")))
 #else // (NOT) defined(_WIN32) || defined(_WIN64), defined(__APPLE__), defined(__ANDROID__), defined(__EMSCRIPTEN__), defined(__unix__)
     #define NT_PLATFORM_UNKNOWN
+    #define NT_PLATFORM_NAME "Unknown"
     #define NT_DEVICE_UNKNOWN
     #define NT_EXPORT
     #define NT_IMPORT

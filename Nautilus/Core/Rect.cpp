@@ -260,6 +260,12 @@ namespace Nt
     {
         position += Vec2f(offsetX, offsetY);
     }
+
+    bool Rect::Contains(const Vec2f& other)
+    {
+        return (position.x <= other.x <= size.x) &&
+               (position.y <= other.y <= size.y);
+    }
 } // namespace Nt
 
 #endif // _NT_CORE_RECT_CPP_

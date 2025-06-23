@@ -79,6 +79,7 @@ namespace Nt
         void MoveTo(float32 x, float32 y);
         void Move(const Vec2f& offset);
         void Move(float32 offsetX, float32 offsetY);
+        bool Contains(const Vec2f& other);
 
         Vec2f position;
         Vec2f size;

@@ -27,6 +27,9 @@ namespace Nt
     	NT_ASSERT(desc.position.y >= 0, "Window y position must be in valid bounds!");
     	NT_ASSERT((desc.width - desc.position.x) > 0, "Window width must be in valid bounds!");
     	NT_ASSERT((desc.height - desc.position.y) > 0, "Window height must be in valid bounds!");
+    
+        desc.title += " | ";
+        desc.title += NT_PLATFORM_NAME;
     }
 
     void Window::SetEventCallback(EventCallbackFn callback)

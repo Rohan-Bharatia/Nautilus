@@ -9,7 +9,7 @@ if not exist Build mkdir Build
 
 @echo Compiling with CMake...
 cd Build
-cmake -G "MinGW Makefiles" -S ../Sandbox
+cmake -G "Ninja" -S ../Sandbox
 cmake --build .
 
 @echo Done...
