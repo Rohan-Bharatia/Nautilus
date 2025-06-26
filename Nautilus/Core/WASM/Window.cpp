@@ -31,7 +31,7 @@ namespace Nt
             return false;
         }
 
-        m_handle.canvas = m_handle.document.call<emscripten::val>("createElement");
+        m_handle.canvas = m_handle.document.call<emscripten::val>("createElement", std::string("canvas"));
 
         std::ostringstream bgColorCSS;
             bgColorCSS << "rgba("
@@ -46,7 +46,7 @@ namespace Nt
         m_handle.canvas["style"].set("position", emscripten::val("absolute"));
         m_handle.canvas["style"].set("left", emscripten::val(std::to_string(m_desc.position.x) + "px"));
         m_handle.canvas["style"].set("top", emscripten::val(std::to_string(m_desc.position.y) + "px"));
-        
+
         return true;
     }
 
@@ -156,7 +156,7 @@ namespace Nt
                     m_eventCallback(event);
                     return 0;
             	}, 0, 0)
-            )	
+            )
     	);
     }
 
