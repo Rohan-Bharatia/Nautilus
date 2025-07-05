@@ -81,7 +81,7 @@ namespace Nt
             }
         }
 
-        while (XPending(s_handle.display))
+        /*while (XPending(s_handle.display))
         {
             XEvent event;
             XNextEvent(s_handle.display, &event);
@@ -115,7 +115,7 @@ namespace Nt
                 default:
                     break;
             }
-        }
+        }*/
     }
 
     void Input::Shutdown(void)
