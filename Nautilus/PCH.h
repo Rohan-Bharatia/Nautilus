@@ -322,7 +322,7 @@
     #endif // UNICODE
     #ifndef NOMINMAX
         #define NOMINMAX
-    #endif // NOMINMAX 
+    #endif // NOMINMAX
     #ifndef WIN32_LEAN_AND_MEAN
         #define WIN32_LEAN_AND_MEAN
     #endif // WIN32_LEAN_AND_MEAN
@@ -336,9 +336,9 @@
     #include <DirectXMath.h>
     using namespace Microsoft::WRL;
 #elif defined(NT_PLATFORM_LINUX)
-    #ifndef VK_USE_PLATFORM_X11_KHR
-        #define VK_USE_PLATFORM_X11_KHR
-    #endif // VK_USE_PLATFORM_X11_KHR
+    #ifndef VK_USE_PLATFORM_XLIB_KHR
+        #define VK_USE_PLATFORM_XLIB_KHR
+    #endif // VK_USE_PLATFORM_XLIB_KHR
     #include <unistd.h>
     #include <fstream>
     #include <cstring>

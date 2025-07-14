@@ -49,10 +49,12 @@ of this license document, but changing it is not allowed.
 	    desc.bgColor  = Color(23, 18, 96, 1.0f);
 
 	    m_window = CreateScope<Window>(desc);
-
 	    NT_ASSERT(m_window, "Failed to create window object!");
 
 	    m_window->SetEventCallback(NT_BIND_EVENT_FN(Application::OnEvent));
+
+         m_context = CreateScope<GraphicsContext>(m_window.get());
+         NT_ASSERT(m_context, "Failed to create graphics context object!");
     }
 
     void Application::PushLayer(Layer* layer)
@@ -79,13 +81,22 @@ of this license document, but changing it is not allowed.
             return;
         }
 
+        if (!m_context->Initialize())
+        {
+            Logger::Error("Failed to initialize graphics context!");
+            return;
+        }
+
         Timer timer;
         float32 prev = 0.0f;
+
         while (m_running)
         {
             float32 current   = timer.GetElapsedSeconds();
             float32 deltaTime = current - prev;
             prev              = current;
+
+            m_context->SetClearColor(Color(0, 0, 0, 1.0f));
 
             for (Layer* layer : m_layerStack)
             {
@@ -93,8 +104,9 @@ of this license document, but changing it is not allowed.
                 layer->OnRender();
             }
 
-	        m_window->OnUpdate();
+            m_context->OnUpdate();
             Input::OnUpdate();
+            m_window->OnUpdate();
         }
     }
 
@@ -117,6 +129,7 @@ of this license document, but changing it is not allowed.
     bool Application::OnWindowClose(WindowCloseEvent& event)
     {
         Input::Shutdown();
+        m_context->Shutdown();
 	    m_window->Shutdown();
         m_running = false;
         return false;

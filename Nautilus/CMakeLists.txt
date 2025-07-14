@@ -7,30 +7,37 @@ project(Nautilus)
 file(GLOB Nautilus_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Renderer/*.cpp
 )
 if(NT_PLATFORM_WINDOWS)
     file(GLOB Nautilus_PLATFORM_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Windows/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer/Windows/*.cpp
     )
 elseif(NT_PLATFORM_LINUX)
     file(GLOB Nautilus_PLATFORM_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Linux/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer/Linux/*.cpp
     )
 elseif(NT_PLATFORM_MACOS)
     file(GLOB Nautilus_PLATFORM_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/MacOS/*.mm
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer/MacOS/*.mm
     )
 elseif(NT_PLATFORM_IOS)
     file(GLOB Nautilus_PLATFORM_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/iOS/*.mm
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer/iOS/*.mm
     )
 elseif(NT_PLATFORM_ANDROID)
     file(GLOB Nautilus_PLATFORM_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/Android/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer/Android/*.cpp
     )
 elseif(NT_PLATFORM_WASM)
     file(GLOB Nautilus_PLATFORM_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/Core/WASM/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Renderer/WASM/*.cpp
     )
 endif()
 list(APPEND Nautilus_SOURCES ${Nautilus_PLATFORM_SOURCES})

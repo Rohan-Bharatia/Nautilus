@@ -18,6 +18,7 @@
     #define _NAUTILUS_H_
 
 #include "Core.h"
+#include "Renderer.h"
 #include "EntryPoint.h"
 
 #define NT_VERSION_MAJOR 1

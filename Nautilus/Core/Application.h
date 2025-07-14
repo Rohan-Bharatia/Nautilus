@@ -24,6 +24,7 @@
 #include "KeyEvent.h"
 #include "MouseEvent.h"
 #include "ApplicationEvent.h"
+#include "../Renderer.h"
 
 namespace Nt
 {
@@ -42,7 +43,8 @@ namespace Nt
 
     private:
         LayerStack m_layerStack;
-	Scope<Window> m_window;
+	    Scope<Window> m_window;
+        Scope<GraphicsContext> m_context;
         bool m_running;
 
         bool OnWindowClose(WindowCloseEvent& event);
